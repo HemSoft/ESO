@@ -26,5 +26,7 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 packages/*
+HemSoft.Eso.EsoDomain/packages/*
+HemSoft.Eso.EsoMonitor/packages/*
 *.rdl.data
 /.vs

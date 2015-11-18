@@ -41,6 +41,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,14 +51,67 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EsoAccount.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EsoCharacter.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EsoClass.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EsoEvent.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EsoEventType.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EsoModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EsoModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EsoModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EsoModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EsoModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EsoRace.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="EsoModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EsoModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EsoModel.edmx.diagram">
+      <DependentUpon>EsoModel.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EsoModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EsoModel.edmx</DependentUpon>
+      <LastGenOutput>EsoModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EsoModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EsoModel.edmx</DependentUpon>
+      <LastGenOutput>EsoModel.cs</LastGenOutput>
+    </Content>
     <Content Include="SQL\create-tables.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

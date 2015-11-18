@@ -1,0 +1,18 @@
+<GuiXml>
+  <Controls>
+    <TopLevelControl name="HSEventLogAddonIndicator" mouseEnabled="true" movable="true" clampedToScreen="true" resizeToFitDescendents="true" tier="LOW">
+      <Dimensions x="400" y="25" />
+      <Anchor point="RIGHT" />
+
+      <OnMoveStop>
+        HSEventLogAddon.OnIndicatorMoveStop()
+      </OnMoveStop>
+ 
+      <Controls>
+        <Label name="$(parent)Label" width="200" height="25" font="ZoFontWinH2" inheritAlpha="true" color="INTERFACE_COLOR_TYPE_TEXT_COLORS:INTERFACE_TEXT_COLOR_SELECTED" wrapMode="ELLIPSIS" verticalAlignment="TOP" horizontalAlignment="LEFT" text="">
+          <Anchor point="TOP" relativeTo="$(parent)" relativePoint="TOP" />
+        </Label>
+      </Controls>
+    </TopLevelControl>
+  </Controls>
+</GuiXml>

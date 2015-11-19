@@ -25,8 +25,6 @@ HSEventLogAddon.lastChampionXP = 0
 
 -- Next we create a function that will initialize our addon
 function HSEventLogAddon:Initialize()
-  --self.inCombat = IsUnitInCombat("player")
-
   --EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ACHIEVEMENTS_UPDATED, self.OnAchievementsUpdated)
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_LOOT_RECEIVED, self.OnLootReceived)
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_COMBAT_STATE, self.OnPlayerCombatState)
@@ -210,9 +208,14 @@ function WriteLog(text)
 end
 
 
-
-
-
-
-
-
+-- self.savedVariables.Cash = GetCurrentMoney()
+-- self.savedVariables.BankedCash = GetBankedMoney()
+-- self.savedVariables.BankedTelvarStoned = GetBankedTelvarStones()
+-- GetFormattedTime()
+-- GetDate()
+-- GetAPIVersion()
+-- GetDisplayName()
+-- GetNumFriends()
+-- GetNumGuilds()
+-- GetSecondsPlayed()
+-- TakeScreenshot()

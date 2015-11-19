@@ -1,5 +1,6 @@
 ﻿using System.ServiceProcess;
 using System.Timers;
+using NLua;
 
 namespace HemSoft.Eso.EsoMonitor
 {
@@ -20,6 +21,11 @@ namespace HemSoft.Eso.EsoMonitor
 
         private void OnTimer(object state)
         {
+            // Temporarily disable timer:
+            _Timer.Enabled = false;
+
+            Lua lua = new Lua();
+            lua.LoadFile(@"C:\Users\fhemmer\Google Drive\Documents\ESO\AddOns\AddOns\HSEventLog\SavedVariables\HSEventLog.lua");
         }
 
         protected override void OnStop()

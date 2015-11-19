@@ -13,14 +13,14 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[EsoAccount](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](50) NOT NULL,
-	[Password] [varchar](50) NOT NULL,
-	[LastLogin] [datetime] NULL,
-	[Description] [varchar](max) NULL,
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Name] [varchar](50) NOT NULL,
+    [Password] [varchar](50) NOT NULL,
+    [LastLogin] [datetime] NULL,
+    [Description] [varchar](max) NULL,
  CONSTRAINT [PK_EsoAccount] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+    [Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
 
@@ -31,12 +31,12 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[EsoAlliance](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](50) NOT NULL,
-	[Description] [varchar](max) NOT NULL,
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Name] [varchar](50) NOT NULL,
+    [Description] [varchar](max) NOT NULL,
  CONSTRAINT [PK_EsoFaction] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+    [Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
 
@@ -47,17 +47,17 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[EsoCharacter](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](50) NOT NULL,
-	[Description] [varchar](max) NULL,
-	[RaceId] [int] NOT NULL,
-	[ClassId] [int] NOT NULL,
-	[LastLogin] [datetime] NULL,
-	[TotalTimeMs] [bigint] NULL,
-	[AccountId] [int] NOT NULL,
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Name] [varchar](50) NOT NULL,
+    [Description] [varchar](max) NULL,
+    [RaceId] [int] NOT NULL,
+    [ClassId] [int] NOT NULL,
+    [LastLogin] [datetime] NULL,
+    [TotalTimeMs] [bigint] NULL,
+    [AccountId] [int] NOT NULL,
  CONSTRAINT [PK_EsoCharacter] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+    [Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
 
@@ -68,12 +68,12 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[EsoClass](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](50) NOT NULL,
-	[Description] [varchar](max) NULL,
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Name] [varchar](50) NOT NULL,
+    [Description] [varchar](max) NULL,
  CONSTRAINT [PK_EsoClass] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+    [Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
 
@@ -84,15 +84,15 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[EsoEvent](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](50) NOT NULL,
-	[EventTime] [datetime] NOT NULL,
-	[EventTypeId] [int] NOT NULL,
-	[Event] [varchar](max) NOT NULL,
-	[CharacterId] [int] NOT NULL,
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Name] [varchar](50) NOT NULL,
+    [EventTime] [datetime] NOT NULL,
+    [EventTypeId] [int] NOT NULL,
+    [Event] [varchar](max) NOT NULL,
+    [CharacterId] [int] NOT NULL,
  CONSTRAINT [PK_EsoEvent] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+    [Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
 
@@ -103,12 +103,12 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[EsoEventType](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](50) NOT NULL,
-	[Description] [varchar](max) NOT NULL,
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Name] [varchar](50) NOT NULL,
+    [Description] [varchar](max) NOT NULL,
  CONSTRAINT [PK_EsoEventType] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+    [Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
 
@@ -119,16 +119,16 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[EsoMount](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[CharacterId] [int] NOT NULL,
-	[Speed] [int] NOT NULL,
-	[Stamina] [int] NOT NULL,
-	[Capacity] [int] NOT NULL,
-	[LastUpdated] [datetime] NOT NULL,
-	[TimeUntilTraining] [bigint] NULL,
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [CharacterId] [int] NOT NULL,
+    [Speed] [int] NOT NULL,
+    [Stamina] [int] NOT NULL,
+    [Capacity] [int] NOT NULL,
+    [LastUpdated] [datetime] NOT NULL,
+    [TimeUntilTraining] [bigint] NULL,
  CONSTRAINT [PK_EsoMount] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+    [Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
 
@@ -139,13 +139,13 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[EsoRace](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](50) NOT NULL,
-	[Description] [varchar](max) NOT NULL,
-	[AllianceId] [int] NULL,
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Name] [varchar](50) NOT NULL,
+    [Description] [varchar](max) NOT NULL,
+    [AllianceId] [int] NULL,
  CONSTRAINT [PK_EsoRace] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+    [Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
 

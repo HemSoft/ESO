@@ -42,6 +42,7 @@ end
 function GetChampionPoints()
   local playerChampionXP = GetPlayerChampionXP()
   local playerChampionPointsEarned = GetPlayerChampionPointsEarned()
+  self.savedVariables.ChampionPointsEarned = playerChampionPointsEarned
   local championXPInRank = GetChampionXPInRank(playerChampionPointsEarned)
   local championPointsMax = GetMaxSpendableChampionPointsInAttribute() * 3
   local enlightenedMultiplier = GetEnlightenedMultiplier()

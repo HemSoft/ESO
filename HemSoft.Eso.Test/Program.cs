@@ -17,19 +17,29 @@ namespace HemSoft.Eso.Test
             lua.DoFile(@"C:\Users\fhemmer\Google Drive\Documents\ESO\AddOns\AddOns\HSEventLog\SavedVariables\HSEventLog.lua");
             var luaTable = lua["HSEventLogSavedVariables"] as LuaTable;
             Dictionary<object, object> dict = lua.GetTableDict(luaTable);
-            if (dict.ContainsKey("version"))
-            {
-                Console.WriteLine(dict["inventory"]);
-            }
+            int indent = 0;
+
             foreach (var tables in dict)
             {
                 Console.WriteLine($"{tables.Key} = {tables.Value}");
-                Dictionary<object, object> dict2 = lua.GetTableDict(tables.Value as LuaTable);
-                foreach (var x in dict2)
+                Dictionary<object, object> accounts = lua.GetTableDict(tables.Value as LuaTable);
+                foreach (var account in accounts)
                 {
-                    
+                    Console.WriteLine($"  {account.Key} = {account.Value}");
+                    Dictionary<object, object> characters = lua.GetTableDict(account.Value as LuaTable);
+                    foreach (var character in characters)
+                    {
+                        Console.WriteLine($"    {character.Key} = {character.Value}");
+                        Dictionary<object, object> properties = lua.GetTableDict(character.Value as LuaTable);
+                        foreach (var property in properties)
+                        {
+                            Console.WriteLine($"      {property.Key} = {property.Value}");
+                        }
+                    }
                 }
             }
+
+            Console.ReadLine();
         }
     }
 }

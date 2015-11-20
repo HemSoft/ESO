@@ -1,0 +1,10 @@
+## Title: HemSoft Event Log
+## APIVersion: 100011
+## Description: Saves in-game information to HSEventLogSavedVariables for consumption by external applications.
+## Version: 0.0.2
+## Author: |c33BBCCHemSoft|r
+## SavedVariables: HSEventLogSavedVariables
+## OptionalDependsOn: LibAddonMenu-2.0
+
+HSEventLog.xml
+HSEventLog.lua

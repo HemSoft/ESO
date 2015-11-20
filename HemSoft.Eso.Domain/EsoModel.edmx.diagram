@@ -15,6 +15,12 @@
         <AssociationConnector Association="EsoModel.FK_EsoCharacter_EsoRace" ManuallyRouted="false" />
         <AssociationConnector Association="EsoModel.FK_EsoEvent_EsoCharacter" ManuallyRouted="false" />
         <AssociationConnector Association="EsoModel.FK_EsoEvent_EsoEventType" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EsoModel.EsoAlliance" Width="1.5" PointX="0.75" PointY="8.875" />
+        <EntityTypeShape EntityType="EsoModel.EsoMount" Width="1.5" PointX="5.25" PointY="8.5" />
+        <EntityTypeShape EntityType="EsoModel.sysdiagram" Width="1.5" PointX="7.375" PointY="0.75" />
+        <AssociationConnector Association="EsoModel.FK_EsoCharacter_EsoAccount" />
+        <AssociationConnector Association="EsoModel.FK_EsoRace_EsoAlliance" />
+        <AssociationConnector Association="EsoModel.FK_EsoMount_EsoCharacter" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

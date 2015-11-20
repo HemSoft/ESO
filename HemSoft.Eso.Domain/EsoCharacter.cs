@@ -18,6 +18,7 @@ namespace HemSoft.Eso.Domain
         public EsoCharacter()
         {
             this.EsoEvents = new HashSet<EsoEvent>();
+            this.EsoMounts = new HashSet<EsoMount>();
         }
     
         public int Id { get; set; }
@@ -33,5 +34,8 @@ namespace HemSoft.Eso.Domain
         public virtual EsoRace EsoRace { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EsoEvent> EsoEvents { get; set; }
+        public virtual EsoAccount EsoAccount { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EsoMount> EsoMounts { get; set; }
     }
 }

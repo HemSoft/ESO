@@ -52,18 +52,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Account.cs" />
+    <Compile Include="Classes\Character.cs" />
+    <Compile Include="Classes\LuaInfo.cs" />
     <Compile Include="EsoMonitor.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="EsoMonitor.Designer.cs">
       <DependentUpon>EsoMonitor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\LuaHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HemSoft.Eso.Domain\HemSoft.Eso.Domain.csproj">
+      <Project>{dffe3ce9-03d6-4afd-9ce6-ed8bcbe864b1}</Project>
+      <Name>HemSoft.Eso.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

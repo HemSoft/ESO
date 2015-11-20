@@ -54,6 +54,9 @@
     <Compile Include="EsoAccount.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EsoAlliance.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EsoCharacter.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
@@ -81,10 +84,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EsoModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EsoMount.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EsoRace.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Managers\AccountManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

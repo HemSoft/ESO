@@ -208,14 +208,37 @@ function WriteLog(text)
 end
 
 
--- self.savedVariables.Cash = GetCurrentMoney()
--- self.savedVariables.BankedCash = GetBankedMoney()
--- self.savedVariables.BankedTelvarStoned = GetBankedTelvarStones()
--- GetFormattedTime()
--- GetDate()
--- GetAPIVersion()
--- GetDisplayName()
--- GetNumFriends()
--- GetNumGuilds()
--- GetSecondsPlayed()
 -- TakeScreenshot()
+-- GetMaxBags()
+-- GetChatFontSize()
+--   Returns: number fontSize
+-- SetChatFontSize(number fontSize)
+-- GetAlliancePoints()
+-- GetBagSize(number Bag bagId)
+--   Returns: number bagSlots
+-- GetNumBagFreeSlots(number Bag bagId)
+--   Returns: number freeSlots
+-- PlayItemSound(number ItemUISoundCategory itemSoundCategory, number ItemUISoundAction itemSoundAction)
+-- IsLocalMailboxFull()
+--   Returns: boolean isFull
+-- GetNumMailItems()
+--   Returns: number numMail
+-- GetNumSmithingResearchLines(number TradeskillType craftingSkillType)
+--   Returns: number numLines
+-- GetMaxSimultaneousSmithingResearch(number TradeskillType craftingSkillType)
+--   Returns: number maxSimultaneousResearch
+-- GetSmithingResearchLineInfo(number TradeskillType craftingSkillType, number researchLineIndex)
+--   Returns: string name, textureName icon, number numTraits, number timeRequiredForNextResearchSecs
+-- GetSmithingResearchLineTraitInfo(number TradeskillType craftingSkillType, number researchLineIndex, number traitIndex)
+--   Returns: number ItemTraitType traitType, string traitDescription, boolean known
+-- GetSmithingResearchLineTraitTimes(number TradeskillType craftingSkillType, number researchLineIndex, number traitIndex)
+--   Returns: number:nilable duration, number:nilable timeRemainingSecs
+
+-- GetNumEmotes()
+--   Returns: number numEmotes
+-- GetEmoteInfo(number emoteIndex)
+--   Returns: string slashName, number EmoteCategory category, number emoteId, string displayName, boolean showInGamepadUI
+-- GetEmoteSlashNameByIndex(number emoteIndex)
+--   Returns: string slashName
+-- PlayEmoteByIndex(number emoteIndex)
+

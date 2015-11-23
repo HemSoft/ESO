@@ -26,8 +26,8 @@ namespace HemSoft.Eso.EsoMonitor
             _Timer.Enabled = false;
 
             Lua lua = new Lua();
-            //lua.LoadFile(@"C:\Users\fhemmer\Google Drive\Documents\ESO\AddOns\AddOns\HSEventLog\SavedVariables\HSEventLog.lua");
-            lua.DoFile(@"C:\Users\fhemmer\Google Drive\Documents\ESO\AddOns\AddOns\HSEventLog\SavedVariables\HSEventLog.lua");
+            //lua.DoFile(@"C:\Users\fhemmer\Google Drive\Documents\ESO\AddOns\AddOns\HSEventLog\SavedVariables\HSEventLog.lua");
+            lua.DoFile(@"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua");
             var luaTable = lua["HSEventLogSavedVariables"] as LuaTable;
             Dictionary<object, object> dict = lua.GetTableDict(luaTable);
 

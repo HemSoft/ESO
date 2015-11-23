@@ -5,9 +5,9 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AddOns", "AddOns", "{70BA941A-7BFE-4010-808D-CC8710D556FF}"
 	ProjectSection(SolutionItems) = preProject
-		..\AddOns\HSEventLog\HSEventLog.lua = ..\AddOns\HSEventLog\HSEventLog.lua
-		..\AddOns\HSEventLog\HSEventLog.txt = ..\AddOns\HSEventLog\HSEventLog.txt
-		..\AddOns\HSEventLog\HSEventLog.xml = ..\AddOns\HSEventLog\HSEventLog.xml
+		AddOns\HSEventLog\HSEventLog.lua = AddOns\HSEventLog\HSEventLog.lua
+		AddOns\HSEventLog\HSEventLog.txt = AddOns\HSEventLog\HSEventLog.txt
+		AddOns\HSEventLog\HSEventLog.xml = AddOns\HSEventLog\HSEventLog.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HemSoft.Eso.Domain", "HemSoft.Eso.Domain\HemSoft.Eso.Domain.csproj", "{DFFE3CE9-03D6-4AFD-9CE6-ED8BCBE864B1}"
@@ -15,6 +15,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HemSoft.Eso.Test", "HemSoft.Eso.Test\HemSoft.Eso.Test.csproj", "{088C3203-41D6-414A-8C11-3BC4D35E653C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HemSoft.Eso.EsoMonitor", "HemSoft.Eso.EsoMonitor\HemSoft.Eso.EsoMonitor.csproj", "{A3B98FC1-4C70-4647-8E92-ACB2C1E5D964}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SavedVariables", "SavedVariables", "{AE20DCE6-128A-4A4E-97B4-221B19246ED3}"
+	ProjectSection(SolutionItems) = preProject
+		AddOns\HSEventLog\SavedVariables\HSEventLog.lua = AddOns\HSEventLog\SavedVariables\HSEventLog.lua
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,5 +42,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AE20DCE6-128A-4A4E-97B4-221B19246ED3} = {70BA941A-7BFE-4010-808D-CC8710D556FF}
 	EndGlobalSection
 EndGlobal

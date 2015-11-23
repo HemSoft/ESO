@@ -57,6 +57,14 @@ function HSEventLogAddon:SetSavedVariables()
   self.savedVariables.AlliancePoints = GetAlliancePoints()
   self.savedVariables.MailCount = GetNumMailItems()
   self.savedVariables.MailMax = GetMaxMailItems()
+
+  self.savedVariables.Inventory = {}
+  local usedBagSlots = GetNumBagUsedSlots(INVENTORY_BACKPACK)
+  for x = 1, usedBagSlots do
+    self.savedVariables.Inventory[x].Name = GetItemName(INVENTORY_BACKPACK, x)
+    self.savedVariables.Inventory[x].Type = GetItemType(INVENTORY_BACKPACK, x)
+    self.savedVariables.Inventory[x].Count = GetItemTotalCount(INVENTORY_BACKPACK, x)
+  end
 end
 
 function HSEventLogAddon:GetChampionPoints()
@@ -208,6 +216,14 @@ function LogInventory(text)
   text = text .. "Collectibles = " .. collectibleCount .. "\n"
   text = text .. "Trophies = " .. trophyCount .. "\n"
   text = text .. HSEventLogAddon:GetChampionPoints() .. "\n"
+
+  text = text .. "Blacksmitth research lines : " .. GetNumSmithingResearchLines(CRAFTING_TYPE_BLACKSMITHING) .. "\n"
+  text = text .. "Blacksmitth max simul lines: " .. GetMaxSimultaneousSmithingResearch(CRAFTING_TYPE_BLACKSMITHING) .. "\n"
+
+  local _, _, _, timeRequiredForNextResearchSecs = GetSmithingResearchLineInfo(CRAFTING_TYPE_BLACKSMITHIN, 0)
+  local formattedTime = ZO_FormatTime(timeRequiredForNextResearchSecs, TIME_FORMAT_STYLE_COLONS, TIME_FORMAT_PRECISION_TWELVE_HOUR)
+  test = test .. "Blacksmith research time left: " .. formattedTime
+
   HSEventLogAddon:SetSavedVariables()
   WriteLog(GetTimeString() .. "\n" .. text)
 end
@@ -226,3 +242,12 @@ EVENT_MANAGER:RegisterForEvent(HSEventLogAddon.name, EVENT_ADD_ON_LOADED, HSEven
 function WriteLog(text)
   HSEventLogAddonIndicatorLabel:SetText(text)
 end
+
+--TradeskillType
+--CRAFTING_TYPE_ALCHEMY
+--CRAFTING_TYPE_BLACKSMITHING
+--CRAFTING_TYPE_CLOTHIER
+--CRAFTING_TYPE_ENCHANTING
+--CRAFTING_TYPE_INVALID
+--CRAFTING_TYPE_PROVISIONING
+--CRAFTING_TYPE_WOODWORKING

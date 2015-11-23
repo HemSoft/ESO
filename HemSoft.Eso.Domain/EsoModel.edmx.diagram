@@ -4,23 +4,17 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="eff88fa5076d4bb586f956047949c5a4" Name="Diagram1">
-        <EntityTypeShape EntityType="EsoModel.EsoAccount" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EsoModel.EsoCharacter" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="EsoModel.EsoClass" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="EsoModel.EsoEvent" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="EsoModel.EsoEventType" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="EsoModel.EsoRace" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
-        <AssociationConnector Association="EsoModel.FK_EsoCharacter_EsoClass" ManuallyRouted="false" />
-        <AssociationConnector Association="EsoModel.FK_EsoCharacter_EsoRace" ManuallyRouted="false" />
-        <AssociationConnector Association="EsoModel.FK_EsoEvent_EsoCharacter" ManuallyRouted="false" />
-        <AssociationConnector Association="EsoModel.FK_EsoEvent_EsoEventType" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="EsoModel.EsoAlliance" Width="1.5" PointX="0.75" PointY="8.875" />
-        <EntityTypeShape EntityType="EsoModel.EsoMount" Width="1.5" PointX="5.25" PointY="8.5" />
-        <EntityTypeShape EntityType="EsoModel.sysdiagram" Width="1.5" PointX="7.375" PointY="0.75" />
-        <AssociationConnector Association="EsoModel.FK_EsoCharacter_EsoAccount" />
-        <AssociationConnector Association="EsoModel.FK_EsoRace_EsoAlliance" />
-        <AssociationConnector Association="EsoModel.FK_EsoMount_EsoCharacter" />
+      <Diagram DiagramId="f667124d5b1c48ab81fd4a216f54a67e" Name="Diagram1">
+        <EntityTypeShape EntityType="hemsoftModel.EsoAccount" Width="1.5" PointX="0.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="hemsoftModel.EsoAlliance" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hemsoftModel.EsoCharacter" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="hemsoftModel.EsoEvent" Width="1.5" PointX="5.25" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hemsoftModel.EsoEventType" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="hemsoftModel.EsoMount" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
+        <AssociationConnector Association="hemsoftModel.FK_EsoCharacter_EsoAccount" ManuallyRouted="false" />
+        <AssociationConnector Association="hemsoftModel.FK_EsoEvent_EsoCharacter" ManuallyRouted="false" />
+        <AssociationConnector Association="hemsoftModel.FK_EsoMount_EsoCharacter" ManuallyRouted="false" />
+        <AssociationConnector Association="hemsoftModel.FK_EsoEvent_EsoEventType" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

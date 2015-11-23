@@ -24,17 +24,26 @@ namespace HemSoft.Eso.Domain
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int RaceId { get; set; }
-        public int ClassId { get; set; }
         public Nullable<System.DateTime> LastLogin { get; set; }
-        public Nullable<long> TotalTimeMs { get; set; }
+        public Nullable<long> TotalTimeSeconds { get; set; }
         public int AccountId { get; set; }
+        public Nullable<int> AlliancePoints { get; set; }
+        public Nullable<int> BankedCash { get; set; }
+        public Nullable<int> BankedTelvarStones { get; set; }
+        public Nullable<int> Cash { get; set; }
+        public Nullable<int> ChampionPointsEarned { get; set; }
+        public Nullable<int> GuildCount { get; set; }
+        public Nullable<int> MailCount { get; set; }
+        public Nullable<int> MailMax { get; set; }
+        public Nullable<int> MaxBagSize { get; set; }
+        public Nullable<int> MaxBankSize { get; set; }
+        public Nullable<int> NumberOfFriends { get; set; }
+        public Nullable<int> UsedBagSlots { get; set; }
+        public Nullable<int> UsedBankSlots { get; set; }
     
-        public virtual EsoClass EsoClass { get; set; }
-        public virtual EsoRace EsoRace { get; set; }
+        public virtual EsoAccount EsoAccount { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EsoEvent> EsoEvents { get; set; }
-        public virtual EsoAccount EsoAccount { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EsoMount> EsoMounts { get; set; }
     }

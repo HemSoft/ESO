@@ -4,14 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="EsoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="hemsoftModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="EsoAccount">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
           <Property Name="LastLogin" Type="datetime" />
           <Property Name="Description" Type="varchar(max)" />
         </EntityType>
@@ -30,19 +30,22 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
-          <Property Name="RaceId" Type="int" Nullable="false" />
-          <Property Name="ClassId" Type="int" Nullable="false" />
           <Property Name="LastLogin" Type="datetime" />
-          <Property Name="TotalTimeMs" Type="bigint" />
+          <Property Name="TotalTimeSeconds" Type="bigint" />
           <Property Name="AccountId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="EsoClass">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="AlliancePoints" Type="int" />
+          <Property Name="BankedCash" Type="int" />
+          <Property Name="BankedTelvarStones" Type="int" />
+          <Property Name="Cash" Type="int" />
+          <Property Name="ChampionPointsEarned" Type="int" />
+          <Property Name="GuildCount" Type="int" />
+          <Property Name="MailCount" Type="int" />
+          <Property Name="MailMax" Type="int" />
+          <Property Name="MaxBagSize" Type="int" />
+          <Property Name="MaxBankSize" Type="int" />
+          <Property Name="NumberOfFriends" Type="int" />
+          <Property Name="UsedBagSlots" Type="int" />
+          <Property Name="UsedBankSlots" Type="int" />
         </EntityType>
         <EntityType Name="EsoEvent">
           <Key>
@@ -75,25 +78,6 @@
           <Property Name="LastUpdated" Type="datetime" Nullable="false" />
           <Property Name="TimeUntilTraining" Type="bigint" />
         </EntityType>
-        <EntityType Name="EsoRace">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Description" Type="varchar(max)" Nullable="false" />
-          <Property Name="AllianceId" Type="int" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <Association Name="FK_EsoCharacter_EsoAccount">
           <End Role="EsoAccount" Type="Self.EsoAccount" Multiplicity="1" />
           <End Role="EsoCharacter" Type="Self.EsoCharacter" Multiplicity="*" />
@@ -103,30 +87,6 @@
             </Principal>
             <Dependent Role="EsoCharacter">
               <PropertyRef Name="AccountId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EsoCharacter_EsoClass">
-          <End Role="EsoClass" Type="Self.EsoClass" Multiplicity="1" />
-          <End Role="EsoCharacter" Type="Self.EsoCharacter" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EsoClass">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EsoCharacter">
-              <PropertyRef Name="ClassId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EsoCharacter_EsoRace">
-          <End Role="EsoRace" Type="Self.EsoRace" Multiplicity="1" />
-          <End Role="EsoCharacter" Type="Self.EsoCharacter" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EsoRace">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EsoCharacter">
-              <PropertyRef Name="RaceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -166,38 +126,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_EsoRace_EsoAlliance">
-          <End Role="EsoAlliance" Type="Self.EsoAlliance" Multiplicity="0..1" />
-          <End Role="EsoRace" Type="Self.EsoRace" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EsoAlliance">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EsoRace">
-              <PropertyRef Name="AllianceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="EsoModelStoreContainer">
+        <EntityContainer Name="hemsoftModelStoreContainer">
           <EntitySet Name="EsoAccount" EntityType="Self.EsoAccount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EsoAlliance" EntityType="Self.EsoAlliance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EsoCharacter" EntityType="Self.EsoCharacter" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EsoClass" EntityType="Self.EsoClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EsoEvent" EntityType="Self.EsoEvent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EsoEventType" EntityType="Self.EsoEventType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EsoMount" EntityType="Self.EsoMount" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EsoRace" EntityType="Self.EsoRace" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_EsoCharacter_EsoAccount" Association="Self.FK_EsoCharacter_EsoAccount">
             <End Role="EsoAccount" EntitySet="EsoAccount" />
-            <End Role="EsoCharacter" EntitySet="EsoCharacter" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EsoCharacter_EsoClass" Association="Self.FK_EsoCharacter_EsoClass">
-            <End Role="EsoClass" EntitySet="EsoClass" />
-            <End Role="EsoCharacter" EntitySet="EsoCharacter" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EsoCharacter_EsoRace" Association="Self.FK_EsoCharacter_EsoRace">
-            <End Role="EsoRace" EntitySet="EsoRace" />
             <End Role="EsoCharacter" EntitySet="EsoCharacter" />
           </AssociationSet>
           <AssociationSet Name="FK_EsoEvent_EsoCharacter" Association="Self.FK_EsoEvent_EsoCharacter">
@@ -212,25 +149,30 @@
             <End Role="EsoCharacter" EntitySet="EsoCharacter" />
             <End Role="EsoMount" EntitySet="EsoMount" />
           </AssociationSet>
-          <AssociationSet Name="FK_EsoRace_EsoAlliance" Association="Self.FK_EsoRace_EsoAlliance">
-            <End Role="EsoAlliance" EntitySet="EsoAlliance" />
-            <End Role="EsoRace" EntitySet="EsoRace" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="EsoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="hemsoftModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="EsoAccount">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="EsoCharacters" Relationship="EsoModel.FK_EsoCharacter_EsoAccount" FromRole="EsoAccount" ToRole="EsoCharacter" />
+          <NavigationProperty Name="EsoCharacters" Relationship="Self.FK_EsoCharacter_EsoAccount" FromRole="EsoAccount" ToRole="EsoCharacter" />
+        </EntityType>
+        <EntityType Name="EsoAlliance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="EsoCharacter">
           <Key>
@@ -239,25 +181,25 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="RaceId" Type="Int32" Nullable="false" />
-          <Property Name="ClassId" Type="Int32" Nullable="false" />
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
-          <Property Name="TotalTimeMs" Type="Int64" />
+          <Property Name="TotalTimeSeconds" Type="Int64" />
           <Property Name="AccountId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="EsoClass" Relationship="Self.FK_EsoCharacter_EsoClass" FromRole="EsoCharacter" ToRole="EsoClass" />
-          <NavigationProperty Name="EsoRace" Relationship="Self.FK_EsoCharacter_EsoRace" FromRole="EsoCharacter" ToRole="EsoRace" />
+          <Property Name="AlliancePoints" Type="Int32" />
+          <Property Name="BankedCash" Type="Int32" />
+          <Property Name="BankedTelvarStones" Type="Int32" />
+          <Property Name="Cash" Type="Int32" />
+          <Property Name="ChampionPointsEarned" Type="Int32" />
+          <Property Name="GuildCount" Type="Int32" />
+          <Property Name="MailCount" Type="Int32" />
+          <Property Name="MailMax" Type="Int32" />
+          <Property Name="MaxBagSize" Type="Int32" />
+          <Property Name="MaxBankSize" Type="Int32" />
+          <Property Name="NumberOfFriends" Type="Int32" />
+          <Property Name="UsedBagSlots" Type="Int32" />
+          <Property Name="UsedBankSlots" Type="Int32" />
+          <NavigationProperty Name="EsoAccount" Relationship="Self.FK_EsoCharacter_EsoAccount" FromRole="EsoCharacter" ToRole="EsoAccount" />
           <NavigationProperty Name="EsoEvents" Relationship="Self.FK_EsoEvent_EsoCharacter" FromRole="EsoCharacter" ToRole="EsoEvent" />
-          <NavigationProperty Name="EsoAccount" Relationship="EsoModel.FK_EsoCharacter_EsoAccount" FromRole="EsoCharacter" ToRole="EsoAccount" />
-          <NavigationProperty Name="EsoMounts" Relationship="EsoModel.FK_EsoMount_EsoCharacter" FromRole="EsoCharacter" ToRole="EsoMount" />
-        </EntityType>
-        <EntityType Name="EsoClass">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="EsoCharacters" Relationship="Self.FK_EsoCharacter_EsoClass" FromRole="EsoClass" ToRole="EsoCharacter" />
+          <NavigationProperty Name="EsoMounts" Relationship="Self.FK_EsoMount_EsoCharacter" FromRole="EsoCharacter" ToRole="EsoMount" />
         </EntityType>
         <EntityType Name="EsoEvent">
           <Key>
@@ -281,38 +223,28 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="EsoEvents" Relationship="Self.FK_EsoEvent_EsoEventType" FromRole="EsoEventType" ToRole="EsoEvent" />
         </EntityType>
-        <EntityType Name="EsoRace">
+        <EntityType Name="EsoMount">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="EsoCharacters" Relationship="Self.FK_EsoCharacter_EsoRace" FromRole="EsoRace" ToRole="EsoCharacter" />
-          <Property Name="AllianceId" Type="Int32" />
-          <NavigationProperty Name="EsoAlliance" Relationship="EsoModel.FK_EsoRace_EsoAlliance" FromRole="EsoRace" ToRole="EsoAlliance" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CharacterId" Type="Int32" Nullable="false" />
+          <Property Name="Speed" Type="Int32" Nullable="false" />
+          <Property Name="Stamina" Type="Int32" Nullable="false" />
+          <Property Name="Capacity" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeUntilTraining" Type="Int64" />
+          <NavigationProperty Name="EsoCharacter" Relationship="Self.FK_EsoMount_EsoCharacter" FromRole="EsoMount" ToRole="EsoCharacter" />
         </EntityType>
-        <Association Name="FK_EsoCharacter_EsoClass">
-          <End Role="EsoClass" Type="Self.EsoClass" Multiplicity="1" />
+        <Association Name="FK_EsoCharacter_EsoAccount">
+          <End Role="EsoAccount" Type="Self.EsoAccount" Multiplicity="1" />
           <End Role="EsoCharacter" Type="Self.EsoCharacter" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="EsoClass">
+            <Principal Role="EsoAccount">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="EsoCharacter">
-              <PropertyRef Name="ClassId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EsoCharacter_EsoRace">
-          <End Role="EsoRace" Type="Self.EsoRace" Multiplicity="1" />
-          <End Role="EsoCharacter" Type="Self.EsoCharacter" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EsoRace">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EsoCharacter">
-              <PropertyRef Name="RaceId" />
+              <PropertyRef Name="AccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -324,6 +256,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="EsoEvent">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EsoMount_EsoCharacter">
+          <End Role="EsoCharacter" Type="Self.EsoCharacter" Multiplicity="1" />
+          <End Role="EsoMount" Type="Self.EsoMount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EsoCharacter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EsoMount">
               <PropertyRef Name="CharacterId" />
             </Dependent>
           </ReferentialConstraint>
@@ -342,119 +286,36 @@
         </Association>
         <EntityContainer Name="EsoEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="EsoAccounts" EntityType="Self.EsoAccount" />
+          <EntitySet Name="EsoAlliances" EntityType="Self.EsoAlliance" />
           <EntitySet Name="EsoCharacters" EntityType="Self.EsoCharacter" />
-          <EntitySet Name="EsoClasses" EntityType="Self.EsoClass" />
           <EntitySet Name="EsoEvents" EntityType="Self.EsoEvent" />
           <EntitySet Name="EsoEventTypes" EntityType="Self.EsoEventType" />
-          <EntitySet Name="EsoRaces" EntityType="Self.EsoRace" />
-          <AssociationSet Name="FK_EsoCharacter_EsoClass" Association="Self.FK_EsoCharacter_EsoClass">
-            <End Role="EsoClass" EntitySet="EsoClasses" />
-            <End Role="EsoCharacter" EntitySet="EsoCharacters" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EsoCharacter_EsoRace" Association="Self.FK_EsoCharacter_EsoRace">
-            <End Role="EsoRace" EntitySet="EsoRaces" />
+          <EntitySet Name="EsoMounts" EntityType="Self.EsoMount" />
+          <AssociationSet Name="FK_EsoCharacter_EsoAccount" Association="Self.FK_EsoCharacter_EsoAccount">
+            <End Role="EsoAccount" EntitySet="EsoAccounts" />
             <End Role="EsoCharacter" EntitySet="EsoCharacters" />
           </AssociationSet>
           <AssociationSet Name="FK_EsoEvent_EsoCharacter" Association="Self.FK_EsoEvent_EsoCharacter">
             <End Role="EsoCharacter" EntitySet="EsoCharacters" />
             <End Role="EsoEvent" EntitySet="EsoEvents" />
           </AssociationSet>
+          <AssociationSet Name="FK_EsoMount_EsoCharacter" Association="Self.FK_EsoMount_EsoCharacter">
+            <End Role="EsoCharacter" EntitySet="EsoCharacters" />
+            <End Role="EsoMount" EntitySet="EsoMounts" />
+          </AssociationSet>
           <AssociationSet Name="FK_EsoEvent_EsoEventType" Association="Self.FK_EsoEvent_EsoEventType">
             <End Role="EsoEventType" EntitySet="EsoEventTypes" />
             <End Role="EsoEvent" EntitySet="EsoEvents" />
           </AssociationSet>
-          <EntitySet Name="EsoAlliances" EntityType="EsoModel.EsoAlliance" />
-          <EntitySet Name="EsoMounts" EntityType="EsoModel.EsoMount" />
-          <EntitySet Name="sysdiagrams" EntityType="EsoModel.sysdiagram" />
-          <AssociationSet Name="FK_EsoCharacter_EsoAccount" Association="EsoModel.FK_EsoCharacter_EsoAccount">
-            <End Role="EsoAccount" EntitySet="EsoAccounts" />
-            <End Role="EsoCharacter" EntitySet="EsoCharacters" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EsoRace_EsoAlliance" Association="EsoModel.FK_EsoRace_EsoAlliance">
-            <End Role="EsoAlliance" EntitySet="EsoAlliances" />
-            <End Role="EsoRace" EntitySet="EsoRaces" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EsoMount_EsoCharacter" Association="EsoModel.FK_EsoMount_EsoCharacter">
-            <End Role="EsoCharacter" EntitySet="EsoCharacters" />
-            <End Role="EsoMount" EntitySet="EsoMounts" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="EsoAlliance">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="EsoRaces" Relationship="EsoModel.FK_EsoRace_EsoAlliance" FromRole="EsoAlliance" ToRole="EsoRace" />
-        </EntityType>
-        <EntityType Name="EsoMount">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CharacterId" Type="Int32" Nullable="false" />
-          <Property Name="Speed" Type="Int32" Nullable="false" />
-          <Property Name="Stamina" Type="Int32" Nullable="false" />
-          <Property Name="Capacity" Type="Int32" Nullable="false" />
-          <Property Name="LastUpdated" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TimeUntilTraining" Type="Int64" />
-          <NavigationProperty Name="EsoCharacter" Relationship="EsoModel.FK_EsoMount_EsoCharacter" FromRole="EsoMount" ToRole="EsoCharacter" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <Association Name="FK_EsoCharacter_EsoAccount">
-          <End Type="EsoModel.EsoAccount" Role="EsoAccount" Multiplicity="1" />
-          <End Type="EsoModel.EsoCharacter" Role="EsoCharacter" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EsoAccount">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EsoCharacter">
-              <PropertyRef Name="AccountId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EsoRace_EsoAlliance">
-          <End Type="EsoModel.EsoAlliance" Role="EsoAlliance" Multiplicity="0..1" />
-          <End Type="EsoModel.EsoRace" Role="EsoRace" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EsoAlliance">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EsoRace">
-              <PropertyRef Name="AllianceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EsoMount_EsoCharacter">
-          <End Type="EsoModel.EsoCharacter" Role="EsoCharacter" Multiplicity="1" />
-          <End Type="EsoModel.EsoMount" Role="EsoMount" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EsoCharacter">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EsoMount">
-              <PropertyRef Name="CharacterId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="EsoModelStoreContainer" CdmEntityContainer="EsoEntities">
+        <EntityContainerMapping StorageEntityContainer="hemsoftModelStoreContainer" CdmEntityContainer="EsoEntities">
           <EntitySetMapping Name="EsoAccounts">
-            <EntityTypeMapping TypeName="EsoModel.EsoAccount">
+            <EntityTypeMapping TypeName="hemsoftModel.EsoAccount">
               <MappingFragment StoreEntitySet="EsoAccount">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -464,31 +325,42 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="EsoAlliances">
+            <EntityTypeMapping TypeName="hemsoftModel.EsoAlliance">
+              <MappingFragment StoreEntitySet="EsoAlliance">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="EsoCharacters">
-            <EntityTypeMapping TypeName="EsoModel.EsoCharacter">
+            <EntityTypeMapping TypeName="hemsoftModel.EsoCharacter">
               <MappingFragment StoreEntitySet="EsoCharacter">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="RaceId" ColumnName="RaceId" />
-                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
-                <ScalarProperty Name="TotalTimeMs" ColumnName="TotalTimeMs" />
+                <ScalarProperty Name="TotalTimeSeconds" ColumnName="TotalTimeSeconds" />
                 <ScalarProperty Name="AccountId" ColumnName="AccountId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EsoClasses">
-            <EntityTypeMapping TypeName="EsoModel.EsoClass">
-              <MappingFragment StoreEntitySet="EsoClass">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="AlliancePoints" ColumnName="AlliancePoints" />
+                <ScalarProperty Name="BankedCash" ColumnName="BankedCash" />
+                <ScalarProperty Name="BankedTelvarStones" ColumnName="BankedTelvarStones" />
+                <ScalarProperty Name="Cash" ColumnName="Cash" />
+                <ScalarProperty Name="ChampionPointsEarned" ColumnName="ChampionPointsEarned" />
+                <ScalarProperty Name="GuildCount" ColumnName="GuildCount" />
+                <ScalarProperty Name="MailCount" ColumnName="MailCount" />
+                <ScalarProperty Name="MailMax" ColumnName="MailMax" />
+                <ScalarProperty Name="MaxBagSize" ColumnName="MaxBagSize" />
+                <ScalarProperty Name="MaxBankSize" ColumnName="MaxBankSize" />
+                <ScalarProperty Name="NumberOfFriends" ColumnName="NumberOfFriends" />
+                <ScalarProperty Name="UsedBagSlots" ColumnName="UsedBagSlots" />
+                <ScalarProperty Name="UsedBankSlots" ColumnName="UsedBankSlots" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EsoEvents">
-            <EntityTypeMapping TypeName="EsoModel.EsoEvent">
+            <EntityTypeMapping TypeName="hemsoftModel.EsoEvent">
               <MappingFragment StoreEntitySet="EsoEvent">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -500,7 +372,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EsoEventTypes">
-            <EntityTypeMapping TypeName="EsoModel.EsoEventType">
+            <EntityTypeMapping TypeName="hemsoftModel.EsoEventType">
               <MappingFragment StoreEntitySet="EsoEventType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -508,46 +380,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EsoRaces">
-            <EntityTypeMapping TypeName="EsoModel.EsoRace">
-              <MappingFragment StoreEntitySet="EsoRace">
-                <ScalarProperty Name="AllianceId" ColumnName="AllianceId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EsoAlliances">
-            <EntityTypeMapping TypeName="EsoModel.EsoAlliance">
-              <MappingFragment StoreEntitySet="EsoAlliance">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="EsoMounts">
-            <EntityTypeMapping TypeName="EsoModel.EsoMount">
+            <EntityTypeMapping TypeName="hemsoftModel.EsoMount">
               <MappingFragment StoreEntitySet="EsoMount">
-                <ScalarProperty Name="TimeUntilTraining" ColumnName="TimeUntilTraining" />
-                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
-                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
-                <ScalarProperty Name="Stamina" ColumnName="Stamina" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="EsoModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Stamina" ColumnName="Stamina" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="TimeUntilTraining" ColumnName="TimeUntilTraining" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

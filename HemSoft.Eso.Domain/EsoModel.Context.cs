@@ -26,13 +26,10 @@ namespace HemSoft.Eso.Domain
         }
     
         public virtual DbSet<EsoAccount> EsoAccounts { get; set; }
+        public virtual DbSet<EsoAlliance> EsoAlliances { get; set; }
         public virtual DbSet<EsoCharacter> EsoCharacters { get; set; }
-        public virtual DbSet<EsoClass> EsoClasses { get; set; }
         public virtual DbSet<EsoEvent> EsoEvents { get; set; }
         public virtual DbSet<EsoEventType> EsoEventTypes { get; set; }
-        public virtual DbSet<EsoRace> EsoRaces { get; set; }
-        public virtual DbSet<EsoAlliance> EsoAlliances { get; set; }
         public virtual DbSet<EsoMount> EsoMounts { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

@@ -60,9 +60,6 @@
     <Compile Include="EsoCharacter.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EsoClass.cs">
-      <DependentUpon>EsoModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="EsoEvent.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
@@ -87,14 +84,9 @@
     <Compile Include="EsoMount.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EsoRace.cs">
-      <DependentUpon>EsoModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Managers\CharacterManager.cs" />
     <Compile Include="Managers\AccountManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>EsoModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

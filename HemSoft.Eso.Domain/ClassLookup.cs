@@ -12,12 +12,12 @@ namespace HemSoft.Eso.Domain
     using System;
     using System.Collections.Generic;
     
-    public partial class EsoClass
+    public partial class ClassLookup
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public EsoClass()
+        public ClassLookup()
         {
-            this.EsoCharacters = new HashSet<EsoCharacter>();
+            this.Characters = new HashSet<Character>();
         }
     
         public int Id { get; set; }
@@ -25,6 +25,6 @@ namespace HemSoft.Eso.Domain
         public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EsoCharacter> EsoCharacters { get; set; }
+        public virtual ICollection<Character> Characters { get; set; }
     }
 }

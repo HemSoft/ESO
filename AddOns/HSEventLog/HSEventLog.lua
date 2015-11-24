@@ -12,9 +12,11 @@ HSEventLogAddon.inventoryToMonitor =
   { Name = "Grand Soul Gem"    , Above = 0, Below = 50 },
   { Name = "Potent Nirncrux"   , Above = 0, Below = 999 },
   { Name = "Fortified Nirncrux", Above = 0, Below = 999 },
-  { Name = "Raw Ancestor Silk" , Above = 0, Below = 100 },
-  { Name = "Rough Ruby Ash"    , Above = 0, Below = 100 },
+  { Name = "Ancestor Silk"     , Above = 0, Below = 100 },
+  { Name = "Ruby Ash"          , Above = 0, Below = 100 },
   { Name = "Rubedite Ore"      , Above = 0, Below = 100 },
+  { Name = "Itade"             , Above = 0, Below = 100 },
+  { Name = "Repora"            , Above = 0, Below = 100 },
   { Name = "Kuta"              , Above = 0, Below = 999 },
   { Name = "Crawlers"          , Above = 0, Below = 100 },
   { Name = "Guts"              , Above = 0, Below = 100 },
@@ -32,15 +34,42 @@ function HSEventLogAddon:Initialize()
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_SKILL_XP_UPDATE, self.OnEventSkillXpUpdate)
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_QUEST_COMPLETE, self.OnEventQuestComplete)
 
-  self.savedVariables = ZO_SavedVars:New("HSEventLogSavedVariables", 1, nil, {})
+  self.savedVariables = ZO_SavedVars:New("HSEventLogSavedVariables", 2, nil, {})
+  HSEventLogAddon:SetSavedVariables()
   self:RestorePosition()
   LogInventory("")
 end
 
-function GetChampionPoints()
+function HSEventLogAddon:SetSavedVariables()
+  self.savedVariables.Date = GetDate()
+  self.savedVariables.Time = GetFormattedTime()
+  self.savedVariables.NumberOfFriends = GetNumFriends()
+  self.savedVariables.SecondsPlayed = GetSecondsPlayed()
+  self.savedVariables.GuildCount = GetNumGuilds()
+  self.savedVariables.Cash = GetCurrentMoney()
+  self.savedVariables.BankedCash = GetBankedMoney()
+  self.savedVariables.BankedTelvarStones = GetBankedTelvarStones()
+  self.savedVariables.ChampionPointsEarned = GetPlayerChampionPointsEarned()
+  self.savedVariables.MaxBagSize = GetBagSize(BAG_BACKPACK)
+  self.savedVariables.MaxBankSize = GetBagSize(BAG_BANK)
+  self.savedVariables.UsedBagSlots = GetNumBagUsedSlots(BAG_BACKPACK)
+  self.savedVariables.UsedBankSlots = GetNumBagUsedSlots(BAG_BANK)
+  self.savedVariables.AlliancePoints = GetAlliancePoints()
+  self.savedVariables.MailCount = GetNumMailItems()
+  self.savedVariables.MailMax = GetMaxMailItems()
+
+  self.savedVariables.Inventory = {}
+  local usedBagSlots = GetNumBagUsedSlots(INVENTORY_BACKPACK)
+  for x = 1, usedBagSlots do
+    self.savedVariables.Inventory[x].Name = GetItemName(INVENTORY_BACKPACK, x)
+    self.savedVariables.Inventory[x].Type = GetItemType(INVENTORY_BACKPACK, x)
+    self.savedVariables.Inventory[x].Count = GetItemTotalCount(INVENTORY_BACKPACK, x)
+  end
+end
+
+function HSEventLogAddon:GetChampionPoints()
   local playerChampionXP = GetPlayerChampionXP()
   local playerChampionPointsEarned = GetPlayerChampionPointsEarned()
-  self.savedVariables.ChampionPointsEarned = playerChampionPointsEarned
   local championXPInRank = GetChampionXPInRank(playerChampionPointsEarned)
   local championPointsMax = GetMaxSpendableChampionPointsInAttribute() * 3
   local enlightenedMultiplier = GetEnlightenedMultiplier()
@@ -186,16 +215,23 @@ function LogInventory(text)
 
   text = text .. "Collectibles = " .. collectibleCount .. "\n"
   text = text .. "Trophies = " .. trophyCount .. "\n"
-  text = text .. GetChampionPoints() .. "\n"
-  WriteLog(GetTimeString() .. "\n" .. text)
+  text = text .. HSEventLogAddon:GetChampionPoints() .. "\n"
 
+  text = text .. "Blacksmitth research lines : " .. GetNumSmithingResearchLines(CRAFTING_TYPE_BLACKSMITHING) .. "\n"
+  text = text .. "Blacksmitth max simul lines: " .. GetMaxSimultaneousSmithingResearch(CRAFTING_TYPE_BLACKSMITHING) .. "\n"
+
+  local _, _, _, timeRequiredForNextResearchSecs = GetSmithingResearchLineInfo(CRAFTING_TYPE_BLACKSMITHIN, 0)
+  local formattedTime = ZO_FormatTime(timeRequiredForNextResearchSecs, TIME_FORMAT_STYLE_COLONS, TIME_FORMAT_PRECISION_TWELVE_HOUR)
+  test = test .. "Blacksmith research time left: " .. formattedTime
+
+  HSEventLogAddon:SetSavedVariables()
+  WriteLog(GetTimeString() .. "\n" .. text)
 end
 
 function Round(num, idp)
   local mult = 10^(idp or 0)
   return math.floor(num * mult + 0.5) / mult
 end
-
 
 -- Finally, we'll register our event handler function to be called when the proper event occurs.
 EVENT_MANAGER:RegisterForEvent(HSEventLogAddon.name, EVENT_ADD_ON_LOADED, HSEventLogAddon.OnAddOnLoaded)
@@ -207,15 +243,11 @@ function WriteLog(text)
   HSEventLogAddonIndicatorLabel:SetText(text)
 end
 
-
--- self.savedVariables.Cash = GetCurrentMoney()
--- self.savedVariables.BankedCash = GetBankedMoney()
--- self.savedVariables.BankedTelvarStoned = GetBankedTelvarStones()
--- GetFormattedTime()
--- GetDate()
--- GetAPIVersion()
--- GetDisplayName()
--- GetNumFriends()
--- GetNumGuilds()
--- GetSecondsPlayed()
--- TakeScreenshot()
+--TradeskillType
+--CRAFTING_TYPE_ALCHEMY
+--CRAFTING_TYPE_BLACKSMITHING
+--CRAFTING_TYPE_CLOTHIER
+--CRAFTING_TYPE_ENCHANTING
+--CRAFTING_TYPE_INVALID
+--CRAFTING_TYPE_PROVISIONING
+--CRAFTING_TYPE_WOODWORKING

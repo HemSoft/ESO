@@ -31,11 +31,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\HemSoft.Eso.EsoMonitor\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\HemSoft.Eso.EsoMonitor\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -51,22 +51,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EsoAccount.cs">
+    <Compile Include="Account.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EsoAlliance.cs">
+    <Compile Include="AllianceLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EsoCharacter.cs">
+    <Compile Include="Character.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EsoClass.cs">
+    <Compile Include="CharacterActivity.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EsoEvent.cs">
-      <DependentUpon>EsoModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EsoEventType.cs">
+    <Compile Include="ClassLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EsoModel.Context.cs">
@@ -84,15 +81,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EsoModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="EsoMount.cs">
-      <DependentUpon>EsoModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EsoRace.cs">
-      <DependentUpon>EsoModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Managers\CharacterActivityManager.cs" />
+    <Compile Include="Managers\CharacterManager.cs" />
     <Compile Include="Managers\AccountManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="sysdiagram.cs">
+    <Compile Include="RaceLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

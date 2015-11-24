@@ -12,19 +12,28 @@ namespace HemSoft.Eso.Domain
     using System;
     using System.Collections.Generic;
     
-    public partial class EsoAlliance
+    public partial class Character
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public EsoAlliance()
+        public Character()
         {
-            this.EsoRaces = new HashSet<EsoRace>();
+            this.CharacterActivities = new HashSet<CharacterActivity>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public int AccountId { get; set; }
+        public Nullable<int> ClassId { get; set; }
+        public Nullable<int> RaceId { get; set; }
+        public Nullable<int> AllianceId { get; set; }
+        public Nullable<System.DateTime> LastLogin { get; set; }
     
+        public virtual Account Account { get; set; }
+        public virtual AllianceLookup AllianceLookup { get; set; }
+        public virtual ClassLookup ClassLookup { get; set; }
+        public virtual RaceLookup RaceLookup { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EsoRace> EsoRaces { get; set; }
+        public virtual ICollection<CharacterActivity> CharacterActivities { get; set; }
     }
 }

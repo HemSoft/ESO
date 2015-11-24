@@ -51,19 +51,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EsoAccount.cs">
+    <Compile Include="Account.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EsoAlliance.cs">
+    <Compile Include="AllianceLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EsoCharacter.cs">
+    <Compile Include="Character.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EsoEvent.cs">
+    <Compile Include="CharacterActivity.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EsoEventType.cs">
+    <Compile Include="ClassLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EsoModel.Context.cs">
@@ -81,12 +81,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EsoModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="EsoMount.cs">
-      <DependentUpon>EsoModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Managers\CharacterActivityManager.cs" />
     <Compile Include="Managers\CharacterManager.cs" />
     <Compile Include="Managers\AccountManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RaceLookup.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

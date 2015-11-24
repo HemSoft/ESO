@@ -6,23 +6,23 @@ namespace HemSoft.Eso.Domain.Managers
 
     public static class AccountManager
     {
-        public static EsoAccount GetByName(string name)
+        public static Account GetByName(string name)
         {
             using (var context = new EsoEntities())
             {
-                var result = context.EsoAccounts.FirstOrDefault(x => x.Name.Contains(name));
-                return result ?? new EsoAccount();
+                var result = context.Accounts.FirstOrDefault(x => x.Name.Contains(name));
+                return result ?? new Account();
             }
         }
 
-        public static void Save(EsoAccount esoAccount)
+        public static void Save(Account esoAccount)
         {
             using (var context = new EsoEntities())
             {
-                var result = context.EsoAccounts.FirstOrDefault(x => x.Name.Contains(esoAccount.Name));
+                var result = context.Accounts.FirstOrDefault(x => x.Name.Contains(esoAccount.Name));
                 if (result == null)
                 {
-                    context.EsoAccounts.Add(esoAccount);
+                    context.Accounts.Add(esoAccount);
                 }
                 else
                 {

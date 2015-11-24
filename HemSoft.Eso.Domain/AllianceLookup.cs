@@ -12,16 +12,19 @@ namespace HemSoft.Eso.Domain
     using System;
     using System.Collections.Generic;
     
-    public partial class EsoMount
+    public partial class AllianceLookup
     {
-        public int Id { get; set; }
-        public int CharacterId { get; set; }
-        public int Speed { get; set; }
-        public int Stamina { get; set; }
-        public int Capacity { get; set; }
-        public System.DateTime LastUpdated { get; set; }
-        public Nullable<long> TimeUntilTraining { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public AllianceLookup()
+        {
+            this.Characters = new HashSet<Character>();
+        }
     
-        public virtual EsoCharacter EsoCharacter { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Character> Characters { get; set; }
     }
 }

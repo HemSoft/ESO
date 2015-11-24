@@ -4,27 +4,27 @@
 
     public static class CharacterManager
     {
-        public static EsoCharacter GetByName(int accountId, string name)
+        public static Character GetByName(int accountId, string name)
         {
             using (var context = new EsoEntities())
             {
-                var result = context.EsoCharacters.FirstOrDefault(x => x.Name.Contains(name) && x.AccountId == accountId);
-                return result ?? new EsoCharacter();
+                var result = context.Characters.FirstOrDefault(x => x.Name.Contains(name) && x.AccountId == accountId);
+                return result ?? new Character();
             }
         }
 
-        public static void Save(EsoCharacter esoCharacter)
+        public static void Save(Character character)
         {
             using (var context = new EsoEntities())
             {
-                var result = context.EsoAccounts.FirstOrDefault(x => x.Name.Contains(esoCharacter.Name));
+                var result = context.Accounts.FirstOrDefault(x => x.Name.Contains(character.Name));
                 if (result == null)
                 {
-                    context.EsoCharacters.Add(esoCharacter);
+                    context.Characters.Add(character);
                 }
                 else
                 {
-                    context.Entry(result).CurrentValues.SetValues(esoCharacter);
+                    context.Entry(result).CurrentValues.SetValues(character);
                 }
                 context.SaveChanges();
             }

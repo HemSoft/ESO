@@ -39,78 +39,80 @@ namespace HemSoft.Eso.Test
             {
                 Console.WriteLine($"{tables.Key} = {tables.Value}");
                 Dictionary<object, object> accounts = lua.GetTableDict(tables.Value as LuaTable);
-                foreach (var account in accounts)
+                foreach (var acc in accounts)
                 {
-                    currentAccount = account.Key.ToString().Substring(1);
+                    currentAccount = acc.Key.ToString().Substring(1);
 
-                    var esoAccount = AccountManager.GetByName(currentAccount);
-                    esoAccount.Name = currentAccount;
-                    AccountManager.Save(esoAccount);
+                    var account = AccountManager.GetByName(currentAccount);
+                    account.Name = currentAccount;
+                    AccountManager.Save(account);
 
-                    Console.WriteLine($"  {account.Key} = {account.Value}");
-                    Dictionary<object, object> characters = lua.GetTableDict(account.Value as LuaTable);
-                    foreach (var character in characters)
+                    Console.WriteLine($"  {acc.Key} = {acc.Value}");
+                    Dictionary<object, object> characters = lua.GetTableDict(acc.Value as LuaTable);
+                    foreach (var c in characters)
                     {
-                        currentCharacter = character.Key.ToString();
+                        currentCharacter = c.Key.ToString();
 
-                        var esoCharacter = CharacterManager.GetByName(esoAccount.Id, currentCharacter);
-                        esoCharacter.Name = currentCharacter;
-                        esoCharacter.AccountId = esoAccount.Id;
+                        var character = CharacterManager.GetByName(account.Id, currentCharacter);
+                        character.Name = currentCharacter;
+                        character.AccountId = account.Id;
 
-                        Console.WriteLine($"    {character.Key} = {character.Value}");
-                        Dictionary<object, object> properties = lua.GetTableDict(character.Value as LuaTable);
+                        var characterActivity = CharacterActivityManager.GetLastActivity(character.Id);
+
+                        Console.WriteLine($"    {c.Key} = {c.Value}");
+                        Dictionary<object, object> properties = lua.GetTableDict(c.Value as LuaTable);
                         var esoProperty = new EsoProperty();
                         foreach (var property in properties)
                         {
                             switch (property.Key.ToString())
                             {
                                 case "AlliancePoints":
-                                    esoCharacter.AlliancePoints = int.Parse(property.Value.ToString());
+                                    characterActivity.AlliancePoints = int.Parse(property.Value.ToString());
                                     break;
                                 case "BankedCash":
-                                    esoCharacter.BankedCash = int.Parse(property.Value.ToString());
+                                    characterActivity.BankedCash = int.Parse(property.Value.ToString());
                                     break;
                                 case "BankedTelvarStones":
-                                    esoCharacter.BankedTelvarStones = int.Parse(property.Value.ToString());
+                                    characterActivity.BankedTelvarStones = int.Parse(property.Value.ToString());
                                     break;
                                 case "Cash":
-                                    esoCharacter.Cash = int.Parse(property.Value.ToString());
+                                    characterActivity.Cash = int.Parse(property.Value.ToString());
                                     break;
                                 case "ChampionPointsEarned":
-                                    esoCharacter.ChampionPointsEarned = int.Parse(property.Value.ToString());
+                                    characterActivity.ChampionPointsEarned = int.Parse(property.Value.ToString());
                                     break;
                                 case "Date":
                                     esoProperty.Date = property.Value.ToString();
                                     break;
                                 case "GuildCount":
-                                    esoCharacter.GuildCount = int.Parse(property.Value.ToString());
+                                    characterActivity.GuildCount = int.Parse(property.Value.ToString());
                                     break;
                                 case "MailCount":
-                                    esoCharacter.MailCount = int.Parse(property.Value.ToString());
+                                    characterActivity.MailCount = int.Parse(property.Value.ToString());
                                     break;
                                 case "MailMax":
-                                    esoCharacter.MailMax = int.Parse(property.Value.ToString());
+                                    characterActivity.MailMax = int.Parse(property.Value.ToString());
                                     break;
                                 case "MaxBagSize":
-                                    esoCharacter.MaxBagSize = int.Parse(property.Value.ToString());
+                                    characterActivity.MaxBagSize = int.Parse(property.Value.ToString());
                                     break;
                                 case "MaxBankSize":
-                                    esoCharacter.MaxBankSize = int.Parse(property.Value.ToString());
+                                    characterActivity.MaxBankSize = int.Parse(property.Value.ToString());
                                     break;
                                 case "NumberOfFriends":
-                                    esoCharacter.NumberOfFriends = int.Parse(property.Value.ToString());
+                                    characterActivity.NumberOfFriends = int.Parse(property.Value.ToString());
                                     break;
                                 case "SecondsPlayed":
-                                    esoCharacter.TotalTimeSeconds = int.Parse(property.Value.ToString());
+                                    characterActivity.SecondsPlayed = int.Parse(property.Value.ToString());
                                     break;
                                 case "Time":
                                     esoProperty.Time = property.Value.ToString();
                                     break;
                                 case "UsedBagSlots":
-                                    esoCharacter.UsedBagSlots = int.Parse(property.Value.ToString());
+                                    characterActivity.UsedBagSlots = int.Parse(property.Value.ToString());
                                     break;
                                 case "UsedBankSlots":
-                                    esoCharacter.UsedBankSlots = int.Parse(property.Value.ToString());
+                                    characterActivity.UsedBankSlots = int.Parse(property.Value.ToString());
                                     break;
                                 default:
                                     break;
@@ -120,7 +122,7 @@ namespace HemSoft.Eso.Test
 
                         if (esoProperty.Time.Length == 3)
                         {
-                            esoCharacter.LastLogin = new DateTime
+                            characterActivity.LastLogin = new DateTime
                             (
                                 int.Parse(esoProperty.Date.Substring(0, 4)),
                                 int.Parse(esoProperty.Date.Substring(4, 2)),
@@ -132,7 +134,7 @@ namespace HemSoft.Eso.Test
                         }
                         else if (esoProperty.Time.Length == 4)
                         {
-                            esoCharacter.LastLogin = new DateTime
+                            characterActivity.LastLogin = new DateTime
                             (
                                 int.Parse(esoProperty.Date.Substring(0, 4)),
                                 int.Parse(esoProperty.Date.Substring(4, 2)),
@@ -144,7 +146,7 @@ namespace HemSoft.Eso.Test
                         }
                         else if (esoProperty.Time.Length == 5)
                         {
-                            esoCharacter.LastLogin = new DateTime
+                            characterActivity.LastLogin = new DateTime
                             (
                                 int.Parse(esoProperty.Date.Substring(0, 4)),
                                 int.Parse(esoProperty.Date.Substring(4, 2)),
@@ -156,7 +158,7 @@ namespace HemSoft.Eso.Test
                         }
                         else
                         {
-                            esoCharacter.LastLogin = new DateTime
+                            characterActivity.LastLogin = new DateTime
                             (
                                 int.Parse(esoProperty.Date.Substring(0, 4)),
                                 int.Parse(esoProperty.Date.Substring(4, 2)),
@@ -166,14 +168,13 @@ namespace HemSoft.Eso.Test
                                 int.Parse(esoProperty.Time.Substring(4, 2))
                             );
                         }
-                        if (!esoAccount.LastLogin.HasValue ||
-                            DateTime.Compare(esoAccount.LastLogin.Value, esoCharacter.LastLogin.Value) > 0)
+                        if (DateTime.Compare(account.LastLogin.Value, characterActivity.LastLogin.Value) > 0)
                         {
-                            esoAccount.LastLogin = esoCharacter.LastLogin;
-                            AccountManager.Save(esoAccount);
+                            account.LastLogin = characterActivity.LastLogin;
+                            AccountManager.Save(account);
                         }
 
-                        CharacterManager.Save(esoCharacter);
+                        CharacterActivityManager.Save(characterActivity);
                     }
                 }
             }

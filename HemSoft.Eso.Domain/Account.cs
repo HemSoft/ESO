@@ -18,7 +18,6 @@ namespace HemSoft.Eso.Domain
         public Account()
         {
             this.Characters = new HashSet<Character>();
-            this.Characters1 = new HashSet<Character>();
         }
     
         public int Id { get; set; }
@@ -29,7 +28,5 @@ namespace HemSoft.Eso.Domain
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Character> Characters { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Character> Characters1 { get; set; }
     }
 }

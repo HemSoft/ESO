@@ -17,7 +17,7 @@
         {
             using (var context = new EsoEntities())
             {
-                var result = context.Accounts.FirstOrDefault(x => x.Name.Contains(character.Name));
+                var result = context.Characters.FirstOrDefault(x => x.Name.Contains(character.Name));
                 if (result == null)
                 {
                     context.Characters.Add(character);

@@ -1,4 +1,6 @@
-﻿namespace HemSoft.Eso.Domain.Managers
+﻿using System;
+
+namespace HemSoft.Eso.Domain.Managers
 {
     using System.Linq;
 
@@ -8,7 +10,9 @@
         {
             using (var context = new EsoEntities())
             {
-                var result = context.CharacterActivities.LastOrDefault(x => x.CharacterId == characterId);
+                var result = context.CharacterActivities
+                    .OrderByDescending(o => o.LastLogin)
+                    .FirstOrDefault(x => x.CharacterId == characterId);
                 return result ?? new CharacterActivity();
             }
         }
@@ -17,8 +21,23 @@
         {
             using (var context = new EsoEntities())
             {
-                context.CharacterActivities.Add(characterActivity);
-                context.SaveChanges();
+                var lastCharacterActivity = GetLastActivity(characterActivity.CharacterId);
+                if (lastCharacterActivity == null)
+                {
+                    context.CharacterActivities.Add(characterActivity);
+                }
+                else
+                {
+                    if (lastCharacterActivity.LastLogin.HasValue)
+                    {
+                        if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) >
+                            0)
+                        {
+                            context.CharacterActivities.Add(characterActivity);
+                            context.SaveChanges();
+                        }
+                    }
+                }
             }
         }
     }

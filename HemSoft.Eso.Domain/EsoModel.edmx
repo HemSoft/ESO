@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EsoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EsoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="Id" />
@@ -30,10 +30,11 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
+          <Property Name="LastLogin" Type="datetime" />
           <Property Name="AccountId" Type="int" Nullable="false" />
-          <Property Name="ClassId" Type="int" Nullable="false" />
-          <Property Name="RaceId" Type="int" Nullable="false" />
-          <Property Name="AllianceId" Type="int" Nullable="false" />
+          <Property Name="ClassId" Type="int" />
+          <Property Name="RaceId" Type="int" />
+          <Property Name="AllianceId" Type="int" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -98,7 +99,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_AllianceLookup">
-          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="1" />
+          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AllianceLookup">
@@ -110,7 +111,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Class">
-          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="1" />
+          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ClassLookup">
@@ -122,7 +123,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Race">
-          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="1" />
+          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RaceLookup">
@@ -177,8 +178,7 @@
             <End Role="CharacterActivity" EntitySet="CharacterActivity" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EsoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -192,7 +192,6 @@
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Characters" Relationship="Self.FK_Character_Account" FromRole="Account" ToRole="Character" />
-          <NavigationProperty Name="Characters1" Relationship="Self.FK_Character_Account1" FromRole="Account" ToRole="Character" />
         </EntityType>
         <EntityType Name="AllianceLookup">
           <Key>
@@ -211,15 +210,15 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="AccountId" Type="Int32" Nullable="false" />
-          <Property Name="ClassId" Type="Int32" Nullable="false" />
-          <Property Name="RaceId" Type="Int32" Nullable="false" />
-          <Property Name="AllianceId" Type="Int32" Nullable="false" />
+          <Property Name="ClassId" Type="Int32" />
+          <Property Name="RaceId" Type="Int32" />
+          <Property Name="AllianceId" Type="Int32" />
           <NavigationProperty Name="Account" Relationship="Self.FK_Character_Account" FromRole="Character" ToRole="Account" />
-          <NavigationProperty Name="Account1" Relationship="Self.FK_Character_Account1" FromRole="Character" ToRole="Account" />
-          <NavigationProperty Name="AllianceLookup" Relationship="Self.FK_Character_AllianceLookup" FromRole="Character" ToRole="AllianceLookup" />
-          <NavigationProperty Name="ClassLookup" Relationship="Self.FK_Character_Class" FromRole="Character" ToRole="ClassLookup" />
-          <NavigationProperty Name="RaceLookup" Relationship="Self.FK_Character_Race" FromRole="Character" ToRole="RaceLookup" />
+          <NavigationProperty Name="AllianceLookup" Relationship="EsoModel.FK_Character_AllianceLookup" FromRole="Character" ToRole="AllianceLookup" />
+          <NavigationProperty Name="ClassLookup" Relationship="EsoModel.FK_Character_Class" FromRole="Character" ToRole="ClassLookup" />
+          <NavigationProperty Name="RaceLookup" Relationship="EsoModel.FK_Character_Race" FromRole="Character" ToRole="RaceLookup" />
           <NavigationProperty Name="CharacterActivities" Relationship="Self.FK_CharacterActivity_Character" FromRole="Character" ToRole="CharacterActivity" />
+          <Property Name="LastLogin" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -287,7 +286,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_AllianceLookup">
-          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="1" />
+          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AllianceLookup">
@@ -299,7 +298,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Class">
-          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="1" />
+          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ClassLookup">
@@ -311,7 +310,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Race">
-          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="1" />
+          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RaceLookup">
@@ -395,6 +394,7 @@
           <EntitySetMapping Name="Characters">
             <EntityTypeMapping TypeName="EsoModel.Character">
               <MappingFragment StoreEntitySet="Character">
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />

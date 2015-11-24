@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,13 @@ namespace HemSoft.Eso.Test
         private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             Lua lua = new Lua();
-            lua.DoFile(@"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua");
+            //var filePath = @"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua";
+            var filePath = @"..\..\..\AddOns\HSEventLog\SavedVariables\HSEventLog.lua";
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+            lua.DoFile(filePath);
             var luaTable = lua["HSEventLogSavedVariables"] as LuaTable;
             Dictionary<object, object> dict = lua.GetTableDict(luaTable);
             int indent = 0;
@@ -56,8 +63,10 @@ namespace HemSoft.Eso.Test
                         var character = CharacterManager.GetByName(account.Id, currentCharacter);
                         character.Name = currentCharacter;
                         character.AccountId = account.Id;
+                        CharacterManager.Save(character);
 
-                        var characterActivity = CharacterActivityManager.GetLastActivity(character.Id);
+                        var lastCharacterActivity = CharacterActivityManager.GetLastActivity(character.Id);
+                        var characterActivity = new CharacterActivity {CharacterId = character.Id};
 
                         Console.WriteLine($"    {c.Key} = {c.Value}");
                         Dictionary<object, object> properties = lua.GetTableDict(c.Value as LuaTable);
@@ -168,13 +177,40 @@ namespace HemSoft.Eso.Test
                                 int.Parse(esoProperty.Time.Substring(4, 2))
                             );
                         }
-                        if (DateTime.Compare(account.LastLogin.Value, characterActivity.LastLogin.Value) > 0)
+
+                        if (!account.LastLogin.HasValue)
+                        {
+                            account.LastLogin = characterActivity.LastLogin.Value;
+                            AccountManager.Save(account);
+                        }
+                        else if (DateTime.Compare(account.LastLogin.Value, characterActivity.LastLogin.Value) > 0)
                         {
                             account.LastLogin = characterActivity.LastLogin;
                             AccountManager.Save(account);
                         }
 
-                        CharacterActivityManager.Save(characterActivity);
+                        if (!character.LastLogin.HasValue)
+                        {
+                            character.LastLogin = characterActivity.LastLogin.Value;
+                            CharacterManager.Save(character);
+                        }
+                        else if (DateTime.Compare(character.LastLogin.Value, characterActivity.LastLogin.Value) > 0)
+                        {
+                            character.LastLogin = characterActivity.LastLogin;
+                            CharacterManager.Save(character);
+                        }
+
+                        if (lastCharacterActivity.LastLogin.HasValue)
+                        {
+                            if (DateTime.Compare(lastCharacterActivity.LastLogin.Value, characterActivity.LastLogin.Value) > 0)
+                            {
+                                CharacterActivityManager.Save(characterActivity);
+                            }
+                        }
+                        else
+                        {
+                            CharacterActivityManager.Save(characterActivity);
+                        }
                     }
                 }
             }

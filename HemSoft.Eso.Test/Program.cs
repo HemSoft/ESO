@@ -15,6 +15,16 @@ namespace HemSoft.Eso.Test
     {
         static void Main(string[] args)
         {
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = 60 * 60 * 1000;
+            timer.Enabled = true;
+            timer.Elapsed += Timer_Elapsed;
+            timer.Start();
+            Console.ReadLine();
+        }
+
+        private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
             Lua lua = new Lua();
             lua.DoFile(@"..\..\..\AddOns\HSEventLog\SavedVariables\HSEventLog.lua");
             var luaTable = lua["HSEventLogSavedVariables"] as LuaTable;
@@ -166,7 +176,6 @@ namespace HemSoft.Eso.Test
                     }
                 }
             }
-            Console.ReadLine();
         }
     }
 

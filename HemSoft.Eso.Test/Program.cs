@@ -15,6 +15,7 @@ namespace HemSoft.Eso.Test
     {
         static void Main(string[] args)
         {
+            Timer_Elapsed(null, null);
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Interval = 60 * 60 * 1000;
             timer.Enabled = true;
@@ -26,7 +27,7 @@ namespace HemSoft.Eso.Test
         private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             Lua lua = new Lua();
-            lua.DoFile(@"..\..\..\AddOns\HSEventLog\SavedVariables\HSEventLog.lua");
+            lua.DoFile(@"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua");
             var luaTable = lua["HSEventLogSavedVariables"] as LuaTable;
             Dictionary<object, object> dict = lua.GetTableDict(luaTable);
             int indent = 0;

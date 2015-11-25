@@ -41,30 +41,55 @@ function HSEventLogAddon:Initialize()
 end
 
 function HSEventLogAddon:SetSavedVariables()
-  self.savedVariables.Date = GetDate()
-  self.savedVariables.Time = GetFormattedTime()
-  self.savedVariables.NumberOfFriends = GetNumFriends()
-  self.savedVariables.SecondsPlayed = GetSecondsPlayed()
-  self.savedVariables.GuildCount = GetNumGuilds()
-  self.savedVariables.Cash = GetCurrentMoney()
+  self.savedVariables.AlliancePoints = GetAlliancePoints()
   self.savedVariables.BankedCash = GetBankedMoney()
   self.savedVariables.BankedTelvarStones = GetBankedTelvarStones()
+  self.savedVariables.Cash = GetCurrentMoney()
   self.savedVariables.ChampionPointsEarned = GetPlayerChampionPointsEarned()
-  self.savedVariables.MaxBagSize = GetBagSize(BAG_BACKPACK)
-  self.savedVariables.MaxBankSize = GetBagSize(BAG_BANK)
-  self.savedVariables.UsedBagSlots = GetNumBagUsedSlots(BAG_BACKPACK)
-  self.savedVariables.UsedBankSlots = GetNumBagUsedSlots(BAG_BANK)
-  self.savedVariables.AlliancePoints = GetAlliancePoints()
+  self.savedVariables.Date = GetDate()
+  self.savedVariables.GuildCount = GetNumGuilds()
   self.savedVariables.MailCount = GetNumMailItems()
   self.savedVariables.MailMax = GetMaxMailItems()
+  self.savedVariables.MaxBagSize = GetBagSize(BAG_BACKPACK)
+  self.savedVariables.MaxBankSize = GetBagSize(BAG_BANK)
+  self.savedVariables.NumberOfFriends = GetNumFriends()
+  self.savedVariables.SecondsPlayed = GetSecondsPlayed()
+  self.savedVariables.Time = GetFormattedTime()
+  self.savedVariables.UsedBagSlots = GetNumBagUsedSlots(BAG_BACKPACK)
+  self.savedVariables.UsedBankSlots = GetNumBagUsedSlots(BAG_BANK)
 
-  self.savedVariables.Inventory = {}
-  local usedBagSlots = GetNumBagUsedSlots(INVENTORY_BACKPACK)
-  for x = 1, usedBagSlots do
-    self.savedVariables.Inventory[x].Name = GetItemName(INVENTORY_BACKPACK, x)
-    self.savedVariables.Inventory[x].Type = GetItemType(INVENTORY_BACKPACK, x)
-    self.savedVariables.Inventory[x].Count = GetItemTotalCount(INVENTORY_BACKPACK, x)
-  end
+  -- Needs to be supported by reader app:
+  local secsMinLeftB, secsMinTotalB, secsMaxLeftB, secsMaxTotalB, numSlotsB, numFreeSlotsB, iconsB = HSEventLogAddon:GetCraftingData(CRAFTING_TYPE_BLACKSMITHING)
+  self.savedVariables.BlacksmithingSecondsMinimumLeft  = secsMinLeftB
+  self.savedVariables.BlacksmithingSecondsMinimumTotal = secsMinTotalB
+  self.savedVariables.BlacksmithingSecondsMaximumLeft  = secsMaxLeftB
+  self.savedVariables.BlacksmithingSecondsMaximumTotal = secsMaxTotalB
+  self.savedVariables.BlacksmithingSlotsMax            = numSlotsB
+  self.savedVariables.BlacksmithingSlotsFree           = numFreeSlotsB
+
+  local secsMinLeftW, secsMinTotalW, secsMaxLeftW, secsMaxTotalW, numSlotsW, numFreeSlotsW, iconsW = HSEventLogAddon:GetCraftingData(CRAFTING_TYPE_WOODWORKING)
+  self.savedVariables.WoodworkingSecondsMinimumLeft  = secsMinLeftB
+  self.savedVariables.WoodworkingSecondsMinimumTotal = secsMinTotalB
+  self.savedVariables.WoodworkingSecondsMaximumLeft  = secsMaxLeftB
+  self.savedVariables.WoodworkingSecondsMaximumTotal = secsMaxTotalB
+  self.savedVariables.WoodworkingSlotsMax            = numSlotsB
+  self.savedVariables.WoodworkingSlotsFree           = numFreeSlotsB
+
+  local secsMinLeftC, secsMinTotalC, secsMaxLeftC, secsMaxTotalC, numSlotsC, numFreeSlotsC, iconsC = HSEventLogAddon:GetCraftingData(CRAFTING_TYPE_CLOTHIER)
+  self.savedVariables.ClothingSecondsMinimumLeft  = secsMinLeftB
+  self.savedVariables.ClothingSecondsMinimumTotal = secsMinTotalB
+  self.savedVariables.ClothingSecondsMaximumLeft  = secsMaxLeftB
+  self.savedVariables.ClothingSecondsMaximumTotal = secsMaxTotalB
+  self.savedVariables.ClothingSlotsMax            = numSlotsB
+  self.savedVariables.ClothingSlotsFree           = numFreeSlotsB
+
+--  self.savedVariables.Inventory = {}
+--  local usedBagSlots = GetNumBagUsedSlots(INVENTORY_BACKPACK)
+--  for x = 1, usedBagSlots do
+--    self.savedVariables.Inventory[x].Name = GetItemName(INVENTORY_BACKPACK, x)
+--    self.savedVariables.Inventory[x].Type = GetItemType(INVENTORY_BACKPACK, x)
+--    self.savedVariables.Inventory[x].Count = GetItemTotalCount(INVENTORY_BACKPACK, x)
+--  end
 end
 
 function HSEventLogAddon:GetChampionPoints()
@@ -217,12 +242,43 @@ function LogInventory(text)
   text = text .. "Trophies = " .. trophyCount .. "\n"
   text = text .. HSEventLogAddon:GetChampionPoints() .. "\n"
 
-  text = text .. "Blacksmitth research lines : " .. GetNumSmithingResearchLines(CRAFTING_TYPE_BLACKSMITHING) .. "\n"
-  text = text .. "Blacksmitth max simul lines: " .. GetMaxSimultaneousSmithingResearch(CRAFTING_TYPE_BLACKSMITHING) .. "\n"
+  local timeMs, totalDurationMs = GetTimeUntilCanBeTrained()
+  local timeMinutes = timeMs / 1000 / 60
+  d(timeMinutes .. " minutes until mount training")
+  local inventoryBonus, maxInventoryBonus, staminaBonus, maxStaminaBonus, speedBonus, maxSpeedBonus = GetRidingStats()
+  d("Bag: " .. inventoryBonus .. '/' .. maxInventoryBonus)
+  d("Stamina: " .. staminaBonus .. '/' .. maxStaminaBonus)
+  d("Speed: " .. speedBonus .. '/' .. maxSpeedBonus)
 
-  local _, _, _, timeRequiredForNextResearchSecs = GetSmithingResearchLineInfo(CRAFTING_TYPE_BLACKSMITHIN, 0)
-  local formattedTime = ZO_FormatTime(timeRequiredForNextResearchSecs, TIME_FORMAT_STYLE_COLONS, TIME_FORMAT_PRECISION_TWELVE_HOUR)
-  test = test .. "Blacksmith research time left: " .. formattedTime
+  d("Available Skill Points: " .. GetAvailableSkillPoints())
+-- Returns: number numPoints
+  d("Skyshards: " .. GetNumSkyShards())
+-- Returns: number numShards
+  d("Skill Types: " .. GetNumSkillTypes())
+-- Returns: number numSkillTypes
+
+  local numSkillTypes = GetNumSkillTypes()
+  for skillType = 1, numSkillTypes do
+    local numSkillLines = GetNumSkillLines(skillType)
+    for skillIndex = 1, numSkillLines do
+      local skillLineInfoName, skillLineInfoRank = GetSkillLineInfo(skillType, skillIndex)
+      local skillLineXpInfoLastRankXp, skillLineXpInfoNextRankXP, skillLineXpInfoCurrentXp = GetSkillLineXPInfo(SkillType skillType, skillIndex)
+      -- GetSkillLineRankXPExtents(number SkillType skillType, number skillIndex, number rank)
+      -- Returns: number:nilable startXP, number:nilable nextRankStartXP
+      local numSkillAbilities = GetNumSkillAbilities(skillType, skillIndex)
+      for abilityIndex = 1, numSkillAbilities do
+        local SkillAbilityName, SkillAbilityTextureName, SkillAbilityEarnedRank, SkillAbilityIsPassive, SkillAbilityIsUltimate, SkillAbilityIsPurchased, SkillAbilityProgressionIndex = GetSkillAbilityInfo(skillType, skillIndex, abilityIndex)
+        -- GetSkillAbilityId(number SkillType skillType, number skillIndex, number abilityIndex, boolean showUpgrade)
+        -- Returns: number abilityId
+        local SkillAbilityUpgradeInfoCurrentUpgradeLevel, SkillAbilityUpgradeInfoMaxUpgradeLevel = GetSkillAbilityUpgradeInfo(skillType, skillIndex, number abilityIndex)
+      end
+    end
+  end
+  
+-- GetSkillAbilityNextUpgradeInfo(number SkillType skillType, number skillIndex, number abilityIndex)
+-- Returns: string name, textureName texture, number:nilable earnedRank
+-- GetCraftingSkillLineIndices(number TradeskillType craftingSkillType)
+-- Returns: number SkillType skillType, number skillIndex-- 
 
   HSEventLogAddon:SetSavedVariables()
   WriteLog(GetTimeString() .. "\n" .. text)
@@ -243,11 +299,33 @@ function WriteLog(text)
   HSEventLogAddonIndicatorLabel:SetText(text)
 end
 
---TradeskillType
---CRAFTING_TYPE_ALCHEMY
---CRAFTING_TYPE_BLACKSMITHING
---CRAFTING_TYPE_CLOTHIER
---CRAFTING_TYPE_ENCHANTING
---CRAFTING_TYPE_INVALID
---CRAFTING_TYPE_PROVISIONING
---CRAFTING_TYPE_WOODWORKING
+HSEventLogAddon:GetCraftingData = function(craftClass)
+  local icons = {}
+  local secsMinLeft = 0
+  local secsMinTotal = 0
+  local secsMaxLeft = 0
+  local secsMaxTotal = 0
+
+  local numSlots = GetMaxSimultaneousSmithingResearch(craftClass)
+  local numResearchLines = GetNumSmithingResearchLines(craftClass)
+  local numFreeSlots = numSlots
+  for researchLine = 1, numResearchLines do
+    local name, icon, numTraits, researchTimeSecs = GetSmithingResearchLineInfo(craftClass, researchLine)
+    for researchTrait = 1, numTraits do
+      totalTimeSecs, timeLeftSecs = GetSmithingResearchLineTraitTimes(craftClass, researchLine, researchTrait)
+      if ((totalTimeSecs ~= nil) and (timeLeftSecs ~= nil)) then
+        table.insert(icons, icon)
+        numFreeSlots = numFreeSlots - 1
+        if timeLeftSecs > secsMaxLeft then
+          secsMaxLeft = timeLeftSecs
+          secsMaxTotal = totalTimeSecs
+        end
+        if (timeLeftSecs < secsMinLeft) or (secsMinLeft == 0) then
+          secsMinLeft = timeLeftSecs
+          secsMinTotal = totalTimeSecs
+        end
+      end
+    end
+  end
+  return secsMinLeft, secsMinTotal, secsMaxLeft, secsMaxTotal, numSlots, numFreeSlots, icons
+end

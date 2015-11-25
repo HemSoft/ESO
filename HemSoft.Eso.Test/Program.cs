@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HemSoft.Eso.Domain;
-using HemSoft.Eso.Domain.Managers;
-using KeraLua;
-using NLua;
-using Lua = NLua.Lua;
-
-namespace HemSoft.Eso.Test
+﻿namespace HemSoft.Eso.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using Domain;
+    using Domain.Managers;
+    using NLua;
+    using Lua = NLua.Lua;
+
     class Program
     {
         static void Main(string[] args)
@@ -28,8 +24,8 @@ namespace HemSoft.Eso.Test
         private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             Lua lua = new Lua();
-            //var filePath = @"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua";
-            var filePath = @"..\..\..\AddOns\HSEventLog\SavedVariables\HSEventLog.lua";
+            var filePath = @"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua";
+            //var filePath = @"..\..\..\AddOns\HSEventLog\SavedVariables\HSEventLog.lua";
             if (!File.Exists(filePath))
             {
                 return;
@@ -183,21 +179,18 @@ namespace HemSoft.Eso.Test
                             account.LastLogin = characterActivity.LastLogin.Value;
                             AccountManager.Save(account);
                         }
-                        else if (DateTime.Compare(account.LastLogin.Value, characterActivity.LastLogin.Value) > 0)
-                        {
-                            account.LastLogin = characterActivity.LastLogin;
-                            AccountManager.Save(account);
-                        }
 
                         if (!character.LastLogin.HasValue)
                         {
                             character.LastLogin = characterActivity.LastLogin.Value;
                             CharacterManager.Save(character);
+                            CharacterActivityManager.Save(characterActivity);
                         }
-                        else if (DateTime.Compare(character.LastLogin.Value, characterActivity.LastLogin.Value) > 0)
+                        else if (DateTime.Compare(characterActivity.LastLogin.Value, character.LastLogin.Value) > 0)
                         {
                             character.LastLogin = characterActivity.LastLogin;
                             CharacterManager.Save(character);
+                            CharacterActivityManager.Save(characterActivity);
                         }
 
                         if (lastCharacterActivity.LastLogin.HasValue)

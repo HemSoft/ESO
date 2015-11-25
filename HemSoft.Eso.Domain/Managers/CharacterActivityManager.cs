@@ -2,14 +2,30 @@
 
 namespace HemSoft.Eso.Domain.Managers
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     public static class CharacterActivityManager
     {
+        public static List<CharacterActivity> GetAllActivityByCharacterId(int characterId)
+        {
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+                return context.CharacterActivities
+                    .OrderBy(o => o.LastLogin)
+                    .Where(x => x.CharacterId == characterId)
+                    .ToList();
+            }
+        }
+
         public static CharacterActivity GetLastActivity(int characterId)
         {
             using (var context = new EsoEntities())
             {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
                 var result = context.CharacterActivities
                     .OrderByDescending(o => o.LastLogin)
                     .FirstOrDefault(x => x.CharacterId == characterId);
@@ -21,6 +37,8 @@ namespace HemSoft.Eso.Domain.Managers
         {
             using (var context = new EsoEntities())
             {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
                 var lastCharacterActivity = GetLastActivity(characterActivity.CharacterId);
                 if (lastCharacterActivity == null)
                 {

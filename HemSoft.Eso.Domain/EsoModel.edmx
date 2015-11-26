@@ -21,7 +21,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Character">
           <Key>
@@ -32,9 +32,9 @@
           <Property Name="Description" Type="varchar(max)" />
           <Property Name="LastLogin" Type="datetime" />
           <Property Name="AccountId" Type="int" Nullable="false" />
-          <Property Name="ClassId" Type="int" />
-          <Property Name="RaceId" Type="int" />
-          <Property Name="AllianceId" Type="int" />
+          <Property Name="ClassId" Type="int" Nullable="false" />
+          <Property Name="RaceId" Type="int" Nullable="false" />
+          <Property Name="AllianceId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -43,20 +43,44 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CharacterId" Type="int" Nullable="false" />
           <Property Name="AlliancePoints" Type="int" />
+          <Property Name="AvailableSkillPoints" Type="int" />
           <Property Name="BankedCash" Type="int" />
           <Property Name="BankedTelvarStones" Type="int" />
+          <Property Name="BlacksmithingSecondsMaximumLeft" Type="int" />
+          <Property Name="BlacksmithingSecondsMaximumTotal" Type="int" />
+          <Property Name="BlacksmithingSecondsMinimumLeft" Type="int" />
+          <Property Name="BlacksmithingSecondsMinimumTotal" Type="int" />
+          <Property Name="BlacksmithingSlotsFree" Type="int" />
+          <Property Name="BlacksmithingSlotsMax" Type="int" />
           <Property Name="Cash" Type="int" />
           <Property Name="ChampionPointsEarned" Type="int" />
+          <Property Name="ClothingSecondsMaximumLeft" Type="int" />
+          <Property Name="ClothingSecondsMaximumTotal" Type="int" />
+          <Property Name="ClothingSecondsMinimumLeft" Type="int" />
+          <Property Name="ClothingSecondsMinimumTotal" Type="int" />
+          <Property Name="ClothingSlotsFree" Type="int" />
+          <Property Name="ClothingSlotsMax" Type="int" />
           <Property Name="GuildCount" Type="int" />
           <Property Name="LastLogin" Type="datetime" />
           <Property Name="MailCount" Type="int" />
           <Property Name="MailMax" Type="int" />
           <Property Name="MaxBagSize" Type="int" />
           <Property Name="MaxBankSize" Type="int" />
+          <Property Name="MountCapacity" Type="int" />
+          <Property Name="MountStamina" Type="int" />
+          <Property Name="MountSpeed" Type="int" />
           <Property Name="NumberOfFriends" Type="int" />
           <Property Name="SecondsPlayed" Type="bigint" />
+          <Property Name="SecondsUntilMountTraining" Type="bigint" />
+          <Property Name="Skyshards" Type="int" />
           <Property Name="UsedBagSlots" Type="int" />
           <Property Name="UsedBankSlots" Type="int" />
+          <Property Name="WoodworkingSecondsMaximumLeft" Type="int" />
+          <Property Name="WoodworkingSecondsMaximumTotal" Type="int" />
+          <Property Name="WoodworkingSecondsMinimumLeft" Type="int" />
+          <Property Name="WoodworkingSecondsMinimumTotal" Type="int" />
+          <Property Name="WoodworkingSlotsFree" Type="int" />
+          <Property Name="WoodworkingSlotsMax" Type="int" />
         </EntityType>
         <EntityType Name="ClassLookup">
           <Key>
@@ -72,7 +96,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
         </EntityType>
         <Association Name="FK_Character_Account">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
@@ -99,7 +123,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_AllianceLookup">
-          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="0..1" />
+          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AllianceLookup">
@@ -111,7 +135,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Class">
-          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="0..1" />
+          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ClassLookup">
@@ -123,7 +147,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Race">
-          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="0..1" />
+          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RaceLookup">
@@ -199,7 +223,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Characters" Relationship="Self.FK_Character_AllianceLookup" FromRole="AllianceLookup" ToRole="Character" />
         </EntityType>
         <EntityType Name="Character">
@@ -210,9 +234,9 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="AccountId" Type="Int32" Nullable="false" />
-          <Property Name="ClassId" Type="Int32" />
-          <Property Name="RaceId" Type="Int32" />
-          <Property Name="AllianceId" Type="Int32" />
+          <Property Name="ClassId" Type="Int32" Nullable="false" />
+          <Property Name="RaceId" Type="Int32" Nullable="false" />
+          <Property Name="AllianceId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="Self.FK_Character_Account" FromRole="Character" ToRole="Account" />
           <NavigationProperty Name="AllianceLookup" Relationship="EsoModel.FK_Character_AllianceLookup" FromRole="Character" ToRole="AllianceLookup" />
           <NavigationProperty Name="ClassLookup" Relationship="EsoModel.FK_Character_Class" FromRole="Character" ToRole="ClassLookup" />
@@ -242,6 +266,30 @@
           <Property Name="UsedBagSlots" Type="Int32" />
           <Property Name="UsedBankSlots" Type="Int32" />
           <NavigationProperty Name="Character" Relationship="Self.FK_CharacterActivity_Character" FromRole="CharacterActivity" ToRole="Character" />
+          <Property Name="BlacksmithingSecondsMaximumLeft" Type="Int32" />
+          <Property Name="BlacksmithingSecondsMaximumTotal" Type="Int32" />
+          <Property Name="BlacksmithingSecondsMinimumLeft" Type="Int32" />
+          <Property Name="BlacksmithingSecondsMinimumTotal" Type="Int32" />
+          <Property Name="BlacksmithingSlotsFree" Type="Int32" />
+          <Property Name="BlacksmithingSlotsMax" Type="Int32" />
+          <Property Name="ClothingSecondsMaximumLeft" Type="Int32" />
+          <Property Name="ClothingSecondsMaximumTotal" Type="Int32" />
+          <Property Name="ClothingSecondsMinimumLeft" Type="Int32" />
+          <Property Name="ClothingSecondsMinimumTotal" Type="Int32" />
+          <Property Name="ClothingSlotsFree" Type="Int32" />
+          <Property Name="ClothingSlotsMax" Type="Int32" />
+          <Property Name="WoodworkingSecondsMaximumLeft" Type="Int32" />
+          <Property Name="WoodworkingSecondsMaximumTotal" Type="Int32" />
+          <Property Name="WoodworkingSecondsMinimumLeft" Type="Int32" />
+          <Property Name="WoodworkingSecondsMinimumTotal" Type="Int32" />
+          <Property Name="WoodworkingSlotsFree" Type="Int32" />
+          <Property Name="WoodworkingSlotsMax" Type="Int32" />
+          <Property Name="AvailableSkillPoints" Type="Int32" />
+          <Property Name="Skyshards" Type="Int32" />
+          <Property Name="MountCapacity" Type="Int32" />
+          <Property Name="MountStamina" Type="Int32" />
+          <Property Name="MountSpeed" Type="Int32" />
+          <Property Name="SecondsUntilMountTraining" Type="Int64" />
         </EntityType>
         <EntityType Name="ClassLookup">
           <Key>
@@ -249,7 +297,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="true" />
           <NavigationProperty Name="Characters" Relationship="Self.FK_Character_Class" FromRole="ClassLookup" ToRole="Character" />
         </EntityType>
         <EntityType Name="RaceLookup">
@@ -258,7 +306,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Characters" Relationship="Self.FK_Character_Race" FromRole="RaceLookup" ToRole="Character" />
         </EntityType>
         <Association Name="FK_Character_Account">
@@ -286,7 +334,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_AllianceLookup">
-          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="0..1" />
+          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AllianceLookup">
@@ -298,7 +346,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Class">
-          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="0..1" />
+          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ClassLookup">
@@ -310,7 +358,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Race">
-          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="0..1" />
+          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RaceLookup">
@@ -408,6 +456,30 @@
           <EntitySetMapping Name="CharacterActivities">
             <EntityTypeMapping TypeName="EsoModel.CharacterActivity">
               <MappingFragment StoreEntitySet="CharacterActivity">
+                <ScalarProperty Name="SecondsUntilMountTraining" ColumnName="SecondsUntilMountTraining" />
+                <ScalarProperty Name="MountSpeed" ColumnName="MountSpeed" />
+                <ScalarProperty Name="MountStamina" ColumnName="MountStamina" />
+                <ScalarProperty Name="MountCapacity" ColumnName="MountCapacity" />
+                <ScalarProperty Name="Skyshards" ColumnName="Skyshards" />
+                <ScalarProperty Name="AvailableSkillPoints" ColumnName="AvailableSkillPoints" />
+                <ScalarProperty Name="WoodworkingSlotsMax" ColumnName="WoodworkingSlotsMax" />
+                <ScalarProperty Name="WoodworkingSlotsFree" ColumnName="WoodworkingSlotsFree" />
+                <ScalarProperty Name="WoodworkingSecondsMinimumTotal" ColumnName="WoodworkingSecondsMinimumTotal" />
+                <ScalarProperty Name="WoodworkingSecondsMinimumLeft" ColumnName="WoodworkingSecondsMinimumLeft" />
+                <ScalarProperty Name="WoodworkingSecondsMaximumTotal" ColumnName="WoodworkingSecondsMaximumTotal" />
+                <ScalarProperty Name="WoodworkingSecondsMaximumLeft" ColumnName="WoodworkingSecondsMaximumLeft" />
+                <ScalarProperty Name="ClothingSlotsMax" ColumnName="ClothingSlotsMax" />
+                <ScalarProperty Name="ClothingSlotsFree" ColumnName="ClothingSlotsFree" />
+                <ScalarProperty Name="ClothingSecondsMinimumTotal" ColumnName="ClothingSecondsMinimumTotal" />
+                <ScalarProperty Name="ClothingSecondsMinimumLeft" ColumnName="ClothingSecondsMinimumLeft" />
+                <ScalarProperty Name="ClothingSecondsMaximumTotal" ColumnName="ClothingSecondsMaximumTotal" />
+                <ScalarProperty Name="ClothingSecondsMaximumLeft" ColumnName="ClothingSecondsMaximumLeft" />
+                <ScalarProperty Name="BlacksmithingSlotsMax" ColumnName="BlacksmithingSlotsMax" />
+                <ScalarProperty Name="BlacksmithingSlotsFree" ColumnName="BlacksmithingSlotsFree" />
+                <ScalarProperty Name="BlacksmithingSecondsMinimumTotal" ColumnName="BlacksmithingSecondsMinimumTotal" />
+                <ScalarProperty Name="BlacksmithingSecondsMinimumLeft" ColumnName="BlacksmithingSecondsMinimumLeft" />
+                <ScalarProperty Name="BlacksmithingSecondsMaximumTotal" ColumnName="BlacksmithingSecondsMaximumTotal" />
+                <ScalarProperty Name="BlacksmithingSecondsMaximumLeft" ColumnName="BlacksmithingSecondsMaximumLeft" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
                 <ScalarProperty Name="AlliancePoints" ColumnName="AlliancePoints" />

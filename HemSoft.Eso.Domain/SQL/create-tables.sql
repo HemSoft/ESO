@@ -39,7 +39,7 @@ GO
 CREATE TABLE [dbo].[AllianceLookup](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50) NOT NULL,
-	[Description] [varchar](max) NOT NULL,
+	[Description] [varchar](max) NULL,
  CONSTRAINT [PK_EsoFaction] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -77,20 +77,44 @@ CREATE TABLE [dbo].[CharacterActivity](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[CharacterId] [int] NOT NULL,
 	[AlliancePoints] [int] NULL,
+    [AvailableSkillPoints] [int] NULL,
 	[BankedCash] [int] NULL,
 	[BankedTelvarStones] [int] NULL,
+    [BlacksmithingSecondsMaximumLeft] [int] NULL,
+    [BlacksmithingSecondsMaximumTotal] [int] NULL,
+    [BlacksmithingSecondsMinimumLeft] [int] NULL,
+    [BlacksmithingSecondsMinimumTotal] [int] NULL,
+    [BlacksmithingSlotsFree] [int] NULL,
+    [BlacksmithingSlotsMax] [int] NULL,
 	[Cash] [int] NULL,
 	[ChampionPointsEarned] [int] NULL,
+    [ClothingSecondsMaximumLeft] [int] NULL,
+    [ClothingSecondsMaximumTotal] [int] NULL,
+    [ClothingSecondsMinimumLeft] [int] NULL,
+    [ClothingSecondsMinimumTotal] [int] NULL,
+    [ClothingSlotsFree] [int] NULL,
+    [ClothingSlotsMax] [int] NULL,
 	[GuildCount] [int] NULL,
 	[LastLogin] [datetime] NULL,
 	[MailCount] [int] NULL,
 	[MailMax] [int] NULL,
 	[MaxBagSize] [int] NULL,
 	[MaxBankSize] [int] NULL,
+    [MountCapacity] [int] NULL,
+    [MountStamina] [int] NULL,
+    [MountSpeed] [int] NULL,
 	[NumberOfFriends] [int] NULL,
 	[SecondsPlayed] [bigint] NULL,
+    [SecondsUntilMountTraining] [bigint] NULL,
+    [Skyshards] [int] NULL,
 	[UsedBagSlots] [int] NULL,
 	[UsedBankSlots] [int] NULL,
+    [WoodworkingSecondsMaximumLeft] [int] NULL,
+    [WoodworkingSecondsMaximumTotal] [int] NULL,
+    [WoodworkingSecondsMinimumLeft] [int] NULL,
+    [WoodworkingSecondsMinimumTotal] [int] NULL,
+    [WoodworkingSlotsFree] [int] NULL,
+    [WoodworkingSlotsMax] [int] NULL,
  CONSTRAINT [PK_CharacterActivity] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -122,7 +146,7 @@ GO
 CREATE TABLE [dbo].[RaceLookup](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50) NOT NULL,
-	[Description] [varchar](max) NOT NULL,
+	[Description] [varchar](max) NULL,
  CONSTRAINT [PK_EsoRace] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

@@ -10,7 +10,7 @@
         <EntityTypeShape EntityType="EsoModel.Character" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="EsoModel.CharacterActivity" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="EsoModel.ClassLookup" Width="1.5" PointX="3.25" PointY="7.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="EsoModel.RaceLookup" Width="1.5" PointX="5.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="EsoModel.RaceLookup" Width="1.5" PointX="7.625" PointY="3.625" IsExpanded="true" />
         <AssociationConnector Association="EsoModel.FK_Character_Account" ManuallyRouted="false" />
         <AssociationConnector Association="EsoModel.FK_Character_Account1" ManuallyRouted="false" />
         <AssociationConnector Association="EsoModel.FK_Character_AllianceLookup" ManuallyRouted="false" />

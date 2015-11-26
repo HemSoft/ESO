@@ -31,6 +31,30 @@ namespace HemSoft.Eso.Domain
         public Nullable<long> SecondsPlayed { get; set; }
         public Nullable<int> UsedBagSlots { get; set; }
         public Nullable<int> UsedBankSlots { get; set; }
+        public Nullable<int> BlacksmithingSecondsMaximumLeft { get; set; }
+        public Nullable<int> BlacksmithingSecondsMaximumTotal { get; set; }
+        public Nullable<int> BlacksmithingSecondsMinimumLeft { get; set; }
+        public Nullable<int> BlacksmithingSecondsMinimumTotal { get; set; }
+        public Nullable<int> BlacksmithingSlotsFree { get; set; }
+        public Nullable<int> BlacksmithingSlotsMax { get; set; }
+        public Nullable<int> ClothingSecondsMaximumLeft { get; set; }
+        public Nullable<int> ClothingSecondsMaximumTotal { get; set; }
+        public Nullable<int> ClothingSecondsMinimumLeft { get; set; }
+        public Nullable<int> ClothingSecondsMinimumTotal { get; set; }
+        public Nullable<int> ClothingSlotsFree { get; set; }
+        public Nullable<int> ClothingSlotsMax { get; set; }
+        public Nullable<int> WoodworkingSecondsMaximumLeft { get; set; }
+        public Nullable<int> WoodworkingSecondsMaximumTotal { get; set; }
+        public Nullable<int> WoodworkingSecondsMinimumLeft { get; set; }
+        public Nullable<int> WoodworkingSecondsMinimumTotal { get; set; }
+        public Nullable<int> WoodworkingSlotsFree { get; set; }
+        public Nullable<int> WoodworkingSlotsMax { get; set; }
+        public Nullable<int> AvailableSkillPoints { get; set; }
+        public Nullable<int> Skyshards { get; set; }
+        public Nullable<int> MountCapacity { get; set; }
+        public Nullable<int> MountStamina { get; set; }
+        public Nullable<int> MountSpeed { get; set; }
+        public Nullable<long> SecondsUntilMountTraining { get; set; }
     
         public virtual Character Character { get; set; }
     }

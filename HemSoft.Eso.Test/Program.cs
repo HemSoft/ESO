@@ -74,12 +74,54 @@
                                 case "AlliancePoints":
                                     characterActivity.AlliancePoints = int.Parse(property.Value.ToString());
                                     break;
+                                case "AvailableSkillPoints":
+                                    characterActivity.AvailableSkillPoints = int.Parse(property.Value.ToString());
+                                    break;
                                 case "BankedCash":
                                     characterActivity.BankedCash = int.Parse(property.Value.ToString());
                                     break;
                                 case "BankedTelvarStones":
                                     characterActivity.BankedTelvarStones = int.Parse(property.Value.ToString());
                                     break;
+
+                                case "BlacksmithingSecondsMaximumLeft":
+                                    characterActivity.BlacksmithingSecondsMaximumLeft = int.Parse(property.Value.ToString());
+                                    break;
+                                case "BlacksmithingSecondsMaximumTotal":
+                                    characterActivity.BlacksmithingSecondsMaximumTotal = int.Parse(property.Value.ToString());
+                                    break;
+                                case "BlacksmithingSecondsMinimumLeft":
+                                    characterActivity.BlacksmithingSecondsMinimumLeft = int.Parse(property.Value.ToString());
+                                    break;
+                                case "BlacksmithingSecondsMinimumTotal":
+                                    characterActivity.BlacksmithingSecondsMinimumTotal = int.Parse(property.Value.ToString());
+                                    break;
+                                case "BlacksmithingSlotsFree":
+                                    characterActivity.BlacksmithingSlotsFree = int.Parse(property.Value.ToString());
+                                    break;
+                                case "BlacksmithingSlotsMax":
+                                    characterActivity.BlacksmithingSlotsMax = int.Parse(property.Value.ToString());
+                                    break;
+
+                                case "ClothingSecondsMaximumLeft":
+                                    characterActivity.ClothingSecondsMaximumLeft = int.Parse(property.Value.ToString());
+                                    break;
+                                case "ClothingSecondsMaximumTotal":
+                                    characterActivity.ClothingSecondsMaximumTotal = int.Parse(property.Value.ToString());
+                                    break;
+                                case "ClothingSecondsMinimumLeft":
+                                    characterActivity.ClothingSecondsMinimumLeft = int.Parse(property.Value.ToString());
+                                    break;
+                                case "ClothingSecondsMinimumTotal":
+                                    characterActivity.ClothingSecondsMinimumTotal = int.Parse(property.Value.ToString());
+                                    break;
+                                case "ClothingSlotsFree":
+                                    characterActivity.ClothingSlotsFree = int.Parse(property.Value.ToString());
+                                    break;
+                                case "ClothingSlotsMax":
+                                    characterActivity.ClothingSlotsMax = int.Parse(property.Value.ToString());
+                                    break;
+
                                 case "Cash":
                                     characterActivity.Cash = int.Parse(property.Value.ToString());
                                     break;
@@ -104,11 +146,26 @@
                                 case "MaxBankSize":
                                     characterActivity.MaxBankSize = int.Parse(property.Value.ToString());
                                     break;
+                                case "MountCapacity":
+                                    characterActivity.MountCapacity = int.Parse(property.Value.ToString());
+                                    break;
+                                case "MountStamina":
+                                    characterActivity.MountStamina = int.Parse(property.Value.ToString());
+                                    break;
+                                case "MountSpeed":
+                                    characterActivity.MountSpeed = int.Parse(property.Value.ToString());
+                                    break;
                                 case "NumberOfFriends":
                                     characterActivity.NumberOfFriends = int.Parse(property.Value.ToString());
                                     break;
                                 case "SecondsPlayed":
                                     characterActivity.SecondsPlayed = int.Parse(property.Value.ToString());
+                                    break;
+                                case "SecondsUntilMountTraining":
+                                    characterActivity.SecondsUntilMountTraining = int.Parse(property.Value.ToString());
+                                    break;
+                                case "Skyshards":
+                                    characterActivity.Skyshards = int.Parse(property.Value.ToString());
                                     break;
                                 case "Time":
                                     esoProperty.Time = property.Value.ToString();
@@ -118,6 +175,25 @@
                                     break;
                                 case "UsedBankSlots":
                                     characterActivity.UsedBankSlots = int.Parse(property.Value.ToString());
+                                    break;
+
+                                case "WoodworkingSecondsMaximumLeft":
+                                    characterActivity.WoodworkingSecondsMaximumLeft = int.Parse(property.Value.ToString());
+                                    break;
+                                case "WoodworkingSecondsMaximumTotal":
+                                    characterActivity.WoodworkingSecondsMaximumTotal = int.Parse(property.Value.ToString());
+                                    break;
+                                case "WoodworkingSecondsMinimumLeft":
+                                    characterActivity.WoodworkingSecondsMinimumLeft = int.Parse(property.Value.ToString());
+                                    break;
+                                case "WoodworkingSecondsMinimumTotal":
+                                    characterActivity.WoodworkingSecondsMinimumTotal = int.Parse(property.Value.ToString());
+                                    break;
+                                case "WoodworkingSlotsFree":
+                                    characterActivity.WoodworkingSlotsFree = int.Parse(property.Value.ToString());
+                                    break;
+                                case "WoodworkingSlotsMax":
+                                    characterActivity.WoodworkingSlotsMax = int.Parse(property.Value.ToString());
                                     break;
                                 default:
                                     break;

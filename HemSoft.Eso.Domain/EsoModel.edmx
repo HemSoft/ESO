@@ -32,9 +32,9 @@
           <Property Name="Description" Type="varchar(max)" />
           <Property Name="LastLogin" Type="datetime" />
           <Property Name="AccountId" Type="int" Nullable="false" />
-          <Property Name="ClassId" Type="int" Nullable="false" />
-          <Property Name="RaceId" Type="int" Nullable="false" />
-          <Property Name="AllianceId" Type="int" Nullable="false" />
+          <Property Name="ClassId" Type="int" />
+          <Property Name="RaceId" Type="int" />
+          <Property Name="AllianceId" Type="int" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -123,7 +123,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_AllianceLookup">
-          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="1" />
+          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AllianceLookup">
@@ -135,7 +135,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Class">
-          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="1" />
+          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ClassLookup">
@@ -147,7 +147,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Race">
-          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="1" />
+          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RaceLookup">
@@ -234,9 +234,9 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="AccountId" Type="Int32" Nullable="false" />
-          <Property Name="ClassId" Type="Int32" Nullable="false" />
-          <Property Name="RaceId" Type="Int32" Nullable="false" />
-          <Property Name="AllianceId" Type="Int32" Nullable="false" />
+          <Property Name="ClassId" Type="Int32" />
+          <Property Name="RaceId" Type="Int32" />
+          <Property Name="AllianceId" Type="Int32" />
           <NavigationProperty Name="Account" Relationship="Self.FK_Character_Account" FromRole="Character" ToRole="Account" />
           <NavigationProperty Name="AllianceLookup" Relationship="EsoModel.FK_Character_AllianceLookup" FromRole="Character" ToRole="AllianceLookup" />
           <NavigationProperty Name="ClassLookup" Relationship="EsoModel.FK_Character_Class" FromRole="Character" ToRole="ClassLookup" />
@@ -334,7 +334,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_AllianceLookup">
-          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="1" />
+          <End Role="AllianceLookup" Type="Self.AllianceLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AllianceLookup">
@@ -346,7 +346,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Class">
-          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="1" />
+          <End Role="ClassLookup" Type="Self.ClassLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ClassLookup">
@@ -358,7 +358,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Character_Race">
-          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="1" />
+          <End Role="RaceLookup" Type="Self.RaceLookup" Multiplicity="0..1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RaceLookup">

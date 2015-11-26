@@ -24,9 +24,9 @@ namespace HemSoft.Eso.Domain
         public string Name { get; set; }
         public string Description { get; set; }
         public int AccountId { get; set; }
-        public int ClassId { get; set; }
-        public int RaceId { get; set; }
-        public int AllianceId { get; set; }
+        public Nullable<int> ClassId { get; set; }
+        public Nullable<int> RaceId { get; set; }
+        public Nullable<int> AllianceId { get; set; }
         public Nullable<System.DateTime> LastLogin { get; set; }
     
         public virtual Account Account { get; set; }

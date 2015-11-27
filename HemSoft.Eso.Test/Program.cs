@@ -195,6 +195,10 @@
                                 case "WoodworkingSlotsMax":
                                     characterActivity.WoodworkingSlotsMax = int.Parse(property.Value.ToString());
                                     break;
+                                case "version":
+                                case "left":
+                                case "top":
+                                    break;
                                 default:
                                     break;
                             }
@@ -275,10 +279,6 @@
                             {
                                 CharacterActivityManager.Save(characterActivity);
                             }
-                        }
-                        else
-                        {
-                            CharacterActivityManager.Save(characterActivity);
                         }
                     }
                 }

@@ -1,0 +1,53 @@
+<GuiXml>
+    <Controls>
+        <TopLevelControl name="CraftingWritAssistantWindow" mouseEnabled="true" movable="true" hidden="true" clampedToScreen="true">
+			 <OnMoveStop>
+				CraftingWritAssistant.SaveWindowLocation()
+			 </OnMoveStop>           
+            <Dimensions x="600" y="240" />
+            <Controls>
+                <Backdrop name="$(parent)BG" inherits="ZO_DefaultBackdrop" />
+                <Label name="$(parent)Heading" font="ZoFontWindowTitle" color="CFDCBD" wrapMode="ELLIPSIS" verticalAlignment="CENTER" text="Crafting Writ Assistant">
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="5" offsetY="10"/>
+					<Dimensions x="300" />
+                </Label>				
+				<Button name="$(parent)CloseButton" inheritAlpha="true" verticalAlignment="CENTER" horizontalAlignment="CENTER">
+				  <Anchor point="TOPRIGHT" relativeTo="$(parent)" relativePoint="TOPRIGHT" />
+				  <Dimensions x="28" y="28" />
+				  <Textures normal="/esoui/art/buttons/cancel_up.dds" mouseOver="/esoui/art/buttons/cancel_down.dds" pressed="/esoui/art/buttons/cancel_down.dds" />
+				  <OnClicked>
+					CraftingWritAssistantWindow:SetHidden(true)
+				  </OnClicked>
+				</Button>				
+				<Texture name="$(parent)TopDivider" textureFile="/esoui/art/quest/questjournal_divider.dds">
+                    <Dimensions y="5" x="600"/>
+                   <Anchor point="TOPLEFT" relativeTo="$(parent)Heading" relativePoint="BOTTOMLEFT" offsetX="0" offsetY="5"/>
+                </Texture>				
+				<Label name="ActiveWritLabel" font="ZoFontWinH2" color="3a92ff" wrapMode="ELLIPSIS" verticalAlignment="LEFT" text="Select Writ Above">
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)TopDivider" relativePoint="TOPLEFT" offsetX="0" offsetY="10"/>
+					 <Dimensions x="300" y="32" />
+                </Label>				
+				 <Control name="CraftingWritStepList">				    
+                     <Dimensions y="240" x="500"/>
+					 <Anchor point="TOPLEFT" relativeTo="ActiveWritLabel" offsetX="0" offsetY="5" relativePoint="TOPLEFT" />                   
+                </Control>			
+		           </Controls>
+        </TopLevelControl>	
+        <Button name="CraftingWritAssistantStepItem" virtual="true">  
+            <Controls>							
+                <Label name="$(parent)Description" font="ZoFontWinH4" wrapMode="ELLIPSIS">
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" />
+                    <Dimensions x="400" y="30" />
+                </Label>			
+            </Controls>
+        </Button>
+		 <Button name="CraftingWritAssistantAddInfoItem" virtual="true">  
+            <Controls>							
+                <Label name="$(parent)Description" font="ZoFontGame" wrapMode="ELLIPSIS">
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" />
+                    <Dimensions x="200" y="30" />
+                </Label>			
+            </Controls>
+        </Button>
+    </Controls>
+</GuiXml>

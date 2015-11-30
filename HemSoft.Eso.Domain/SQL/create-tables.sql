@@ -58,9 +58,9 @@ CREATE TABLE [dbo].[Character](
 	[Description] [varchar](max) NULL,
 	[LastLogin] [datetime] NULL,
 	[AccountId] [int] NOT NULL,
-	[ClassId] [int] NOT NULL,
-	[RaceId] [int] NOT NULL,
-	[AllianceId] [int] NOT NULL,
+	[ClassId] [int] NULL,
+	[RaceId] [int] NULL,
+	[AllianceId] [int] NULL,
  CONSTRAINT [PK_Character] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -215,4 +215,194 @@ INSERT INTO ClassLookup (Name, Description) VALUES ('Nightblade', 'This is your 
 INSERT INTO ClassLookup (Name, Description) VALUES ('Sorcerer', ' This class is ESOs primary magic-using class. In other titles, the Sorcerer is called the Mage, Wizard, Warlock, or Necromancer.');
 INSERT INTO ClassLookup (Name, Description) VALUES ('Templar', 'The Templar is a warrior wielding Holy magic to smite enemies or heal allies. It is equivalent to the Paladin class in most other games.');
 
-SELECT * FROM CharacterActivity ca
+--==============================================================================================================--
+--==============================================================================================================--
+--==============================================================================================================--
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'CharactersNeedingAttention')
+    DROP PROCEDURE CharactersNeedingAttention
+GO
+
+CREATE PROCEDURE CharactersNeedingAttention
+AS
+BEGIN
+    -- Get Research Past Due:
+    SELECT
+        c.Id AS CharacterId
+      , c.Name AS CharacterName
+      , ca.LastLogin
+
+      , CASE
+            WHEN DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin) < GETDATE() THEN
+                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin))) + ' PAST DUE!'
+            ELSE
+                ''
+        END HourseFeedingStatus
+      , CASE
+            WHEN DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin) < GETDATE() THEN
+                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin))) + ' PAST DUE!'
+            ELSE
+                ''
+        END BlacksmithingStatus
+      , CASE
+            WHEN DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin) < GETDATE() THEN
+                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin))) + ' PAST DUE!'
+            ELSE
+                ''
+        END ClothingStatus
+      , CASE
+            WHEN DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin) < GETDATE() THEN
+                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin))) + ' PAST DUE!'
+            ELSE
+                ''
+        END WoodworkingStatus
+    FROM
+        CharacterActivity ca
+        INNER JOIN Character c ON ca.CharacterId = c.Id
+    WHERE
+        ca.Id IN 
+        (
+            SELECT
+              (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id) AS ActivityId
+            FROM
+                Character c
+                INNER JOIN CharacterActivity ca ON ca.CharacterId = c.Id AND ca.Id = (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id)
+        )
+        AND
+        (
+            DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin) < GETDATE()
+            OR
+            DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin) < GETDATE()
+            OR
+            DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin) < GETDATE()
+            OR
+            DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin) < GETDATE()
+        )
+    ORDER BY
+        c.Name
+END
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'CharactersNeedingAttentionWithinHours')
+    DROP PROCEDURE CharactersNeedingAttentionWithinHours
+GO
+
+CREATE PROCEDURE CharactersNeedingAttentionWithinHours
+(
+    @hours INT
+)
+AS
+BEGIN
+    -- Get Research Past Due:
+    SELECT
+        c.Id AS CharacterId
+      , c.Name AS CharacterName
+      , ca.LastLogin
+
+      , CASE
+            WHEN DATEADD(ss, ca.SecondsUntilMountTraining - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
+                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin))) + ' DUE SOON!'
+            ELSE
+                ''
+        END HourseFeedingStatus
+      , CASE
+            WHEN DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
+                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin))) + ' DUE SOON!'
+            ELSE
+                ''
+        END BlacksmithingStatus
+      , CASE
+            WHEN DATEADD(ss, ca.ClothingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
+                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin))) + ' DUE SOON!'
+            ELSE
+                ''
+        END ClothingStatus
+      , CASE
+            WHEN DATEADD(ss, ca.WoodworkingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
+                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin))) + ' DUE SOON!'
+
+            ELSE
+                ''
+        END WoodworkingStatus
+    FROM
+        CharacterActivity ca
+        INNER JOIN Character c ON ca.CharacterId = c.Id
+    WHERE
+        ca.Id IN 
+        (
+            SELECT
+              (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id) AS ActivityId
+            FROM
+                Character c
+                INNER JOIN CharacterActivity ca ON ca.CharacterId = c.Id AND ca.Id = (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id)
+        )
+        AND
+        (
+            DATEADD(ss, ca.SecondsUntilMountTraining - (60 * 60 * @hours), ca.LastLogin) < GETDATE()
+            OR
+            DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE()
+            OR
+            DATEADD(ss, ca.ClothingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE()
+            OR
+            DATEADD(ss, ca.WoodworkingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE()
+        )
+    ORDER BY
+        c.Name
+END
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'GetLastCharacterActivity')
+    DROP PROCEDURE GetLastCharacterActivity
+GO
+
+CREATE PROCEDURE GetLastCharacterActivity
+AS
+BEGIN
+
+    SELECT
+        c.Id AS CharacterId
+      , c.Name AS CharacterName
+      , ca.Id AS ActivityId
+      , ca.AlliancePoints
+      , ca.BankedCash
+      , ca.BankedTelvarStones
+      , ca.Cash
+      , ca.ChampionPointsEarned
+      , ca.GuildCount
+      , ca.LastLogin
+      , ca.MailCount
+      , ca.MailMax
+      , ca.MaxBagSize
+      , ca.MaxBankSize
+      , ca.NumberOfFriends
+      , ca.SecondsPlayed
+      , ca.UsedBagSlots
+      , ca.UsedBankSlots
+      , DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin) AS BlackmithingAvailableAt
+      , DATEDIFF(SECOND, GETDATE(), DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)) AS BlacksmithingSecondsLeft
+      , ca.BlacksmithingSecondsMinimumLeft / 60 AS BlacksmithingMinutesLeft
+      , ca.BlacksmithingSlotsFree
+      , ca.BlacksmithingSlotsMax
+      , ca.ClothingSecondsMinimumLeft / 60 AS ClothingMinutesLeft
+      , (ca.ClothingSecondsMinimumLeft / ca.ClothingSecondsMinimumTotal) * 100 AS ClothingPercentDone
+      , ca.ClothingSlotsFree
+      , ca.ClothingSlotsMax
+      , ca.WoodworkingSecondsMaximumLeft / 60 AS WoodworkingMinutesLeft
+      , (ca.WoodworkingSecondsMaximumLeft / ca.WoodworkingSecondsMaximumTotal) * 100 AS WoodworkingPercentDone
+      , ca.WoodworkingSlotsFree
+      , ca.WoodworkingSlotsMax
+      , ca.MountCapacity
+      , ca.MountStamina
+      , ca.MountSpeed
+      , ca.SecondsUntilMountTraining
+    FROM
+        CharacterActivity ca
+        INNER JOIN Character c ON ca.CharacterId = c.Id
+    WHERE
+        ca.Id IN 
+        (
+            SELECT
+              (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id) AS ActivityId
+            FROM
+                Character c
+                INNER JOIN CharacterActivity ca ON ca.CharacterId = c.Id AND ca.Id = (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id)
+        )
+END

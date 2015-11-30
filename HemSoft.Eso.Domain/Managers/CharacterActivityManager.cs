@@ -43,9 +43,11 @@ namespace HemSoft.Eso.Domain.Managers
                 if (lastCharacterActivity == null)
                 {
                     context.CharacterActivities.Add(characterActivity);
+                    context.SaveChanges();
                 }
                 else
                 {
+
                     if (lastCharacterActivity.LastLogin.HasValue)
                     {
                         if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) >
@@ -54,6 +56,11 @@ namespace HemSoft.Eso.Domain.Managers
                             context.CharacterActivities.Add(characterActivity);
                             context.SaveChanges();
                         }
+                    }
+                    else
+                    {
+                        context.CharacterActivities.Add(characterActivity);
+                        context.SaveChanges();
                     }
                 }
             }

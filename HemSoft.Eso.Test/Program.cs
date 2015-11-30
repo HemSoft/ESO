@@ -14,7 +14,7 @@
         {
             Timer_Elapsed(null, null);
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 60 * 60 * 1000;
+            timer.Interval = 5 * 60 * 1000;
             timer.Enabled = true;
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
@@ -83,7 +83,6 @@
                                 case "BankedTelvarStones":
                                     characterActivity.BankedTelvarStones = int.Parse(property.Value.ToString());
                                     break;
-
                                 case "BlacksmithingSecondsMaximumLeft":
                                     characterActivity.BlacksmithingSecondsMaximumLeft = int.Parse(property.Value.ToString());
                                     break;
@@ -121,7 +120,6 @@
                                 case "ClothingSlotsMax":
                                     characterActivity.ClothingSlotsMax = int.Parse(property.Value.ToString());
                                     break;
-
                                 case "Cash":
                                     characterActivity.Cash = int.Parse(property.Value.ToString());
                                     break;
@@ -176,7 +174,6 @@
                                 case "UsedBankSlots":
                                     characterActivity.UsedBankSlots = int.Parse(property.Value.ToString());
                                     break;
-
                                 case "WoodworkingSecondsMaximumLeft":
                                     characterActivity.WoodworkingSecondsMaximumLeft = int.Parse(property.Value.ToString());
                                     break;
@@ -198,6 +195,7 @@
                                 case "version":
                                 case "left":
                                 case "top":
+                                case "Inventory":
                                     break;
                                 default:
                                     break;
@@ -215,7 +213,7 @@
                                 0,
                                 int.Parse(esoProperty.Time.Substring(0, 1)),
                                 int.Parse(esoProperty.Time.Substring(1, 2))
-                            );
+                            ).ToUniversalTime();
                         }
                         else if (esoProperty.Time.Length == 4)
                         {
@@ -227,7 +225,7 @@
                                 0,
                                 int.Parse(esoProperty.Time.Substring(0, 2)),
                                 int.Parse(esoProperty.Time.Substring(2, 2))
-                            );
+                            ).ToUniversalTime();
                         }
                         else if (esoProperty.Time.Length == 5)
                         {
@@ -239,7 +237,7 @@
                                 int.Parse(esoProperty.Time.Substring(0, 1)),
                                 int.Parse(esoProperty.Time.Substring(1, 2)),
                                 int.Parse(esoProperty.Time.Substring(3, 2))
-                            );
+                            ).ToUniversalTime();
                         }
                         else
                         {
@@ -251,7 +249,7 @@
                                 int.Parse(esoProperty.Time.Substring(0, 2)),
                                 int.Parse(esoProperty.Time.Substring(2, 2)),
                                 int.Parse(esoProperty.Time.Substring(4, 2))
-                            );
+                            ).ToUniversalTime();
                         }
 
                         if (!account.LastLogin.HasValue)
@@ -283,6 +281,7 @@
                     }
                 }
             }
+            Console.WriteLine("Last completion " + DateTime.Now.ToLongTimeString());
         }
     }
 

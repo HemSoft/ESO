@@ -7,6 +7,10 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    @section scripts{
+        <script src="~/Scripts/angular.js"></script>
+        <script src="~/Scripts/controllers/AccountController.js"></script>
+    }
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -24,6 +28,7 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li></li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

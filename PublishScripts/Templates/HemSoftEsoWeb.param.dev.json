@@ -1,0 +1,32 @@
+{
+  "siteName": {
+    "value": "HemSoftEsoWeb"
+  },
+  "hostingPlanName": {
+    "value": "hemsoft-app-service-plan"
+  },
+  "siteLocation": {
+    "value": "North Central US"
+  },
+  "sku": {
+    "value": "Free"
+  },
+  "workerSize": {
+    "value": "0"
+  },
+  "serverName": {
+    "value": "hemsoft-sqlserver"
+  },
+  "serverLocation": {
+    "value": "North Central US"
+  },
+  "administratorLogin": {
+    "value": "hemsoft"
+  },
+  "administratorLoginPassword": {
+    "value": "Inxs1Inxs"
+  },
+  "databaseName": {
+    "value": "HemSoftEsoWeb_db"
+  }
+}

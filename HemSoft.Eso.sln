@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		PublishScripts\Templates\HemSoftEsoApi.param.dev.json = PublishScripts\Templates\HemSoftEsoApi.param.dev.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HemSoft.Eso.Web", "HemSoft.Eso.Web\HemSoft.Eso.Web.csproj", "{22329BC3-9456-4CCB-A953-4E9790B98645}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{B68C3177-94BE-45B7-9DEB-096D80C84064}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B68C3177-94BE-45B7-9DEB-096D80C84064}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B68C3177-94BE-45B7-9DEB-096D80C84064}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22329BC3-9456-4CCB-A953-4E9790B98645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22329BC3-9456-4CCB-A953-4E9790B98645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22329BC3-9456-4CCB-A953-4E9790B98645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22329BC3-9456-4CCB-A953-4E9790B98645}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

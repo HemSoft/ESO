@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eso", "Eso\Eso.csproj", "{AB61AF60-CB3D-4FD1-BE6A-3C92BFF763CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eso.Droid", "Droid\Eso.Droid.csproj", "{DBE34446-DCED-4B29-A555-22824DA04E81}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB61AF60-CB3D-4FD1-BE6A-3C92BFF763CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB61AF60-CB3D-4FD1-BE6A-3C92BFF763CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB61AF60-CB3D-4FD1-BE6A-3C92BFF763CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB61AF60-CB3D-4FD1-BE6A-3C92BFF763CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBE34446-DCED-4B29-A555-22824DA04E81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBE34446-DCED-4B29-A555-22824DA04E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBE34446-DCED-4B29-A555-22824DA04E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBE34446-DCED-4B29-A555-22824DA04E81}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

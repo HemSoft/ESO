@@ -60,6 +60,7 @@
           <Property Name="ClothingSecondsMinimumTotal" Type="int" />
           <Property Name="ClothingSlotsFree" Type="int" />
           <Property Name="ClothingSlotsMax" Type="int" />
+          <Property Name="EnlightenedPool" Type="int" />
           <Property Name="GuildCount" Type="int" />
           <Property Name="LastLogin" Type="datetime" />
           <Property Name="MailCount" Type="int" />
@@ -290,6 +291,7 @@
           <Property Name="MountStamina" Type="Int32" />
           <Property Name="MountSpeed" Type="Int32" />
           <Property Name="SecondsUntilMountTraining" Type="Int64" />
+          <Property Name="EnlightenedPool" Type="Int32" />
         </EntityType>
         <EntityType Name="ClassLookup">
           <Key>
@@ -456,6 +458,7 @@
           <EntitySetMapping Name="CharacterActivities">
             <EntityTypeMapping TypeName="EsoModel.CharacterActivity">
               <MappingFragment StoreEntitySet="CharacterActivity">
+                <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
                 <ScalarProperty Name="SecondsUntilMountTraining" ColumnName="SecondsUntilMountTraining" />
                 <ScalarProperty Name="MountSpeed" ColumnName="MountSpeed" />
                 <ScalarProperty Name="MountStamina" ColumnName="MountStamina" />

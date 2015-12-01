@@ -129,6 +129,9 @@
                                 case "Date":
                                     esoProperty.Date = property.Value.ToString();
                                     break;
+                                case "EnlightenedPool":
+                                    characterActivity.EnlightenedPool = int.Parse(property.Value.ToString());
+                                    break;
                                 case "GuildCount":
                                     characterActivity.GuildCount = int.Parse(property.Value.ToString());
                                     break;

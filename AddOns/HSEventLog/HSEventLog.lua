@@ -33,7 +33,12 @@ function HSEventLogAddon:Initialize()
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ZONE_CHANGED, self.OnEventZoneChanged)
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_SKILL_XP_UPDATE, self.OnEventSkillXpUpdate)
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_QUEST_COMPLETE, self.OnEventQuestComplete)
-
+  EVENT_MANAGER:RegisterForEvent(self.name, EVENT_LOGOUT_DEFERRED, self.OnEventLogoutDeferred)
+  EVENT_MANAGER:RegisterForEvent(self.name, EVENT_LOGOUT_DISALLOWED, self.OnEventLogoutDisallowed)
+  EVENT_MANAGER:RegisterForEvent(self.name, EVENT_SMITHING_TRAIT_RESEARCH_COMPLETED, self.OnEventSmithingTraitResearchCompleted)
+  EVENT_MANAGER:RegisterForEvent(self.name, EVENT_SMITHING_TRAIT_RESEARCH_STARTED, self.OnEventSmithingTraitResearchStarted)
+  EVENT_MANAGER:RegisterForEvent(self.name, EVENT_RIDING_SKILL_IMPROVEMENT, self.OnEventRidingSkillImprovement)
+ 
   self.savedVariables = ZO_SavedVars:New("HSEventLogSavedVariables", 2, nil, {})
   HSEventLogAddon:SetSavedVariables()
   self:RestorePosition()
@@ -68,20 +73,40 @@ function HSEventLogAddon:SetSavedVariables()
   self.savedVariables.BlacksmithingSlotsFree           = numFreeSlotsB
 
   local secsMinLeftW, secsMinTotalW, secsMaxLeftW, secsMaxTotalW, numSlotsW, numFreeSlotsW, iconsW = HSEventLogAddon:GetCraftingData(CRAFTING_TYPE_WOODWORKING)
-  self.savedVariables.WoodworkingSecondsMinimumLeft  = secsMinLeftB
-  self.savedVariables.WoodworkingSecondsMinimumTotal = secsMinTotalB
-  self.savedVariables.WoodworkingSecondsMaximumLeft  = secsMaxLeftB
-  self.savedVariables.WoodworkingSecondsMaximumTotal = secsMaxTotalB
-  self.savedVariables.WoodworkingSlotsMax            = numSlotsB
-  self.savedVariables.WoodworkingSlotsFree           = numFreeSlotsB
+  self.savedVariables.WoodworkingSecondsMinimumLeft  = secsMinLeftW
+  self.savedVariables.WoodworkingSecondsMinimumTotal = secsMinTotalW
+  self.savedVariables.WoodworkingSecondsMaximumLeft  = secsMaxLeftW
+  self.savedVariables.WoodworkingSecondsMaximumTotal = secsMaxTotalW
+  self.savedVariables.WoodworkingSlotsMax            = numSlotsW
+  self.savedVariables.WoodworkingSlotsFree           = numFreeSlotsW
 
   local secsMinLeftC, secsMinTotalC, secsMaxLeftC, secsMaxTotalC, numSlotsC, numFreeSlotsC, iconsC = HSEventLogAddon:GetCraftingData(CRAFTING_TYPE_CLOTHIER)
-  self.savedVariables.ClothingSecondsMinimumLeft  = secsMinLeftB
-  self.savedVariables.ClothingSecondsMinimumTotal = secsMinTotalB
-  self.savedVariables.ClothingSecondsMaximumLeft  = secsMaxLeftB
-  self.savedVariables.ClothingSecondsMaximumTotal = secsMaxTotalB
-  self.savedVariables.ClothingSlotsMax            = numSlotsB
-  self.savedVariables.ClothingSlotsFree           = numFreeSlotsB
+  self.savedVariables.ClothingSecondsMinimumLeft  = secsMinLeftC
+  self.savedVariables.ClothingSecondsMinimumTotal = secsMinTotalC
+  self.savedVariables.ClothingSecondsMaximumLeft  = secsMaxLeftC
+  self.savedVariables.ClothingSecondsMaximumTotal = secsMaxTotalC
+  self.savedVariables.ClothingSlotsMax            = numSlotsC
+  self.savedVariables.ClothingSlotsFree           = numFreeSlotsC
+
+  self.savedVariables.AvailableSkillPoints = GetAvailableSkillPoints()
+  self.savedVariables.Skyshards = GetNumSkyShards()
+  self.savedVariables.EnlightenedPool = GetEnlightenedPool()
+
+  local TimeTilMountFeed, TotalTime = nil, nil
+  for ii = 0, 10, 1 do
+    TimeTilMountFeed, TotalTime = GetTimeUntilCanBeTrained(ii)
+    if TimeTilMountFeed ~= nil and TotalTime ~= nil then break end
+  end
+  if TimeTilMountFeed == nil or TotalTime == nil then
+    TimeTilMountFeed = 0
+  end
+
+  self.savedVariables.SecondsUntilMountTraining = TimeTilMountFeed / 1000
+
+  local inventoryBonus, maxInventoryBonus, staminaBonus, maxStaminaBonus, speedBonus, maxSpeedBonus = GetRidingStats()
+  self.savedVariables.MountCapacity = inventoryBonus
+  self.savedVariables.MountStamina = staminaBonus
+  self.savedVariables.MountSpeed = speedBonus
 
 --  self.savedVariables.Inventory = {}
 --  local usedBagSlots = GetNumBagUsedSlots(INVENTORY_BACKPACK)
@@ -124,6 +149,19 @@ function HSEventLogAddon:GetChampionPoints()
   local championXPPercent = Round((playerChampionXP / championXPInRank) * 100)
 
   local result = "Champion Points = " .. playerChampionXP .. ' (' .. championXPPercent .. '%)/' .. championXPInRank .. ' (Earned: ' .. playerChampionPointsEarned .. '/' .. championPointsMax .. ') Enlightened pool: ' .. enlightenedPool
+
+  --local journalQuestCount = GetNumJournalQuests()
+  --d("Number of Journal Quests: " .. journalQuestCount)
+  --for x = 1, journalQuestCount do
+  --  journalQuestInfo = GetJournalQuestInfo(x)
+  --  local questName, backgroundText, activeStepText, activeStepType, activeStepTrackerOverrideText, completed, tracked, questLevel, pushed, questType, instanceDisplayType = GetJournalQuestInfo(x)
+  --  if (completed) then
+  --    d(questName .. " Completed. Type: " .. questType)
+  --  else
+  --    d(questName .. " not completed. Type: " .. questType)
+  --  end
+  --end
+
   return result
 end
  
@@ -188,6 +226,28 @@ function HSEventLogAddon.OnLootReceived(eventCode, receivedBy, itemName, quantit
   LogInventory(text)
 end
 
+function HSEventLogAddon.OnEventLogoutDeferred(eventCode, deferMilliseconds, quitRequested)
+  d("OnOnEventLogoutDeferred() called.")
+  HSEventLogAddon:SetSavedVariables()
+end
+
+function HSEventLogAddon.OnEventLogoutDisallowed(eventCode, quitRequested)
+  d("OnEventLogoutDisallowed() called.")
+  HSEventLogAddon:SetSavedVariables()
+end
+
+function HSEventLogAddon.OnEventSmithingTraitResearchCompleted(eventCode, craftingSkillType, researchLineIndex, traitIndex)
+  HSEventLogAddon:SetSavedVariables()
+end
+
+function HSEventLogAddon.OnEventSmithingTraitResearchStarted(eventCode, craftingSkillType, researchLineIndex, traitIndex)
+  HSEventLogAddon:SetSavedVariables()
+end
+
+function HSEventLogAddon.OnEventRidingSkillImprovement(eventCode, ridingSkillType, previous, current, source)
+  HSEventLogAddon:SetSavedVariables()
+end
+
 function LogInventory(text)
   local usedBagSlots = GetNumBagUsedSlots(INVENTORY_BACKPACK)
   local backpackItemName = ""
@@ -242,27 +302,13 @@ function LogInventory(text)
   text = text .. "Trophies = " .. trophyCount .. "\n"
   text = text .. HSEventLogAddon:GetChampionPoints() .. "\n"
 
-  local timeMs, totalDurationMs = GetTimeUntilCanBeTrained()
-  local timeMinutes = timeMs / 1000 / 60
-  d(timeMinutes .. " minutes until mount training")
-  local inventoryBonus, maxInventoryBonus, staminaBonus, maxStaminaBonus, speedBonus, maxSpeedBonus = GetRidingStats()
-  d("Bag: " .. inventoryBonus .. '/' .. maxInventoryBonus)
-  d("Stamina: " .. staminaBonus .. '/' .. maxStaminaBonus)
-  d("Speed: " .. speedBonus .. '/' .. maxSpeedBonus)
-
-  d("Available Skill Points: " .. GetAvailableSkillPoints())
--- Returns: number numPoints
-  d("Skyshards: " .. GetNumSkyShards())
--- Returns: number numShards
-  d("Skill Types: " .. GetNumSkillTypes())
--- Returns: number numSkillTypes
-
   local numSkillTypes = GetNumSkillTypes()
   for skillType = 1, numSkillTypes do
     local numSkillLines = GetNumSkillLines(skillType)
     for skillIndex = 1, numSkillLines do
       local skillLineInfoName, skillLineInfoRank = GetSkillLineInfo(skillType, skillIndex)
-      local skillLineXpInfoLastRankXp, skillLineXpInfoNextRankXP, skillLineXpInfoCurrentXp = GetSkillLineXPInfo(SkillType skillType, skillIndex)
+      --d("Skill line name: " .. skillLineInfoName .. " - Rank: " .. skillLineInfoRank)
+      local skillLineXpInfoLastRankXp, skillLineXpInfoNextRankXP, skillLineXpInfoCurrentXp = GetSkillLineXPInfo(skillType, skillIndex)
       -- GetSkillLineRankXPExtents(number SkillType skillType, number skillIndex, number rank)
       -- Returns: number:nilable startXP, number:nilable nextRankStartXP
       local numSkillAbilities = GetNumSkillAbilities(skillType, skillIndex)
@@ -270,7 +316,7 @@ function LogInventory(text)
         local SkillAbilityName, SkillAbilityTextureName, SkillAbilityEarnedRank, SkillAbilityIsPassive, SkillAbilityIsUltimate, SkillAbilityIsPurchased, SkillAbilityProgressionIndex = GetSkillAbilityInfo(skillType, skillIndex, abilityIndex)
         -- GetSkillAbilityId(number SkillType skillType, number skillIndex, number abilityIndex, boolean showUpgrade)
         -- Returns: number abilityId
-        local SkillAbilityUpgradeInfoCurrentUpgradeLevel, SkillAbilityUpgradeInfoMaxUpgradeLevel = GetSkillAbilityUpgradeInfo(skillType, skillIndex, number abilityIndex)
+        local SkillAbilityUpgradeInfoCurrentUpgradeLevel, SkillAbilityUpgradeInfoMaxUpgradeLevel = GetSkillAbilityUpgradeInfo(skillType, skillIndex, abilityIndex)
       end
     end
   end
@@ -299,7 +345,7 @@ function WriteLog(text)
   HSEventLogAddonIndicatorLabel:SetText(text)
 end
 
-HSEventLogAddon:GetCraftingData = function(craftClass)
+function HSEventLogAddon:GetCraftingData(craftClass)
   local icons = {}
   local secsMinLeft = 0
   local secsMinTotal = 0

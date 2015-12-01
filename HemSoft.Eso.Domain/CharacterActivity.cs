@@ -55,6 +55,7 @@ namespace HemSoft.Eso.Domain
         public Nullable<int> MountStamina { get; set; }
         public Nullable<int> MountSpeed { get; set; }
         public Nullable<long> SecondsUntilMountTraining { get; set; }
+        public Nullable<int> EnlightenedPool { get; set; }
     
         public virtual Character Character { get; set; }
     }

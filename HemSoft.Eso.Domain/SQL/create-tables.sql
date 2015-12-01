@@ -95,6 +95,7 @@ CREATE TABLE [dbo].[CharacterActivity](
     [ClothingSlotsFree] [int] NULL,
     [ClothingSlotsMax] [int] NULL,
 	[GuildCount] [int] NULL,
+    [EnlightenedPool] [int] NULL,
 	[LastLogin] [datetime] NULL,
 	[MailCount] [int] NULL,
 	[MailMax] [int] NULL,
@@ -366,6 +367,7 @@ BEGIN
       , ca.BankedTelvarStones
       , ca.Cash
       , ca.ChampionPointsEarned
+      , ca.EnlightenedPool
       , ca.GuildCount
       , ca.LastLogin
       , ca.MailCount
@@ -374,6 +376,7 @@ BEGIN
       , ca.MaxBankSize
       , ca.NumberOfFriends
       , ca.SecondsPlayed
+      , ca.SecondsPlayed / 60 / 60 AS HoursPlayed
       , ca.UsedBagSlots
       , ca.UsedBankSlots
       , DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin) AS BlackmithingAvailableAt

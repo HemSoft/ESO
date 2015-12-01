@@ -21,6 +21,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SavedVariables", "SavedVari
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HemSoft.Eso.Viewer", "HemSoft.Eso.Viewer\HemSoft.Eso.Viewer.csproj", "{B56DCADB-147D-4140-A596-929DF444BF5A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HemSoft.Eso.Api", "HemSoft.Eso.Api\HemSoft.Eso.Api.csproj", "{B68C3177-94BE-45B7-9DEB-096D80C84064}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{00A88CB4-02EE-4DFB-8BB6-E9BF05CDD5F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{785CB51D-D966-45DE-9D4B-4443099AC041}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1 = PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{8D9A8E53-5405-4D2F-921C-3B33EDB16B59}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Templates\HemSoftEsoApi.json = PublishScripts\Templates\HemSoftEsoApi.json
+		PublishScripts\Templates\HemSoftEsoApi.param.dev.json = PublishScripts\Templates\HemSoftEsoApi.param.dev.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,11 +54,17 @@ Global
 		{B56DCADB-147D-4140-A596-929DF444BF5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B56DCADB-147D-4140-A596-929DF444BF5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B56DCADB-147D-4140-A596-929DF444BF5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B68C3177-94BE-45B7-9DEB-096D80C84064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68C3177-94BE-45B7-9DEB-096D80C84064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B68C3177-94BE-45B7-9DEB-096D80C84064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B68C3177-94BE-45B7-9DEB-096D80C84064}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AE20DCE6-128A-4A4E-97B4-221B19246ED3} = {70BA941A-7BFE-4010-808D-CC8710D556FF}
+		{785CB51D-D966-45DE-9D4B-4443099AC041} = {00A88CB4-02EE-4DFB-8BB6-E9BF05CDD5F7}
+		{8D9A8E53-5405-4D2F-921C-3B33EDB16B59} = {00A88CB4-02EE-4DFB-8BB6-E9BF05CDD5F7}
 	EndGlobalSection
 EndGlobal

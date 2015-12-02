@@ -40,7 +40,7 @@
 
             foreach (var tables in dict)
             {
-                Console.WriteLine($"{tables.Key} = {tables.Value}");
+                //Console.WriteLine($"{tables.Key} = {tables.Value}");
                 Dictionary<object, object> accounts = lua.GetTableDict(tables.Value as LuaTable);
                 foreach (var acc in accounts)
                 {
@@ -50,7 +50,7 @@
                     account.Name = currentAccount;
                     AccountManager.Save(account);
 
-                    Console.WriteLine($"  {acc.Key} = {acc.Value}");
+                    //Console.WriteLine($"  {acc.Key} = {acc.Value}");
                     Dictionary<object, object> characters = lua.GetTableDict(acc.Value as LuaTable);
                     foreach (var c in characters)
                     {
@@ -64,7 +64,7 @@
                         var lastCharacterActivity = CharacterActivityManager.GetLastActivity(character.Id);
                         var characterActivity = new CharacterActivity {CharacterId = character.Id};
 
-                        Console.WriteLine($"    {c.Key} = {c.Value}");
+                        //Console.WriteLine($"    {c.Key} = {c.Value}");
                         Dictionary<object, object> properties = lua.GetTableDict(c.Value as LuaTable);
                         var esoProperty = new EsoProperty();
                         foreach (var property in properties)
@@ -203,7 +203,7 @@
                                 default:
                                     break;
                             }
-                            Console.WriteLine($"      {property.Key} = {property.Value}");
+                            //Console.WriteLine($"      {property.Key} = {property.Value}");
                         }
 
                         if (esoProperty.Time.Length == 3)
@@ -266,12 +266,14 @@
                             character.LastLogin = characterActivity.LastLogin.Value;
                             CharacterManager.Save(character);
                             CharacterActivityManager.Save(characterActivity);
+                            Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
                         else if (DateTime.Compare(characterActivity.LastLogin.Value, character.LastLogin.Value) > 0)
                         {
                             character.LastLogin = characterActivity.LastLogin;
                             CharacterManager.Save(character);
                             CharacterActivityManager.Save(characterActivity);
+                            Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
 
                         if (lastCharacterActivity.LastLogin.HasValue)
@@ -279,12 +281,13 @@
                             if (DateTime.Compare(lastCharacterActivity.LastLogin.Value, characterActivity.LastLogin.Value) > 0)
                             {
                                 CharacterActivityManager.Save(characterActivity);
+                                Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                             }
                         }
                     }
                 }
             }
-            Console.WriteLine("Last completion " + DateTime.Now.ToLongTimeString());
+            //Console.WriteLine("Last completion " + DateTime.Now.ToLongTimeString());
         }
     }
 

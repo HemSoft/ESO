@@ -260,6 +260,14 @@
                             account.LastLogin = characterActivity.LastLogin.Value;
                             AccountManager.Save(account);
                         }
+                        else
+                        {
+                            if (DateTime.Compare(characterActivity.LastLogin.Value, account.LastLogin.Value) > 0)
+                            {
+                                account.LastLogin = characterActivity.LastLogin.Value;
+                                AccountManager.Save(account);
+                            }
+                        }
 
                         if (!character.LastLogin.HasValue)
                         {

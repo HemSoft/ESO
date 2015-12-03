@@ -14,6 +14,10 @@
             // Web API routes
             config.MapHttpAttributeRoutes();
 
+            // Enable CORS:
+            config.EnableCors();
+
+            // Default Route:
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

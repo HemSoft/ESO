@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-namespace HemSoft.Eso.Api.Controllers
+﻿namespace HemSoft.Eso.Api.Controllers
 {
+    using System.Collections.Generic;
+    using System.Web.Http;
+    using System.Web.Http.Cors;
+
+    [EnableCors("*", "*", "*")]
     public class ValuesController : ApiController
     {
         // GET api/values

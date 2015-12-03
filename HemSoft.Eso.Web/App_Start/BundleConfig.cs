@@ -16,8 +16,19 @@
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap.js", "~/Scripts/respond.js"));
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/bootstrap.css", "~/Content/site.css"));
 
-            // Added angular.js
-            bundles.Add(new ScriptBundle("~/bundles/angular").Include("~/Scripts/angular.js"));
+            // angular.js
+            bundles.Add(new ScriptBundle("~/bundles/angular")
+                .Include("~/Scripts/angular.js")
+                .Include("~/Scripts/angular-resource.js"));
+
+            // App specific includes:
+            bundles.Add
+            (
+                new ScriptBundle("~/bundles/eso")
+                    .Include("~/app/app.js")
+                    .IncludeDirectory("~/app/controllers", "*.js")
+                    //.IncludeDirectory("~/app/services", "*.js")
+            );
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Data.Entity;
-
-namespace HemSoft.Eso.Domain.Managers
+﻿namespace HemSoft.Eso.Domain.Managers
 {
     using System.Collections.Generic;
     using System.Linq;

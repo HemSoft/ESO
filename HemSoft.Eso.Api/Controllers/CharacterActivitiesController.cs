@@ -22,6 +22,12 @@
             return db.CharacterActivities;
         }
 
+        public IQueryable<CharacterActivity> GetCharacterActivitiesByCharacterId(int characterId)
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return db.CharacterActivities.Where(x => x.CharacterId == characterId);
+        }
+
         // GET: api/CharacterActivities/5
         [ResponseType(typeof(CharacterActivity))]
         public async Task<IHttpActionResult> GetCharacterActivity(int id)

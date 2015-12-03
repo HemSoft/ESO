@@ -27,7 +27,6 @@
                 new ScriptBundle("~/bundles/eso")
                     .Include("~/app/app.js")
                     .IncludeDirectory("~/app/controllers", "*.js")
-                    .IncludeDirectory("~/app/services", "*.js")
             );
         }
     }

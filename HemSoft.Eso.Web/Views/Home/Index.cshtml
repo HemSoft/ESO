@@ -2,37 +2,77 @@
     ViewBag.Title = "Home Page";
 }
 
-<div ng-app="esoApp" class="row">
-    <div ng-controller="esoController" class="row">
+<div ng-app="esoApp" ng-controller="esoController" class="row">
+    <div class="row">
         <div class="col-md-6 panel">
-            <h2 class="text-center">Accounts</h2>
-            <table class="table table-bordered table-striped table-hover">
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Last Logged In</th>
-                </tr>
-                <tr ng-repeat="account in accounts" ng-click="accountSelected(a)">
-                <td>{{account.Id}}</td>
-                <td>{{account.Name}}</td>
-                <td>{{account.LastLogin | date: 'EEEE MMM d, yyyy hh:mm:ss' : 'UTC'}}</td>
-                <tr>
-            </table>
+            <div class="panel-heading">
+                <h2 class="text-center">Accounts</h2>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Last Logged In</th>
+                    </tr>
+                    <tr ng-repeat="account in accounts" ng-click="accountSelected()" ng-cloak>
+                        <td>{{account.Id}}</td>
+                        <td>{{account.Name}}</td>
+                        <td>{{account.LastLogin | date: 'EEEE MMM d, yyyy hh:mm:ss' : 'UTC'}}</td>
+                    <tr>
+                </table>
+            </div>
         </div>
         <div ng-show="selectedAccount" class="col-md-6 panel">
-            <h2 class="text-center">Characters</h2>
-            <table class="table table-bordered table-striped table-hover">
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Last Logged In</th>
-                </tr>
-                <tr ng-repeat="character in characters">
+            <div class="panel-heading">
+                <h2 class="text-center">Characters for {{selectedAccount.Name}} account:</h2>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Last Logged In</th>
+                    </tr>
+                    <tr ng-repeat="character in characters" ng-click="characterSelected()" ng-cloak>
                     <td>{{character.Id}}</td>
                     <td>{{character.Name}}</td>
                     <td>{{character.LastLogin | date: 'EEEE MMM d, yyyy hh:mm:ss' : 'UTC'}}</td>
-                <tr>
-            </table>
+                    <tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div ng-show="selectedCharacter" class="col-md-12 panel">
+            <div class="panel-heading">
+                <h2 class="text-center">Character Activities for {{selectedCharacter.Name}}</h2>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <tr>
+                        <th>Id</th>
+                        <th>Time</th>
+                        <th>CP</th>
+                        <th>Enlightened Pool</th>
+                        <th>Bag</th>
+                        <th>Bank</th>
+                        <th>Cash</th>
+                        <th>Banked Cash</th>
+                    </tr>
+                    <tr ng-repeat="characterActvity in characterActivities" ng-cloak>
+                        <td>{{characterActvity.Id}}</td>
+                        <td>{{characterActvity.LastLogin | date: 'EEEE MMM d, yyyy hh:mm:ss' : 'UTC'}}</td>
+                        <td>{{characterActvity.ChampionPointsEarned}}</td>
+                        <td>{{characterActvity.EnlightenedPool}}</td>
+                        <td>{{characterActvity.UsedBagSlots}}/{{characterActvity.MaxBagSize}} </td>
+                        <td>{{characterActvity.UsedBankSlots}}/{{characterActvity.MaxBankSize}} </td>
+                        <td>{{characterActvity.Cash}}</td>
+                        <td>{{characterActvity.BankedCash}}</td>
+                    <tr>
+                </table>
+            </div>
         </div>
     </div>
 

@@ -63,6 +63,12 @@
     <Compile Include="CharacterActivity.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CharactersNeedingAttentionWithinHours_Result.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CharactersNeedingAttention_Result.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ClassLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
@@ -80,6 +86,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EsoModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="GetLastCharacterActivity_Result.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Managers\CharacterActivityManager.cs" />
     <Compile Include="Managers\CharacterManager.cs" />

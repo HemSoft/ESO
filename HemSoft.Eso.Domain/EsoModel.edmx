@@ -171,6 +171,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="CharactersNeedingAttention" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="CharactersNeedingAttentionWithinHours" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="hours" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetLastCharacterActivity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="EsoModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AllianceLookup" EntityType="Self.AllianceLookup" Schema="dbo" store:Type="Tables" />
@@ -414,7 +419,71 @@
             <End Role="Character" EntitySet="Characters" />
             <End Role="CharacterActivity" EntitySet="CharacterActivities" />
           </AssociationSet>
+          <FunctionImport Name="CharactersNeedingAttention" ReturnType="Collection(EsoModel.CharactersNeedingAttention_Result)" />
+          <FunctionImport Name="CharactersNeedingAttentionWithinHours" ReturnType="Collection(EsoModel.CharactersNeedingAttentionWithinHours_Result)">
+          <Parameter Name="hours" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetLastCharacterActivity" ReturnType="Collection(EsoModel.GetLastCharacterActivity_Result)" />
         </EntityContainer>
+        <ComplexType Name="CharactersNeedingAttention_Result">
+          <Property Type="Int32" Name="CharacterId" Nullable="false" />
+          <Property Type="String" Name="CharacterName" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="LastLogin" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="ChampionPointsEarned" Nullable="true" />
+          <Property Type="Int32" Name="EnlightenedPool" Nullable="true" />
+          <Property Type="String" Name="BlacksmithingStatus" Nullable="true" MaxLength="45" />
+          <Property Type="String" Name="ClothingStatus" Nullable="true" MaxLength="45" />
+          <Property Type="String" Name="WoodworkingStatus" Nullable="true" MaxLength="45" />
+          <Property Type="String" Name="HorseFeedingStatus" Nullable="true" MaxLength="45" />
+        </ComplexType>
+        <ComplexType Name="CharactersNeedingAttentionWithinHours_Result">
+          <Property Type="Int32" Name="CharacterId" Nullable="false" />
+          <Property Type="String" Name="CharacterName" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="LastLogin" Nullable="true" Precision="23" />
+          <Property Type="String" Name="HourseFeedingStatus" Nullable="true" MaxLength="45" />
+          <Property Type="String" Name="BlacksmithingStatus" Nullable="true" MaxLength="45" />
+          <Property Type="String" Name="ClothingStatus" Nullable="true" MaxLength="45" />
+          <Property Type="String" Name="WoodworkingStatus" Nullable="true" MaxLength="45" />
+        </ComplexType>
+        <ComplexType Name="GetLastCharacterActivity_Result">
+          <Property Type="Int32" Name="CharacterId" Nullable="false" />
+          <Property Type="String" Name="CharacterName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="ActivityId" Nullable="false" />
+          <Property Type="Int32" Name="AlliancePoints" Nullable="true" />
+          <Property Type="Int32" Name="BankedCash" Nullable="true" />
+          <Property Type="Int32" Name="BankedTelvarStones" Nullable="true" />
+          <Property Type="Int32" Name="Cash" Nullable="true" />
+          <Property Type="Int32" Name="ChampionPointsEarned" Nullable="true" />
+          <Property Type="Int32" Name="EnlightenedPool" Nullable="true" />
+          <Property Type="Int32" Name="GuildCount" Nullable="true" />
+          <Property Type="DateTime" Name="LastLogin" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="MailCount" Nullable="true" />
+          <Property Type="Int32" Name="MailMax" Nullable="true" />
+          <Property Type="Int32" Name="MaxBagSize" Nullable="true" />
+          <Property Type="Int32" Name="MaxBankSize" Nullable="true" />
+          <Property Type="Int32" Name="NumberOfFriends" Nullable="true" />
+          <Property Type="Int64" Name="SecondsPlayed" Nullable="true" />
+          <Property Type="Int64" Name="HoursPlayed" Nullable="true" />
+          <Property Type="Int32" Name="UsedBagSlots" Nullable="true" />
+          <Property Type="Int32" Name="UsedBankSlots" Nullable="true" />
+          <Property Type="DateTime" Name="BlackmithingAvailableAt" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="BlacksmithingSecondsLeft" Nullable="true" />
+          <Property Type="Int32" Name="BlacksmithingMinutesLeft" Nullable="true" />
+          <Property Type="Int32" Name="BlacksmithingSlotsFree" Nullable="true" />
+          <Property Type="Int32" Name="BlacksmithingSlotsMax" Nullable="true" />
+          <Property Type="Int32" Name="ClothingMinutesLeft" Nullable="true" />
+          <Property Type="Int32" Name="ClothingPercentDone" Nullable="true" />
+          <Property Type="Int32" Name="ClothingSlotsFree" Nullable="true" />
+          <Property Type="Int32" Name="ClothingSlotsMax" Nullable="true" />
+          <Property Type="Int32" Name="WoodworkingMinutesLeft" Nullable="true" />
+          <Property Type="Int32" Name="WoodworkingPercentDone" Nullable="true" />
+          <Property Type="Int32" Name="WoodworkingSlotsFree" Nullable="true" />
+          <Property Type="Int32" Name="WoodworkingSlotsMax" Nullable="true" />
+          <Property Type="Int32" Name="MountCapacity" Nullable="true" />
+          <Property Type="Int32" Name="MountStamina" Nullable="true" />
+          <Property Type="Int32" Name="MountSpeed" Nullable="true" />
+          <Property Type="Int64" Name="SecondsUntilMountTraining" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -521,6 +590,76 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CharactersNeedingAttention" FunctionName="EsoModel.Store.CharactersNeedingAttention">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EsoModel.CharactersNeedingAttention_Result">
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="CharacterName" ColumnName="CharacterName" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="ChampionPointsEarned" ColumnName="ChampionPointsEarned" />
+                <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
+                <ScalarProperty Name="BlacksmithingStatus" ColumnName="BlacksmithingStatus" />
+                <ScalarProperty Name="ClothingStatus" ColumnName="ClothingStatus" />
+                <ScalarProperty Name="WoodworkingStatus" ColumnName="WoodworkingStatus" />
+                <ScalarProperty Name="HorseFeedingStatus" ColumnName="HorseFeedingStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CharactersNeedingAttentionWithinHours" FunctionName="EsoModel.Store.CharactersNeedingAttentionWithinHours">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EsoModel.CharactersNeedingAttentionWithinHours_Result">
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="CharacterName" ColumnName="CharacterName" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="BlacksmithingStatus" ColumnName="BlacksmithingStatus" />
+                <ScalarProperty Name="ClothingStatus" ColumnName="ClothingStatus" />
+                <ScalarProperty Name="WoodworkingStatus" ColumnName="WoodworkingStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetLastCharacterActivity" FunctionName="EsoModel.Store.GetLastCharacterActivity">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EsoModel.GetLastCharacterActivity_Result">
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="CharacterName" ColumnName="CharacterName" />
+                <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+                <ScalarProperty Name="AlliancePoints" ColumnName="AlliancePoints" />
+                <ScalarProperty Name="BankedCash" ColumnName="BankedCash" />
+                <ScalarProperty Name="BankedTelvarStones" ColumnName="BankedTelvarStones" />
+                <ScalarProperty Name="Cash" ColumnName="Cash" />
+                <ScalarProperty Name="ChampionPointsEarned" ColumnName="ChampionPointsEarned" />
+                <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
+                <ScalarProperty Name="GuildCount" ColumnName="GuildCount" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="MailCount" ColumnName="MailCount" />
+                <ScalarProperty Name="MailMax" ColumnName="MailMax" />
+                <ScalarProperty Name="MaxBagSize" ColumnName="MaxBagSize" />
+                <ScalarProperty Name="MaxBankSize" ColumnName="MaxBankSize" />
+                <ScalarProperty Name="NumberOfFriends" ColumnName="NumberOfFriends" />
+                <ScalarProperty Name="SecondsPlayed" ColumnName="SecondsPlayed" />
+                <ScalarProperty Name="HoursPlayed" ColumnName="HoursPlayed" />
+                <ScalarProperty Name="UsedBagSlots" ColumnName="UsedBagSlots" />
+                <ScalarProperty Name="UsedBankSlots" ColumnName="UsedBankSlots" />
+                <ScalarProperty Name="BlackmithingAvailableAt" ColumnName="BlackmithingAvailableAt" />
+                <ScalarProperty Name="BlacksmithingSecondsLeft" ColumnName="BlacksmithingSecondsLeft" />
+                <ScalarProperty Name="BlacksmithingMinutesLeft" ColumnName="BlacksmithingMinutesLeft" />
+                <ScalarProperty Name="BlacksmithingSlotsFree" ColumnName="BlacksmithingSlotsFree" />
+                <ScalarProperty Name="BlacksmithingSlotsMax" ColumnName="BlacksmithingSlotsMax" />
+                <ScalarProperty Name="ClothingMinutesLeft" ColumnName="ClothingMinutesLeft" />
+                <ScalarProperty Name="ClothingPercentDone" ColumnName="ClothingPercentDone" />
+                <ScalarProperty Name="ClothingSlotsFree" ColumnName="ClothingSlotsFree" />
+                <ScalarProperty Name="ClothingSlotsMax" ColumnName="ClothingSlotsMax" />
+                <ScalarProperty Name="WoodworkingMinutesLeft" ColumnName="WoodworkingMinutesLeft" />
+                <ScalarProperty Name="WoodworkingPercentDone" ColumnName="WoodworkingPercentDone" />
+                <ScalarProperty Name="WoodworkingSlotsFree" ColumnName="WoodworkingSlotsFree" />
+                <ScalarProperty Name="WoodworkingSlotsMax" ColumnName="WoodworkingSlotsMax" />
+                <ScalarProperty Name="MountCapacity" ColumnName="MountCapacity" />
+                <ScalarProperty Name="MountStamina" ColumnName="MountStamina" />
+                <ScalarProperty Name="MountSpeed" ColumnName="MountSpeed" />
+                <ScalarProperty Name="SecondsUntilMountTraining" ColumnName="SecondsUntilMountTraining" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

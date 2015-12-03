@@ -1,5 +1,6 @@
 ﻿namespace HemSoft.Eso.Api.Controllers
 {
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
@@ -9,6 +10,7 @@
     using System.Web.Http.Cors;
     using System.Web.Http.Description;
     using Domain;
+    using Domain.Managers;
 
     [EnableCors("*", "*", "*")]
     public class CharactersController : ApiController
@@ -26,6 +28,12 @@
         {
             db.Configuration.ProxyCreationEnabled = false;
             return db.Characters.Where(x => x.AccountId == accountId);
+        }
+
+        public List<CharactersNeedingAttention_Result> GetCharactersNeedingAttention()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return CharacterManager.GetCharactersNeedingAttention();
         }
 
         // GET: api/Characters/5

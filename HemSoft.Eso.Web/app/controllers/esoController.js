@@ -3,6 +3,9 @@
     $scope.accounts = $resource("http://hemsoftesoapi.azurewebsites.net/api/accounts/:id").query();
     $scope.selectedAccount = null;
     $scope.selectedCharacter = null;
+    $scope.charactersNeedingAttention = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetCharactersNeedingAttention").query();
+    //$scope.charactersNeedingAttention = null;
+    //$scope.getCharactersNeedingAttention();
 
     $scope.accountSelected = function() {
         $scope.selectedAccount = this.account;
@@ -28,5 +31,9 @@
                 $resource("http://hemsoftesoapi.azurewebsites.net/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId="
                     + this.selectedAccount.Id).query();
         }
+    }
+
+    $scope.getCharactersNeedingAttention = function() {
+        $scope.charactersNeedingAttention = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetCharactersNeedingAttention").query();
     }
 });

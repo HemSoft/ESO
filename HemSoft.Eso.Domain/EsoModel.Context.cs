@@ -12,6 +12,8 @@ namespace HemSoft.Eso.Domain
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class EsoEntities : DbContext
     {
@@ -31,5 +33,24 @@ namespace HemSoft.Eso.Domain
         public virtual DbSet<CharacterActivity> CharacterActivities { get; set; }
         public virtual DbSet<ClassLookup> ClassLookups { get; set; }
         public virtual DbSet<RaceLookup> RaceLookups { get; set; }
+    
+        public virtual ObjectResult<CharactersNeedingAttention_Result> CharactersNeedingAttention()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CharactersNeedingAttention_Result>("CharactersNeedingAttention");
+        }
+    
+        public virtual ObjectResult<CharactersNeedingAttentionWithinHours_Result> CharactersNeedingAttentionWithinHours(Nullable<int> hours)
+        {
+            var hoursParameter = hours.HasValue ?
+                new ObjectParameter("hours", hours) :
+                new ObjectParameter("hours", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CharactersNeedingAttentionWithinHours_Result>("CharactersNeedingAttentionWithinHours", hoursParameter);
+        }
+    
+        public virtual ObjectResult<GetLastCharacterActivity_Result> GetLastCharacterActivity()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetLastCharacterActivity_Result>("GetLastCharacterActivity");
+        }
     }
 }

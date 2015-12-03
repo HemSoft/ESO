@@ -1,4 +1,6 @@
-﻿namespace HemSoft.Eso.Domain.Managers
+﻿using System.Data.Entity.Core.Objects;
+
+namespace HemSoft.Eso.Domain.Managers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -25,6 +27,17 @@
                 return result ?? new Character();
             }
         }
+
+        public static List<CharactersNeedingAttention_Result> GetCharactersNeedingAttention()
+        {
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+                return context.CharactersNeedingAttention().ToList();
+            }
+        }
+
 
         public static void Save(Character character)
         {

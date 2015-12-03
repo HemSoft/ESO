@@ -3,23 +3,36 @@
 }
 
 <div ng-app="esoApp" class="row">
-    <div ng-controller="accountController" class="row">
-        <h2 class="text-center">Accounts</h2>
-        <div class="col-md-6">
+    <div ng-controller="esoController" class="row">
+        <div class="col-md-6 panel">
+            <h2 class="text-center">Accounts</h2>
             <table class="table table-bordered table-striped table-hover">
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
                     <th>Last Logged In</th>
                 </tr>
-                <tr ng-repeat="a in accounts">
-                <td>{{a.Id}}</td>
-                <td>{{a.Name}}</td>
-                <td>{{a.LastLogin | date: 'EEEE MMM d, yyyy hh:mm:ss' : 'CST'}}</td>
+                <tr ng-repeat="account in accounts" ng-click="accountSelected(a)">
+                <td>{{account.Id}}</td>
+                <td>{{account.Name}}</td>
+                <td>{{account.LastLogin | date: 'EEEE MMM d, yyyy hh:mm:ss' : 'UTC'}}</td>
                 <tr>
             </table>
         </div>
-        <div class="col-md-6">
+        <div ng-show="selectedAccount" class="col-md-6 panel">
+            <h2 class="text-center">Characters</h2>
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Last Logged In</th>
+                </tr>
+                <tr ng-repeat="character in characters">
+                    <td>{{character.Id}}</td>
+                    <td>{{character.Name}}</td>
+                    <td>{{character.LastLogin | date: 'EEEE MMM d, yyyy hh:mm:ss' : 'UTC'}}</td>
+                <tr>
+            </table>
         </div>
     </div>
 

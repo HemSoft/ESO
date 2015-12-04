@@ -1,4 +1,4 @@
-﻿namespace HemSoft.Eso.Test
+﻿namespace HemSoft.Eso.CharacterMonitor
 {
     using System;
     using System.Collections.Generic;
@@ -14,7 +14,7 @@
         {
             Timer_Elapsed(null, null);
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 5 * 60 * 1000;
+            timer.Interval = 1 * 60 * 1000;
             timer.Enabled = true;
             timer.Elapsed += Timer_Elapsed;
             timer.Start();

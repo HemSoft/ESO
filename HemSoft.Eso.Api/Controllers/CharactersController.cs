@@ -36,6 +36,18 @@
             return CharacterManager.GetCharactersNeedingAttention();
         }
 
+        public List<CharacterResearch_Result> GetCharacterResearch()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return CharacterManager.GetCharacterResearch();
+        }
+
+        public NextUpInResearch_Result GetNextUpInResearch()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return CharacterManager.GetNextUpInResearch();
+        }
+
         // GET: api/Characters/5
         [ResponseType(typeof(Character))]
         public async Task<IHttpActionResult> GetCharacter(int id)

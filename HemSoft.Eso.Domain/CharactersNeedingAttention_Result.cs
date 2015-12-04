@@ -16,11 +16,9 @@ namespace HemSoft.Eso.Domain
         public int CharacterId { get; set; }
         public string CharacterName { get; set; }
         public Nullable<System.DateTime> LastLogin { get; set; }
-        public Nullable<int> ChampionPointsEarned { get; set; }
-        public Nullable<int> EnlightenedPool { get; set; }
-        public string BlacksmithingStatus { get; set; }
-        public string ClothingStatus { get; set; }
-        public string WoodworkingStatus { get; set; }
-        public string HorseFeedingStatus { get; set; }
+        public Nullable<System.DateTime> BlacksmithingStatus { get; set; }
+        public Nullable<System.DateTime> ClothingStatus { get; set; }
+        public Nullable<System.DateTime> WoodworkingStatus { get; set; }
+        public Nullable<System.DateTime> HorseFeedingStatus { get; set; }
     }
 }

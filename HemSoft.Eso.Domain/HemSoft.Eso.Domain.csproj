@@ -63,6 +63,9 @@
     <Compile Include="CharacterActivity.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CharacterResearch_Result.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="CharactersNeedingAttentionWithinHours_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
@@ -93,6 +96,9 @@
     <Compile Include="Managers\CharacterActivityManager.cs" />
     <Compile Include="Managers\CharacterManager.cs" />
     <Compile Include="Managers\AccountManager.cs" />
+    <Compile Include="NextUpInResearch_Result.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RaceLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>

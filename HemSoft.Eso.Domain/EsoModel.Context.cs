@@ -52,5 +52,15 @@ namespace HemSoft.Eso.Domain
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetLastCharacterActivity_Result>("GetLastCharacterActivity");
         }
+    
+        public virtual ObjectResult<CharacterResearch_Result> CharacterResearch()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CharacterResearch_Result>("CharacterResearch");
+        }
+    
+        public virtual ObjectResult<NextUpInResearch_Result> NextUpInResearch()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NextUpInResearch_Result>("NextUpInResearch");
+        }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Data.Entity.Core.Objects;
-
-namespace HemSoft.Eso.Domain.Managers
+﻿namespace HemSoft.Eso.Domain.Managers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -38,6 +36,25 @@ namespace HemSoft.Eso.Domain.Managers
             }
         }
 
+        public static List<CharacterResearch_Result> GetCharacterResearch()
+        {
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+                return context.CharacterResearch().ToList();
+            }
+        }
+
+        public static NextUpInResearch_Result GetNextUpInResearch()
+        {
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+                return context.NextUpInResearch().FirstOrDefault();
+            }
+        }
 
         public static void Save(Character character)
         {
@@ -57,6 +74,5 @@ namespace HemSoft.Eso.Domain.Managers
                 context.SaveChanges();
             }
         }
-
     }
 }

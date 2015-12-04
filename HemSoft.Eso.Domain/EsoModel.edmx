@@ -171,11 +171,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="CharacterResearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CharactersNeedingAttention" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CharactersNeedingAttentionWithinHours" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="hours" Type="int" Mode="In" />
         </Function>
         <Function Name="GetLastCharacterActivity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="NextUpInResearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="EsoModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AllianceLookup" EntityType="Self.AllianceLookup" Schema="dbo" store:Type="Tables" />
@@ -424,17 +426,17 @@
           <Parameter Name="hours" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetLastCharacterActivity" ReturnType="Collection(EsoModel.GetLastCharacterActivity_Result)" />
+          <FunctionImport Name="CharacterResearch" ReturnType="Collection(EsoModel.CharacterResearch_Result)" />
+          <FunctionImport Name="NextUpInResearch" ReturnType="Collection(EsoModel.NextUpInResearch_Result)" />
         </EntityContainer>
         <ComplexType Name="CharactersNeedingAttention_Result">
           <Property Type="Int32" Name="CharacterId" Nullable="false" />
           <Property Type="String" Name="CharacterName" Nullable="false" MaxLength="50" />
           <Property Type="DateTime" Name="LastLogin" Nullable="true" Precision="23" />
-          <Property Type="Int32" Name="ChampionPointsEarned" Nullable="true" />
-          <Property Type="Int32" Name="EnlightenedPool" Nullable="true" />
-          <Property Type="String" Name="BlacksmithingStatus" Nullable="true" MaxLength="45" />
-          <Property Type="String" Name="ClothingStatus" Nullable="true" MaxLength="45" />
-          <Property Type="String" Name="WoodworkingStatus" Nullable="true" MaxLength="45" />
-          <Property Type="String" Name="HorseFeedingStatus" Nullable="true" MaxLength="45" />
+          <Property Type="DateTime" Name="BlacksmithingStatus" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="ClothingStatus" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="WoodworkingStatus" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="HorseFeedingStatus" Nullable="true" Precision="23" />
         </ComplexType>
         <ComplexType Name="CharactersNeedingAttentionWithinHours_Result">
           <Property Type="Int32" Name="CharacterId" Nullable="false" />
@@ -483,6 +485,36 @@
           <Property Type="Int32" Name="MountStamina" Nullable="true" />
           <Property Type="Int32" Name="MountSpeed" Nullable="true" />
           <Property Type="Int64" Name="SecondsUntilMountTraining" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="CharacterResearch_Result">
+          <Property Type="Int32" Name="CharacterId" Nullable="false" />
+          <Property Type="String" Name="CharacterName" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="LastLogin" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="HorseDue" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="BlacksmithingDue" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="ClothingDue" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="WoodworkingDue" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="NextDue" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="HorseInMinutes" Nullable="true" />
+          <Property Type="Int32" Name="BlacksmithingInMinutes" Nullable="true" />
+          <Property Type="Int32" Name="ClothingInMinutes" Nullable="true" />
+          <Property Type="Int32" Name="WoodworkingInMinutes" Nullable="true" />
+          <Property Type="Int32" Name="NextInMinutes" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="NextUpInResearch_Result">
+          <Property Type="Int32" Name="CharacterId" Nullable="false" />
+          <Property Type="String" Name="CharacterName" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="LastLogin" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="HorseDue" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="BlacksmithingDue" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="ClothingDue" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="WoodworkingDue" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="NextDue" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="HorseInMinutes" Nullable="true" />
+          <Property Type="Int32" Name="BlacksmithingInMinutes" Nullable="true" />
+          <Property Type="Int32" Name="ClothingInMinutes" Nullable="true" />
+          <Property Type="Int32" Name="WoodworkingInMinutes" Nullable="true" />
+          <Property Type="Int32" Name="NextInMinutes" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -596,8 +628,6 @@
                 <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
                 <ScalarProperty Name="CharacterName" ColumnName="CharacterName" />
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
-                <ScalarProperty Name="ChampionPointsEarned" ColumnName="ChampionPointsEarned" />
-                <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
                 <ScalarProperty Name="BlacksmithingStatus" ColumnName="BlacksmithingStatus" />
                 <ScalarProperty Name="ClothingStatus" ColumnName="ClothingStatus" />
                 <ScalarProperty Name="WoodworkingStatus" ColumnName="WoodworkingStatus" />
@@ -657,6 +687,44 @@
                 <ScalarProperty Name="MountStamina" ColumnName="MountStamina" />
                 <ScalarProperty Name="MountSpeed" ColumnName="MountSpeed" />
                 <ScalarProperty Name="SecondsUntilMountTraining" ColumnName="SecondsUntilMountTraining" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CharacterResearch" FunctionName="EsoModel.Store.CharacterResearch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EsoModel.CharacterResearch_Result">
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="CharacterName" ColumnName="CharacterName" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="HorseDue" ColumnName="HorseDue" />
+                <ScalarProperty Name="BlacksmithingDue" ColumnName="BlacksmithingDue" />
+                <ScalarProperty Name="ClothingDue" ColumnName="ClothingDue" />
+                <ScalarProperty Name="WoodworkingDue" ColumnName="WoodworkingDue" />
+                <ScalarProperty Name="NextDue" ColumnName="NextDue" />
+                <ScalarProperty Name="HorseInMinutes" ColumnName="HorseInMinutes" />
+                <ScalarProperty Name="BlacksmithingInMinutes" ColumnName="BlacksmithingInMinutes" />
+                <ScalarProperty Name="ClothingInMinutes" ColumnName="ClothingInMinutes" />
+                <ScalarProperty Name="WoodworkingInMinutes" ColumnName="WoodworkingInMinutes" />
+                <ScalarProperty Name="NextInMinutes" ColumnName="NextInMinutes" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="NextUpInResearch" FunctionName="EsoModel.Store.NextUpInResearch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EsoModel.NextUpInResearch_Result">
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="CharacterName" ColumnName="CharacterName" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="HorseDue" ColumnName="HorseDue" />
+                <ScalarProperty Name="BlacksmithingDue" ColumnName="BlacksmithingDue" />
+                <ScalarProperty Name="ClothingDue" ColumnName="ClothingDue" />
+                <ScalarProperty Name="WoodworkingDue" ColumnName="WoodworkingDue" />
+                <ScalarProperty Name="NextDue" ColumnName="NextDue" />
+                <ScalarProperty Name="HorseInMinutes" ColumnName="HorseInMinutes" />
+                <ScalarProperty Name="BlacksmithingInMinutes" ColumnName="BlacksmithingInMinutes" />
+                <ScalarProperty Name="ClothingInMinutes" ColumnName="ClothingInMinutes" />
+                <ScalarProperty Name="WoodworkingInMinutes" ColumnName="WoodworkingInMinutes" />
+                <ScalarProperty Name="NextInMinutes" ColumnName="NextInMinutes" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

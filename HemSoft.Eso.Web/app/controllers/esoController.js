@@ -85,9 +85,12 @@
 
         // get tag element
         var countdown = document.getElementById('countdown');
+        var counter = 0;
 
         // update the tag with id "countdown" every 1 second
         setInterval(function () {
+
+            counter = counter + 1;
 
             // find the amount of "seconds" between now and target
             var current_date = new Date().getTime();
@@ -106,6 +109,14 @@
             // format countdown string + set tag value
             countdown.innerHTML = '<span class="days">' + nextUp.CharacterName + ': ' + days + ' <b>Days</b></span> <span class="hours">' + hours + ' <b>Hours</b></span> <span class="minutes">'
             + minutes + ' <b>Minutes</b></span> <span class="seconds">' + seconds + ' <b>Seconds</b></span>';
+
+            if (counter >= 60) {
+                counter = 0;
+
+                $scope.nextUpInResearch = $scope.nextUpInResearchPromise.get(function (resp) {
+                    nextUp = resp;
+                });
+            }
 
         }, 1000);
     }

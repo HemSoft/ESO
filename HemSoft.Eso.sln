@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AddOns", "AddOns", "{70BA94
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HemSoft.Eso.Domain", "HemSoft.Eso.Domain\HemSoft.Eso.Domain.csproj", "{DFFE3CE9-03D6-4AFD-9CE6-ED8BCBE864B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HemSoft.Eso.Test", "HemSoft.Eso.Test\HemSoft.Eso.Test.csproj", "{088C3203-41D6-414A-8C11-3BC4D35E653C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HemSoft.Eso.CharacterMonitor", "HemSoft.Eso.Test\HemSoft.Eso.CharacterMonitor.csproj", "{088C3203-41D6-414A-8C11-3BC4D35E653C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SavedVariables", "SavedVariables", "{AE20DCE6-128A-4A4E-97B4-221B19246ED3}"
 	ProjectSection(SolutionItems) = preProject

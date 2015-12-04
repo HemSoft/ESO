@@ -7,8 +7,8 @@
     <ProjectGuid>{088C3203-41D6-414A-8C11-3BC4D35E653C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HemSoft.Eso.Test</RootNamespace>
-    <AssemblyName>HemSoft.Eso.Test</AssemblyName>
+    <RootNamespace>HemSoft.Eso.CharacterMonitor</RootNamespace>
+    <AssemblyName>HemSoft.Eso.CharacterMonitor</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

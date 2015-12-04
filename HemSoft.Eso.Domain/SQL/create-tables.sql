@@ -235,27 +235,27 @@ BEGIN
 
       , CASE
             WHEN DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin) < GETDATE() THEN
-                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin))) + ' PAST DUE!'
+                DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin)
             ELSE
-                ''
+                NULL
         END HorseFeedingStatus
       , CASE
             WHEN DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin) < GETDATE() THEN
-                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin))) + ' PAST DUE!'
+                DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)
             ELSE
-                ''
+                NULL
         END BlacksmithingStatus
       , CASE
             WHEN DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin) < GETDATE() THEN
-                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin))) + ' PAST DUE!'
+                DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)
             ELSE
-                ''
+                NULL
         END ClothingStatus
       , CASE
             WHEN DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin) < GETDATE() THEN
-                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin))) + ' PAST DUE!'
+                DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin)
             ELSE
-                ''
+                NULL
         END WoodworkingStatus
     FROM
         CharacterActivity ca
@@ -301,28 +301,28 @@ BEGIN
 
       , CASE
             WHEN DATEADD(ss, ca.SecondsUntilMountTraining - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
-                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin))) + ' DUE SOON!'
+                DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin)
             ELSE
-                ''
+                NULL
         END HorseFeedingStatus
       , CASE
             WHEN DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
-                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin))) + ' DUE SOON!'
+                DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)
             ELSE
-                ''
+                NULL
         END BlacksmithingStatus
       , CASE
             WHEN DATEADD(ss, ca.ClothingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
-                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin))) + ' DUE SOON!'
+                DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)
             ELSE
-                ''
+                NULL
         END ClothingStatus
       , CASE
             WHEN DATEADD(ss, ca.WoodworkingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
-                '===> ' + CONVERT(VARCHAR, DATEADD(HOUR, -6, DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin))) + ' DUE SOON!'
+                DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin)
 
             ELSE
-                ''
+                NULL
         END WoodworkingStatus
     FROM
         CharacterActivity ca
@@ -408,4 +408,141 @@ BEGIN
                 Character c
                 INNER JOIN CharacterActivity ca ON ca.CharacterId = c.Id AND ca.Id = (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id)
         )
+END
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'CharacterResearch')
+    DROP PROCEDURE CharacterResearch
+GO
+
+CREATE PROCEDURE CharacterResearch
+AS
+BEGIN
+
+    SELECT
+        c.Id AS CharacterId
+      , c.Name AS CharacterName
+      , ca.LastLogin
+      , DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin) AS HorseDue
+      , DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin) AS BlacksmithingDue
+      , DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin) AS ClothingDue
+      , DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin) AS WoodworkingDue
+      , CASE
+            WHEN ca.SecondsUntilMountTraining < ca.BlacksmithingSecondsMinimumLeft AND
+                 ca.SecondsUntilMountTraining < ca.ClothingSecondsMinimumLeft AND
+                 ca.SecondsUntilMountTraining < ca.WoodworkingSecondsMinimumLeft THEN
+               DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin)
+            WHEN ca.BlacksmithingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
+                 ca.BlacksmithingSecondsMinimumLeft < ca.ClothingSecondsMinimumLeft AND
+                 ca.BlacksmithingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
+                DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)
+            WHEN ca.ClothingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
+                 ca.ClothingSecondsMinimumLeft < ca.BlacksmithingSecondsMinimumLeft AND
+                 ca.ClothingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
+                DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)
+            ELSE
+                DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin)
+        END AS NextDue
+      , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin)) AS HorseInMinutes
+      , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)) AS BlacksmithingInMinutes
+      , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)) AS ClothingInMinutes
+      , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin)) AS WoodworkingInMinutes
+      , CASE
+            WHEN ca.SecondsUntilMountTraining < ca.BlacksmithingSecondsMinimumLeft AND
+                 ca.SecondsUntilMountTraining < ca.ClothingSecondsMinimumLeft AND
+                 ca.SecondsUntilMountTraining < ca.WoodworkingSecondsMinimumLeft THEN
+                 DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin))
+            WHEN ca.BlacksmithingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
+                 ca.BlacksmithingSecondsMinimumLeft < ca.ClothingSecondsMinimumLeft AND
+                 ca.BlacksmithingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
+                 DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)) 
+            WHEN ca.ClothingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
+                 ca.ClothingSecondsMinimumLeft < ca.BlacksmithingSecondsMinimumLeft AND
+                 ca.ClothingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
+                 DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)) 
+            ELSE
+                DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin))
+        END AS NextInMinutes
+    FROM
+        CharacterActivity ca
+        INNER JOIN Character c ON ca.CharacterId = c.Id
+    WHERE
+        ca.Id IN 
+        (
+            SELECT
+                (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id) AS ActivityId
+            FROM
+                Character c
+                INNER JOIN CharacterActivity ca ON ca.CharacterId = c.Id AND ca.Id = (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id)
+        )
+    ORDER BY
+        NextInMinutes
+END
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'NextUpInResearch')
+    DROP PROCEDURE NextUpInResearch
+GO
+
+CREATE PROCEDURE NextUpInResearch
+AS
+BEGIN
+
+    SELECT
+        TOP 1
+        c.Id AS CharacterId
+      , c.Name AS CharacterName
+      , ca.LastLogin
+      , DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin) AS HorseDue
+      , DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin) AS BlacksmithingDue
+      , DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin) AS ClothingDue
+      , DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin) AS WoodworkingDue
+      , CASE
+            WHEN ca.SecondsUntilMountTraining < ca.BlacksmithingSecondsMinimumLeft AND
+                 ca.SecondsUntilMountTraining < ca.ClothingSecondsMinimumLeft AND
+                 ca.SecondsUntilMountTraining < ca.WoodworkingSecondsMinimumLeft THEN
+                DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin)
+            WHEN ca.BlacksmithingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
+                 ca.BlacksmithingSecondsMinimumLeft < ca.ClothingSecondsMinimumLeft AND
+                 ca.BlacksmithingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
+                DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)
+            WHEN ca.ClothingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
+                 ca.ClothingSecondsMinimumLeft < ca.BlacksmithingSecondsMinimumLeft AND
+                 ca.ClothingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
+                DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)
+            ELSE
+                DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin)
+        END AS NextDue
+      , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin)) AS HorseInMinutes
+      , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)) AS BlacksmithingInMinutes
+      , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)) AS ClothingInMinutes
+      , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin)) AS WoodworkingInMinutes
+      , CASE
+            WHEN ca.SecondsUntilMountTraining < ca.BlacksmithingSecondsMinimumLeft AND
+                 ca.SecondsUntilMountTraining < ca.ClothingSecondsMinimumLeft AND
+                 ca.SecondsUntilMountTraining < ca.WoodworkingSecondsMinimumLeft THEN
+                 DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin))
+            WHEN ca.BlacksmithingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
+                 ca.BlacksmithingSecondsMinimumLeft < ca.ClothingSecondsMinimumLeft AND
+                 ca.BlacksmithingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
+                 DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)) 
+            WHEN ca.ClothingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
+                 ca.ClothingSecondsMinimumLeft < ca.BlacksmithingSecondsMinimumLeft AND
+                 ca.ClothingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
+                 DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)) 
+            ELSE
+                DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin))
+        END AS NextInMinutes
+    FROM
+        CharacterActivity ca
+        INNER JOIN Character c ON ca.CharacterId = c.Id
+    WHERE
+        ca.Id IN 
+        (
+            SELECT
+                (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id) AS ActivityId
+            FROM
+                Character c
+                INNER JOIN CharacterActivity ca ON ca.CharacterId = c.Id AND ca.Id = (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id)
+        )
+    ORDER BY
+        NextInMinutes
 END

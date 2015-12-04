@@ -29,7 +29,7 @@
         if (this.selectedAccount !== null) {
             $scope.characterActivities =
                 $resource("http://hemsoftesoapi.azurewebsites.net/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId="
-                    + this.selectedAccount.Id).query();
+                    + this.selectedCharacter.Id).query();
         }
     }
 

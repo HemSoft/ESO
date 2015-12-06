@@ -60,9 +60,12 @@
           <Property Name="ClothingSecondsMinimumTotal" Type="int" />
           <Property Name="ClothingSlotsFree" Type="int" />
           <Property Name="ClothingSlotsMax" Type="int" />
+          <Property Name="EffictiveLevel" Type="int" />
           <Property Name="EnlightenedPool" Type="int" />
           <Property Name="GuildCount" Type="int" />
+          <Property Name="IsVeteran" Type="bit" />
           <Property Name="LastLogin" Type="datetime" />
+          <Property Name="Level" Type="int" />
           <Property Name="MailCount" Type="int" />
           <Property Name="MailMax" Type="int" />
           <Property Name="MaxBagSize" Type="int" />
@@ -76,12 +79,26 @@
           <Property Name="Skyshards" Type="int" />
           <Property Name="UsedBagSlots" Type="int" />
           <Property Name="UsedBankSlots" Type="int" />
+          <Property Name="VeteranRank" Type="int" />
+          <Property Name="VP" Type="int" />
+          <Property Name="VPMax" Type="int" />
           <Property Name="WoodworkingSecondsMaximumLeft" Type="int" />
           <Property Name="WoodworkingSecondsMaximumTotal" Type="int" />
           <Property Name="WoodworkingSecondsMinimumLeft" Type="int" />
           <Property Name="WoodworkingSecondsMinimumTotal" Type="int" />
           <Property Name="WoodworkingSlotsFree" Type="int" />
           <Property Name="WoodworkingSlotsMax" Type="int" />
+          <Property Name="XP" Type="int" />
+          <Property Name="XPMax" Type="int" />
+          <Property Name="Zone" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="CharacterSkill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CharacterId" Type="int" Nullable="false" />
+          <Property Name="SkillId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ClassLookup">
           <Key>
@@ -99,19 +116,15 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="SkillLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
+        </EntityType>
         <Association Name="FK_Character_Account">
-          <End Role="Account" Type="Self.Account" Multiplicity="1" />
-          <End Role="Character" Type="Self.Character" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Character">
-              <PropertyRef Name="AccountId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Character_Account1">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
           <ReferentialConstraint>
@@ -171,11 +184,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CharacterSkill_Character">
+          <End Role="Character" Type="Self.Character" Multiplicity="1" />
+          <End Role="CharacterSkill" Type="Self.CharacterSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Character">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterSkill">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CharacterSkill_SkillLookup">
+          <End Role="SkillLookup" Type="Self.SkillLookup" Multiplicity="1" />
+          <End Role="CharacterSkill" Type="Self.CharacterSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SkillLookup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterSkill">
+              <PropertyRef Name="SkillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="CharacterResearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CharactersNeedingAttention" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CharactersNeedingAttentionWithinHours" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="hours" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetAccounts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetLastCharacterActivity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="NextUpInResearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="EsoModelStoreContainer">
@@ -183,13 +221,11 @@
           <EntitySet Name="AllianceLookup" EntityType="Self.AllianceLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Character" EntityType="Self.Character" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterActivity" EntityType="Self.CharacterActivity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CharacterSkill" EntityType="Self.CharacterSkill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassLookup" EntityType="Self.ClassLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RaceLookup" EntityType="Self.RaceLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SkillLookup" EntityType="Self.SkillLookup" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Character_Account" Association="Self.FK_Character_Account">
-            <End Role="Account" EntitySet="Account" />
-            <End Role="Character" EntitySet="Character" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Character_Account1" Association="Self.FK_Character_Account1">
             <End Role="Account" EntitySet="Account" />
             <End Role="Character" EntitySet="Character" />
           </AssociationSet>
@@ -208,6 +244,14 @@
           <AssociationSet Name="FK_CharacterActivity_Character" Association="Self.FK_CharacterActivity_Character">
             <End Role="Character" EntitySet="Character" />
             <End Role="CharacterActivity" EntitySet="CharacterActivity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CharacterSkill_Character" Association="Self.FK_CharacterSkill_Character">
+            <End Role="Character" EntitySet="Character" />
+            <End Role="CharacterSkill" EntitySet="CharacterSkill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CharacterSkill_SkillLookup" Association="Self.FK_CharacterSkill_SkillLookup">
+            <End Role="SkillLookup" EntitySet="SkillLookup" />
+            <End Role="CharacterSkill" EntitySet="CharacterSkill" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -251,6 +295,7 @@
           <NavigationProperty Name="RaceLookup" Relationship="EsoModel.FK_Character_Race" FromRole="Character" ToRole="RaceLookup" />
           <NavigationProperty Name="CharacterActivities" Relationship="Self.FK_CharacterActivity_Character" FromRole="Character" ToRole="CharacterActivity" />
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CharacterSkills" Relationship="EsoModel.FK_CharacterSkill_Character" FromRole="Character" ToRole="CharacterSkill" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -299,6 +344,15 @@
           <Property Name="MountSpeed" Type="Int32" />
           <Property Name="SecondsUntilMountTraining" Type="Int64" />
           <Property Name="EnlightenedPool" Type="Int32" />
+          <Property Name="EffictiveLevel" Type="Int32" />
+          <Property Name="Level" Type="Int32" />
+          <Property Name="Zone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsVeteran" Type="Boolean" />
+          <Property Name="VeteranRank" Type="Int32" />
+          <Property Name="VP" Type="Int32" />
+          <Property Name="VPMax" Type="Int32" />
+          <Property Name="XP" Type="Int32" />
+          <Property Name="XPMax" Type="Int32" />
         </EntityType>
         <EntityType Name="ClassLookup">
           <Key>
@@ -428,6 +482,17 @@
           <FunctionImport Name="GetLastCharacterActivity" ReturnType="Collection(EsoModel.GetLastCharacterActivity_Result)" />
           <FunctionImport Name="CharacterResearch" ReturnType="Collection(EsoModel.CharacterResearch_Result)" />
           <FunctionImport Name="NextUpInResearch" ReturnType="Collection(EsoModel.NextUpInResearch_Result)" />
+          <EntitySet Name="CharacterSkills" EntityType="EsoModel.CharacterSkill" />
+          <EntitySet Name="SkillLookups" EntityType="EsoModel.SkillLookup" />
+          <AssociationSet Name="FK_CharacterSkill_Character" Association="EsoModel.FK_CharacterSkill_Character">
+            <End Role="Character" EntitySet="Characters" />
+            <End Role="CharacterSkill" EntitySet="CharacterSkills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CharacterSkill_SkillLookup" Association="EsoModel.FK_CharacterSkill_SkillLookup">
+            <End Role="SkillLookup" EntitySet="SkillLookups" />
+            <End Role="CharacterSkill" EntitySet="CharacterSkills" />
+          </AssociationSet>
+          <FunctionImport Name="GetAccounts" ReturnType="Collection(EsoModel.GetAccounts_Result)" />
         </EntityContainer>
         <ComplexType Name="CharactersNeedingAttention_Result">
           <Property Type="Int32" Name="CharacterId" Nullable="false" />
@@ -516,6 +581,58 @@
           <Property Type="Int32" Name="WoodworkingInMinutes" Nullable="true" />
           <Property Type="Int32" Name="NextInMinutes" Nullable="true" />
         </ComplexType>
+        <EntityType Name="CharacterSkill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CharacterId" Type="Int32" Nullable="false" />
+          <Property Name="SkillId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Character" Relationship="EsoModel.FK_CharacterSkill_Character" FromRole="CharacterSkill" ToRole="Character" />
+          <NavigationProperty Name="SkillLookup" Relationship="EsoModel.FK_CharacterSkill_SkillLookup" FromRole="CharacterSkill" ToRole="SkillLookup" />
+        </EntityType>
+        <EntityType Name="SkillLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CharacterSkills" Relationship="EsoModel.FK_CharacterSkill_SkillLookup" FromRole="SkillLookup" ToRole="CharacterSkill" />
+        </EntityType>
+        <Association Name="FK_CharacterSkill_Character">
+          <End Type="EsoModel.Character" Role="Character" Multiplicity="1" />
+          <End Type="EsoModel.CharacterSkill" Role="CharacterSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Character">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterSkill">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CharacterSkill_SkillLookup">
+          <End Type="EsoModel.SkillLookup" Role="SkillLookup" Multiplicity="1" />
+          <End Type="EsoModel.CharacterSkill" Role="CharacterSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SkillLookup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterSkill">
+              <PropertyRef Name="SkillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="GetAccounts_Result">
+          <Property Type="Int32" Name="AccountId" Nullable="false" />
+          <Property Type="String" Name="AccountName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="AccountPassword" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="LastLogin" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="String" Name="CharacterName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="EnlightenedPool" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -559,6 +676,15 @@
           <EntitySetMapping Name="CharacterActivities">
             <EntityTypeMapping TypeName="EsoModel.CharacterActivity">
               <MappingFragment StoreEntitySet="CharacterActivity">
+                <ScalarProperty Name="XPMax" ColumnName="XPMax" />
+                <ScalarProperty Name="XP" ColumnName="XP" />
+                <ScalarProperty Name="VPMax" ColumnName="VPMax" />
+                <ScalarProperty Name="VP" ColumnName="VP" />
+                <ScalarProperty Name="VeteranRank" ColumnName="VeteranRank" />
+                <ScalarProperty Name="IsVeteran" ColumnName="IsVeteran" />
+                <ScalarProperty Name="Zone" ColumnName="Zone" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="EffictiveLevel" ColumnName="EffictiveLevel" />
                 <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
                 <ScalarProperty Name="SecondsUntilMountTraining" ColumnName="SecondsUntilMountTraining" />
                 <ScalarProperty Name="MountSpeed" ColumnName="MountSpeed" />
@@ -725,6 +851,37 @@
                 <ScalarProperty Name="ClothingInMinutes" ColumnName="ClothingInMinutes" />
                 <ScalarProperty Name="WoodworkingInMinutes" ColumnName="WoodworkingInMinutes" />
                 <ScalarProperty Name="NextInMinutes" ColumnName="NextInMinutes" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="CharacterSkills">
+            <EntityTypeMapping TypeName="EsoModel.CharacterSkill">
+              <MappingFragment StoreEntitySet="CharacterSkill">
+                <ScalarProperty Name="SkillId" ColumnName="SkillId" />
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SkillLookups">
+            <EntityTypeMapping TypeName="EsoModel.SkillLookup">
+              <MappingFragment StoreEntitySet="SkillLookup">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetAccounts" FunctionName="EsoModel.Store.GetAccounts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EsoModel.GetAccounts_Result">
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="AccountPassword" ColumnName="AccountPassword" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CharacterName" ColumnName="CharacterName" />
+                <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

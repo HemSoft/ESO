@@ -197,6 +197,10 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
+    <None Include="Properties\PublishProfiles\HemSoftEsoWeb - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\HemSoftEsoWeb - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\HemSoftEsoWeb - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\HemSoftEsoWeb - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

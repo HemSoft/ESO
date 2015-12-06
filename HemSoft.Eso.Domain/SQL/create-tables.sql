@@ -2,12 +2,53 @@
 --==============================================================================================================--
 --==============================================================================================================--
 
-DROP TABLE CharacterActivity
-DROP TABLE [Character]
-DROP TABLE ClassLookup
-DROP TABLE RaceLookup
-DROP TABLE AllianceLookup
-DROP TABLE Account
+IF OBJECT_ID('dbo.CharacterActivity', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE CharacterActivity
+END
+GO
+
+IF OBJECT_ID('dbo.[Character]', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE [Character]
+END
+GO
+
+IF OBJECT_ID('dbo.ClassLookup', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE ClassLookup
+END
+GO
+
+IF OBJECT_ID('dbo.RaceLookup', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE RaceLookup
+END
+GO
+
+IF OBJECT_ID('dbo.AllianceLookup', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE AllianceLookup
+END
+GO
+
+IF OBJECT_ID('dbo.Account', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE Account
+END
+GO
+
+IF OBJECT_ID('dbo.SkillLookup', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE SkillLookup
+END
+GO
+
+IF OBJECT_ID('dbo.CharacterSkill', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE CharacterSkill
+END
+GO
 
 --==============================================================================================================--
 --==============================================================================================================--
@@ -41,6 +82,22 @@ CREATE TABLE [dbo].[AllianceLookup](
     [Name] [varchar](50) NOT NULL,
     [Description] [varchar](max) NULL,
  CONSTRAINT [PK_EsoFaction] PRIMARY KEY CLUSTERED 
+(
+    [Id] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
+)
+
+GO
+/****** Object:  Table [dbo].[SkillLookup]    Script Date: 11/24/2015 3:19:05 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SkillLookup](
+    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Name] [varchar](50) NOT NULL,
+    [Description] [varchar](max) NULL,
+ CONSTRAINT [PK_SkillLookup] PRIMARY KEY CLUSTERED 
 (
     [Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
@@ -94,9 +151,12 @@ CREATE TABLE [dbo].[CharacterActivity](
     [ClothingSecondsMinimumTotal] [int] NULL,
     [ClothingSlotsFree] [int] NULL,
     [ClothingSlotsMax] [int] NULL,
-    [GuildCount] [int] NULL,
+    [EffictiveLevel] [int] NULL,
     [EnlightenedPool] [int] NULL,
+    [GuildCount] [int] NULL,
+    [IsVeteran] [bit] NULL,
     [LastLogin] [datetime] NULL,
+    [Level] [int] NULL,
     [MailCount] [int] NULL,
     [MailMax] [int] NULL,
     [MaxBagSize] [int] NULL,
@@ -110,12 +170,18 @@ CREATE TABLE [dbo].[CharacterActivity](
     [Skyshards] [int] NULL,
     [UsedBagSlots] [int] NULL,
     [UsedBankSlots] [int] NULL,
+    [VeteranRank] [int] NULL,
+    [VP] [int] NULL,
+    [VPMax] [int] NULL,
     [WoodworkingSecondsMaximumLeft] [int] NULL,
     [WoodworkingSecondsMaximumTotal] [int] NULL,
     [WoodworkingSecondsMinimumLeft] [int] NULL,
     [WoodworkingSecondsMinimumTotal] [int] NULL,
     [WoodworkingSlotsFree] [int] NULL,
     [WoodworkingSlotsMax] [int] NULL,
+    [XP] [int] NULL,
+    [XPMax] [int] NULL,
+    [Zone] [varchar](100) NULL,
  CONSTRAINT [PK_CharacterActivity] PRIMARY KEY CLUSTERED 
 (
     [Id] ASC
@@ -123,6 +189,29 @@ CREATE TABLE [dbo].[CharacterActivity](
 )
 
 GO
+USE [Eso]
+GO
+
+/****** Object:  Table [dbo].[CharacterSkill]    Script Date: 12/5/2015 4:43:55 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[CharacterSkill](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CharacterId] [int] NOT NULL,
+	[SkillId] [int] NOT NULL,
+ CONSTRAINT [PK_CharacterSkill] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+)
+
+GO
+
+
 /****** Object:  Table [dbo].[ClassLookup]    Script Date: 11/24/2015 3:19:05 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -220,11 +309,11 @@ INSERT INTO ClassLookup (Name, Description) VALUES ('Templar', 'The Templar is a
 --==============================================================================================================--
 --==============================================================================================================--
 
-IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'CharactersNeedingAttention')
-    DROP PROCEDURE CharactersNeedingAttention
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.CharactersNeedingAttention'))
+    EXEC('CREATE PROCEDURE [dbo].[CharactersNeedingAttention] AS BEGIN SET NOCOUNT ON; END')
 GO
 
-CREATE PROCEDURE CharactersNeedingAttention
+ALTER PROCEDURE CharactersNeedingAttention
 AS
 BEGIN
     -- Get Research Past Due:
@@ -282,51 +371,27 @@ BEGIN
     ORDER BY
         c.Name
 END
-
-IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'CharactersNeedingAttentionWithinHours')
-    DROP PROCEDURE CharactersNeedingAttentionWithinHours
 GO
 
-CREATE PROCEDURE CharactersNeedingAttentionWithinHours
-(
-    @hours INT
-)
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.GetAccounts'))
+    EXEC('CREATE PROCEDURE [dbo].[GetAccounts] AS BEGIN SET NOCOUNT ON; END')
+GO
+
+ALTER PROCEDURE GetAccounts
 AS
 BEGIN
-    -- Get Research Past Due:
     SELECT
-        c.Id AS CharacterId
+        a.Id AS AccountId
+      , a.Name AS AccountName
+      , a.Password AS AccountPassword
+      , a.LastLogin
+      , a.Description
       , c.Name AS CharacterName
-      , ca.LastLogin
-
-      , CASE
-            WHEN DATEADD(ss, ca.SecondsUntilMountTraining - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
-                DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin)
-            ELSE
-                NULL
-        END HorseFeedingStatus
-      , CASE
-            WHEN DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
-                DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)
-            ELSE
-                NULL
-        END BlacksmithingStatus
-      , CASE
-            WHEN DATEADD(ss, ca.ClothingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
-                DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)
-            ELSE
-                NULL
-        END ClothingStatus
-      , CASE
-            WHEN DATEADD(ss, ca.WoodworkingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE() THEN
-                DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin)
-
-            ELSE
-                NULL
-        END WoodworkingStatus
+      , ca.EnlightenedPool
     FROM
-        CharacterActivity ca
-        INNER JOIN Character c ON ca.CharacterId = c.Id
+        Account a
+        INNER JOIN Character c ON a.Id = c.Id
+        LEFT OUTER JOIN CharacterActivity ca ON c.Id = ca.CharacterId
     WHERE
         ca.Id IN 
         (
@@ -336,25 +401,14 @@ BEGIN
                 Character c
                 INNER JOIN CharacterActivity ca ON ca.CharacterId = c.Id AND ca.Id = (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id)
         )
-        AND
-        (
-            DATEADD(ss, ca.SecondsUntilMountTraining - (60 * 60 * @hours), ca.LastLogin) < GETDATE()
-            OR
-            DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE()
-            OR
-            DATEADD(ss, ca.ClothingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE()
-            OR
-            DATEADD(ss, ca.WoodworkingSecondsMinimumLeft - (60 * 60 * @hours), ca.LastLogin) < GETDATE()
-        )
-    ORDER BY
-        c.Name
 END
-
-IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'GetLastCharacterActivity')
-    DROP PROCEDURE GetLastCharacterActivity
 GO
 
-CREATE PROCEDURE GetLastCharacterActivity
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.GetLastCharacterActivity'))
+    EXEC('CREATE PROCEDURE [dbo].[GetLastCharacterActivity] AS BEGIN SET NOCOUNT ON; END')
+GO
+
+ALTER PROCEDURE GetLastCharacterActivity
 AS
 BEGIN
 
@@ -409,12 +463,13 @@ BEGIN
                 INNER JOIN CharacterActivity ca ON ca.CharacterId = c.Id AND ca.Id = (SELECT MAX(Id) FROM CharacterActivity ca WHERE ca.CharacterId = c.Id)
         )
 END
-
-IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'CharacterResearch')
-    DROP PROCEDURE CharacterResearch
 GO
 
-CREATE PROCEDURE CharacterResearch
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.CharacterResearch'))
+    EXEC('CREATE PROCEDURE [dbo].[CharacterResearch] AS BEGIN SET NOCOUNT ON; END')
+GO
+
+ALTER PROCEDURE CharacterResearch
 AS
 BEGIN
 
@@ -427,40 +482,44 @@ BEGIN
       , DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin) AS ClothingDue
       , DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin) AS WoodworkingDue
       , CASE
-            WHEN ca.SecondsUntilMountTraining < ca.BlacksmithingSecondsMinimumLeft AND
-                 ca.SecondsUntilMountTraining < ca.ClothingSecondsMinimumLeft AND
-                 ca.SecondsUntilMountTraining < ca.WoodworkingSecondsMinimumLeft THEN
+            WHEN COALESCE(ca.SecondsUntilMountTraining, 9999999999) < COALESCE(ca.BlacksmithingSecondsMinimumLeft, 9999999999) AND
+                 COALESCE(ca.SecondsUntilMountTraining, 9999999999) < COALESCE(ca.ClothingSecondsMinimumLeft, 9999999999) AND
+                 COALESCE(ca.SecondsUntilMountTraining, 9999999999) < COALESCE(ca.WoodworkingSecondsMinimumLeft, 9999999999) THEN
                DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin)
-            WHEN ca.BlacksmithingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
-                 ca.BlacksmithingSecondsMinimumLeft < ca.ClothingSecondsMinimumLeft AND
-                 ca.BlacksmithingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
-                DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)
-            WHEN ca.ClothingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
-                 ca.ClothingSecondsMinimumLeft < ca.BlacksmithingSecondsMinimumLeft AND
-                 ca.ClothingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
+            WHEN COALESCE(ca.BlacksmithingSecondsMinimumLeft, 9999999999) < COALESCE(ca.SecondsUntilMountTraining, 9999999999) AND
+                 COALESCE(ca.BlacksmithingSecondsMinimumLeft, 9999999999) < COALESCE(ca.ClothingSecondsMinimumLeft, 9999999999) AND
+                 COALESCE(ca.BlacksmithingSecondsMinimumLeft, 9999999999) < COALESCE(ca.WoodworkingSecondsMinimumLeft, 9999999999) THEN
+               DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)
+            WHEN COALESCE(ca.ClothingSecondsMinimumLeft, 9999999999) < COALESCE(ca.SecondsUntilMountTraining, 9999999999) AND
+                 COALESCE(ca.ClothingSecondsMinimumLeft, 9999999999) < COALESCE(ca.BlacksmithingSecondsMinimumLeft, 9999999999) AND
+                 COALESCE(ca.ClothingSecondsMinimumLeft, 9999999999) < COALESCE(ca.WoodworkingSecondsMinimumLeft, 9999999999) THEN
                 DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)
-            ELSE
+            WHEN ca.WoodworkingSecondsMaximumLeft IS NOT NULL THEN
                 DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin)
+            ELSE
+                NULL
         END AS NextDue
       , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin)) AS HorseInMinutes
       , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)) AS BlacksmithingInMinutes
       , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)) AS ClothingInMinutes
       , DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin)) AS WoodworkingInMinutes
       , CASE
-            WHEN ca.SecondsUntilMountTraining < ca.BlacksmithingSecondsMinimumLeft AND
-                 ca.SecondsUntilMountTraining < ca.ClothingSecondsMinimumLeft AND
-                 ca.SecondsUntilMountTraining < ca.WoodworkingSecondsMinimumLeft THEN
-                 DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin))
-            WHEN ca.BlacksmithingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
-                 ca.BlacksmithingSecondsMinimumLeft < ca.ClothingSecondsMinimumLeft AND
-                 ca.BlacksmithingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
-                 DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)) 
-            WHEN ca.ClothingSecondsMinimumLeft < ca.SecondsUntilMountTraining AND
-                 ca.ClothingSecondsMinimumLeft < ca.BlacksmithingSecondsMinimumLeft AND
-                 ca.ClothingSecondsMinimumLeft < ca.WoodworkingSecondsMinimumLeft THEN
-                 DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)) 
-            ELSE
+            WHEN COALESCE(ca.SecondsUntilMountTraining, 9999999999) < COALESCE(ca.BlacksmithingSecondsMinimumLeft, 9999999999) AND
+                 COALESCE(ca.SecondsUntilMountTraining, 9999999999) < COALESCE(ca.ClothingSecondsMinimumLeft, 9999999999) AND
+                 COALESCE(ca.SecondsUntilMountTraining, 9999999999) < COALESCE(ca.WoodworkingSecondsMinimumLeft, 9999999999) THEN
+                DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.SecondsUntilMountTraining, ca.LastLogin))
+            WHEN COALESCE(ca.BlacksmithingSecondsMinimumLeft, 9999999999) < COALESCE(ca.SecondsUntilMountTraining, 9999999999) AND
+                 COALESCE(ca.BlacksmithingSecondsMinimumLeft, 9999999999) < COALESCE(ca.ClothingSecondsMinimumLeft, 9999999999) AND
+                 COALESCE(ca.BlacksmithingSecondsMinimumLeft, 9999999999) < COALESCE(ca.WoodworkingSecondsMinimumLeft, 9999999999) THEN
+                DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.BlacksmithingSecondsMinimumLeft, ca.LastLogin)) 
+            WHEN COALESCE(ca.ClothingSecondsMinimumLeft, 9999999999) < COALESCE(ca.SecondsUntilMountTraining, 9999999999) AND
+                 COALESCE(ca.ClothingSecondsMinimumLeft, 9999999999) < COALESCE(ca.BlacksmithingSecondsMinimumLeft, 9999999999) AND
+                 COALESCE(ca.ClothingSecondsMinimumLeft, 9999999999) < COALESCE(ca.WoodworkingSecondsMinimumLeft, 9999999999) THEN
+                DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.ClothingSecondsMinimumLeft, ca.LastLogin)) 
+            WHEN ca.WoodworkingSecondsMaximumLeft IS NOT NULL THEN
                 DATEDIFF(MINUTE, GETDATE(), DATEADD(ss, ca.WoodworkingSecondsMinimumLeft, ca.LastLogin))
+            ELSE
+                NULL
         END AS NextInMinutes
     FROM
         CharacterActivity ca
@@ -477,12 +536,13 @@ BEGIN
     ORDER BY
         NextInMinutes
 END
-
-IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'NextUpInResearch')
-    DROP PROCEDURE NextUpInResearch
 GO
 
-CREATE PROCEDURE NextUpInResearch
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.NextUpInResearch'))
+    EXEC('CREATE PROCEDURE [dbo].[NextUpInResearch] AS BEGIN SET NOCOUNT ON; END')
+GO
+
+ALTER PROCEDURE NextUpInResearch
 AS
 BEGIN
 

@@ -230,6 +230,8 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Metadata\deploymentTemplates\apiappconfig.azureresource.json" />
     <Content Include="apiapp.json" />
+    <None Include="Properties\PublishProfiles\HemSoftEsoApi - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\HemSoftEsoApi - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\HemSoftEsoApi.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -281,7 +283,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53807</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

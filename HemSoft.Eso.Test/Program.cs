@@ -129,11 +129,20 @@
                                 case "Date":
                                     esoProperty.Date = property.Value.ToString();
                                     break;
+                                case "EffectiveLevel":
+                                    characterActivity.EffictiveLevel = int.Parse(property.Value.ToString());
+                                    break;
                                 case "EnlightenedPool":
                                     characterActivity.EnlightenedPool = int.Parse(property.Value.ToString());
                                     break;
                                 case "GuildCount":
                                     characterActivity.GuildCount = int.Parse(property.Value.ToString());
+                                    break;
+                                case "IsVeteran":
+                                    characterActivity.IsVeteran = bool.Parse(property.Value.ToString());
+                                    break;
+                                case "Level":
+                                    characterActivity.Level = int.Parse(property.Value.ToString());
                                     break;
                                 case "MailCount":
                                     characterActivity.MailCount = int.Parse(property.Value.ToString());
@@ -177,6 +186,12 @@
                                 case "UsedBankSlots":
                                     characterActivity.UsedBankSlots = int.Parse(property.Value.ToString());
                                     break;
+                                case "VP":
+                                    characterActivity.VP = int.Parse(property.Value.ToString());
+                                    break;
+                                case "VPMax":
+                                    characterActivity.VPMax = int.Parse(property.Value.ToString());
+                                    break;
                                 case "WoodworkingSecondsMaximumLeft":
                                     characterActivity.WoodworkingSecondsMaximumLeft = int.Parse(property.Value.ToString());
                                     break;
@@ -195,6 +210,15 @@
                                 case "WoodworkingSlotsMax":
                                     characterActivity.WoodworkingSlotsMax = int.Parse(property.Value.ToString());
                                     break;
+                                case "XP":
+                                    characterActivity.XP = int.Parse(property.Value.ToString());
+                                    break;
+                                case "XPMax":
+                                    characterActivity.XPMax = int.Parse(property.Value.ToString());
+                                    break;
+                                case "Zone":
+                                    characterActivity.Zone = property.Value.ToString();
+                                    break;
                                 case "version":
                                 case "left":
                                 case "top":
@@ -204,6 +228,17 @@
                                     break;
                             }
                             //Console.WriteLine($"      {property.Key} = {property.Value}");
+                        }
+
+                        // Some post-mortem rules:
+
+                        // 1) If Mount stats is all 60, we don't need to feed the horse.
+                        if (characterActivity != null &&
+                            characterActivity.MountCapacity == 60 &&
+                            characterActivity.MountSpeed == 60 &&
+                            characterActivity.MountStamina == 60)
+                        {
+                            characterActivity.SecondsUntilMountTraining = null;
                         }
 
                         if (esoProperty.Time.Length == 3)

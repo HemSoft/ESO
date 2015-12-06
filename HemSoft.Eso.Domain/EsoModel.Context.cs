@@ -33,6 +33,8 @@ namespace HemSoft.Eso.Domain
         public virtual DbSet<CharacterActivity> CharacterActivities { get; set; }
         public virtual DbSet<ClassLookup> ClassLookups { get; set; }
         public virtual DbSet<RaceLookup> RaceLookups { get; set; }
+        public virtual DbSet<CharacterSkill> CharacterSkills { get; set; }
+        public virtual DbSet<SkillLookup> SkillLookups { get; set; }
     
         public virtual ObjectResult<CharactersNeedingAttention_Result> CharactersNeedingAttention()
         {
@@ -61,6 +63,11 @@ namespace HemSoft.Eso.Domain
         public virtual ObjectResult<NextUpInResearch_Result> NextUpInResearch()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NextUpInResearch_Result>("NextUpInResearch");
+        }
+    
+        public virtual ObjectResult<GetAccounts_Result> GetAccounts()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAccounts_Result>("GetAccounts");
         }
     }
 }

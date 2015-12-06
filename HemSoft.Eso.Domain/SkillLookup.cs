@@ -12,30 +12,18 @@ namespace HemSoft.Eso.Domain
     using System;
     using System.Collections.Generic;
     
-    public partial class Character
+    public partial class SkillLookup
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Character()
+        public SkillLookup()
         {
-            this.CharacterActivities = new HashSet<CharacterActivity>();
             this.CharacterSkills = new HashSet<CharacterSkill>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int AccountId { get; set; }
-        public Nullable<int> ClassId { get; set; }
-        public Nullable<int> RaceId { get; set; }
-        public Nullable<int> AllianceId { get; set; }
-        public Nullable<System.DateTime> LastLogin { get; set; }
     
-        public virtual Account Account { get; set; }
-        public virtual AllianceLookup AllianceLookup { get; set; }
-        public virtual ClassLookup ClassLookup { get; set; }
-        public virtual RaceLookup RaceLookup { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CharacterActivity> CharacterActivities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CharacterSkill> CharacterSkills { get; set; }
     }

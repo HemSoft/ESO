@@ -17,6 +17,10 @@ namespace HemSoft.Eso.Domain
         public int Id { get; set; }
         public int CharacterId { get; set; }
         public int SkillId { get; set; }
+        public int XP { get; set; }
+        public int Rank { get; set; }
+        public int NextRankXP { get; set; }
+        public int LastRankXP { get; set; }
     
         public virtual Character Character { get; set; }
         public virtual SkillLookup SkillLookup { get; set; }

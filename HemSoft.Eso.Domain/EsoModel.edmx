@@ -99,6 +99,10 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CharacterId" Type="int" Nullable="false" />
           <Property Name="SkillId" Type="int" Nullable="false" />
+          <Property Name="XP" Type="int" Nullable="false" />
+          <Property Name="Rank" Type="int" Nullable="false" />
+          <Property Name="NextRankXP" Type="int" Nullable="false" />
+          <Property Name="LastRankXP" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ClassLookup">
           <Key>
@@ -590,6 +594,10 @@
           <Property Name="SkillId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Character" Relationship="EsoModel.FK_CharacterSkill_Character" FromRole="CharacterSkill" ToRole="Character" />
           <NavigationProperty Name="SkillLookup" Relationship="EsoModel.FK_CharacterSkill_SkillLookup" FromRole="CharacterSkill" ToRole="SkillLookup" />
+          <Property Name="XP" Type="Int32" Nullable="false" />
+          <Property Name="Rank" Type="Int32" Nullable="false" />
+          <Property Name="NextRankXP" Type="Int32" Nullable="false" />
+          <Property Name="LastRankXP" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="SkillLookup">
           <Key>
@@ -857,6 +865,10 @@
           <EntitySetMapping Name="CharacterSkills">
             <EntityTypeMapping TypeName="EsoModel.CharacterSkill">
               <MappingFragment StoreEntitySet="CharacterSkill">
+                <ScalarProperty Name="LastRankXP" ColumnName="LastRankXP" />
+                <ScalarProperty Name="NextRankXP" ColumnName="NextRankXP" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="XP" ColumnName="XP" />
                 <ScalarProperty Name="SkillId" ColumnName="SkillId" />
                 <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

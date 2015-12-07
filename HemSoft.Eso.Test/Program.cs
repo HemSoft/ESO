@@ -24,6 +24,7 @@
         private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             Lua lua = new Lua();
+            var skillList = new List<CharacterSkill>();
             var filePath = @"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua";
             //var filePath = @"..\..\..\AddOns\HSEventLog\SavedVariables\HSEventLog.lua";
             if (!File.Exists(filePath))
@@ -33,7 +34,6 @@
             lua.DoFile(filePath);
             var luaTable = lua["HSEventLogSavedVariables"] as LuaTable;
             Dictionary<object, object> dict = lua.GetTableDict(luaTable);
-            int indent = 0;
 
             var currentAccount = string.Empty;
             var currentCharacter = string.Empty;
@@ -83,6 +83,7 @@
                                 case "BankedTelvarStones":
                                     characterActivity.BankedTelvarStones = int.Parse(property.Value.ToString());
                                     break;
+
                                 case "BlacksmithingSecondsMaximumLeft":
                                     characterActivity.BlacksmithingSecondsMaximumLeft = int.Parse(property.Value.ToString());
                                     break;
@@ -174,6 +175,45 @@
                                 case "SecondsUntilMountTraining":
                                     characterActivity.SecondsUntilMountTraining = int.Parse(property.Value.ToString());
                                     break;
+                                case "Skill":
+                                    skillList.Clear();
+                                    Dictionary<object, object> skills = lua.GetTableDict(property.Value as LuaTable);
+                                    foreach (var s in skills)
+                                    {
+                                        Dictionary<object, object> skill = lua.GetTableDict(s.Value as LuaTable);
+                                        var skillClass = new CharacterSkill();
+                                        foreach (var sk in skill)
+                                        {
+                                            switch (sk.Key.ToString().ToLower())
+                                            {
+                                                case "name":
+                                                    skillClass.SkillId = SkillManager.GetSkillId(sk.Value.ToString());
+                                                    if (skillClass.SkillId == 0)
+                                                    {
+                                                        var newSkillLookup = new SkillLookup();
+                                                        newSkillLookup.Name = sk.Value.ToString();
+                                                        skillClass.SkillId = SkillManager.Save(newSkillLookup);
+                                                    }
+                                                    break;
+                                                case "rank":
+                                                    skillClass.Rank = int.Parse(sk.Value.ToString());
+                                                    break;
+                                                case "xp":
+                                                    skillClass.XP = int.Parse(sk.Value.ToString());
+                                                    break;
+                                                case "lastrankxp":
+                                                    skillClass.LastRankXP = int.Parse(sk.Value.ToString());
+                                                    break;
+                                                case "nextrankxp":
+                                                    skillClass.NextRankXP = int.Parse(sk.Value.ToString());
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        skillList.Add(skillClass);
+                                    }
+                                    break;
                                 case "Skyshards":
                                     characterActivity.Skyshards = int.Parse(property.Value.ToString());
                                     break;
@@ -185,6 +225,9 @@
                                     break;
                                 case "UsedBankSlots":
                                     characterActivity.UsedBankSlots = int.Parse(property.Value.ToString());
+                                    break;
+                                case "VeteranRank":
+                                    characterActivity.VeteranRank = int.Parse(property.Value.ToString());
                                     break;
                                 case "VP":
                                     characterActivity.VP = int.Parse(property.Value.ToString());
@@ -223,6 +266,9 @@
                                 case "left":
                                 case "top":
                                 case "Inventory":
+                                case "Alliance":
+                                case "HealthMax":
+                                case "Title":
                                     break;
                                 default:
                                     break;
@@ -239,6 +285,11 @@
                             characterActivity.MountStamina == 60)
                         {
                             characterActivity.SecondsUntilMountTraining = null;
+                        }
+
+                        if (esoProperty.Time == null)
+                        {
+                            return;
                         }
 
                         if (esoProperty.Time.Length == 3)
@@ -307,6 +358,7 @@
                         if (!character.LastLogin.HasValue)
                         {
                             character.LastLogin = characterActivity.LastLogin.Value;
+                            CharacterManager.SaveSkills(skillList, character.Id);
                             CharacterManager.Save(character);
                             CharacterActivityManager.Save(characterActivity);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
@@ -314,6 +366,7 @@
                         else if (DateTime.Compare(characterActivity.LastLogin.Value, character.LastLogin.Value) > 0)
                         {
                             character.LastLogin = characterActivity.LastLogin;
+                            CharacterManager.SaveSkills(skillList, character.Id);
                             CharacterManager.Save(character);
                             CharacterActivityManager.Save(characterActivity);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
@@ -323,6 +376,7 @@
                         {
                             if (DateTime.Compare(lastCharacterActivity.LastLogin.Value, characterActivity.LastLogin.Value) > 0)
                             {
+                                CharacterManager.SaveSkills(skillList, character.Id);
                                 CharacterActivityManager.Save(characterActivity);
                                 Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                             }
@@ -330,7 +384,6 @@
                     }
                 }
             }
-            //Console.WriteLine("Last completion " + DateTime.Now.ToLongTimeString());
         }
     }
 
@@ -352,5 +405,14 @@
         public string Time { get; set; }
         public int UsedBagSlots { get; set; }
         public int UsedBankSlots { get; set; }
+    }
+
+    public class Skill
+    {
+        public string Name { get; set; }
+        public int Rank { get; set; }
+        public int Xp { get; set; }
+        public int LastRankXp { get; set; }
+        public int NextRankXp { get; set; }
     }
 }

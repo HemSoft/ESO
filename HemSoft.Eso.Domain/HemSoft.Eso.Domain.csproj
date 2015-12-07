@@ -99,6 +99,7 @@
     <Compile Include="GetLastCharacterActivity_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Managers\SkillManager.cs" />
     <Compile Include="Managers\CharacterActivityManager.cs" />
     <Compile Include="Managers\CharacterManager.cs" />
     <Compile Include="Managers\AccountManager.cs" />

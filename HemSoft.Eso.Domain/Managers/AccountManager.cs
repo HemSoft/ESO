@@ -26,20 +26,20 @@
             }
         }
 
-        public static void Save(Account esoAccount)
+        public static void Save(Account account)
         {
             using (var context = new EsoEntities())
             {
                 context.Configuration.LazyLoadingEnabled = false;
                 context.Configuration.ProxyCreationEnabled = false;
-                var result = context.Accounts.FirstOrDefault(x => x.Name.Contains(esoAccount.Name));
+                var result = context.Accounts.FirstOrDefault(x => x.Name.Contains(account.Name));
                 if (result == null)
                 {
-                    context.Accounts.Add(esoAccount);
+                    context.Accounts.Add(account);
                 }
                 else
                 {
-                    context.Entry(result).CurrentValues.SetValues(esoAccount);
+                    context.Entry(result).CurrentValues.SetValues(account);
                 }
                 context.SaveChanges();
             }

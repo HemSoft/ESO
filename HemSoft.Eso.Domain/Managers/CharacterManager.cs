@@ -74,5 +74,37 @@
                 context.SaveChanges();
             }
         }
+
+        public static void SaveSkills(List<CharacterSkill> skills, int characterId)
+        {
+            if (skills == null || !skills.Any())
+            {
+                return;
+            }
+
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+
+                foreach (var skill in skills)
+                {
+                    skill.CharacterId = characterId;
+
+                    var result = context.CharacterSkills.FirstOrDefault(x => x.SkillId == skill.SkillId && x.CharacterId == skill.CharacterId);
+                    if (result == null)
+                    {
+                        context.CharacterSkills.Add(skill);
+                    }
+                    else
+                    {
+                        skill.Id = result.Id;
+                        context.Entry(result).CurrentValues.SetValues(skill);
+                    }
+                    context.SaveChanges();
+                }
+            }
+        }
+
     }
 }

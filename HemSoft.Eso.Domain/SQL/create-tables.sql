@@ -67,6 +67,7 @@ CREATE TABLE [dbo].[Account](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50) NOT NULL,
 	[Password] [varchar](50) NULL,
+	[ChampionPointsEarned] [int] NULL,
     [EnlightenedPool] [int] NULL,
 	[LastLogin] [datetime] NULL,
 	[Description] [varchar](max) NULL,
@@ -111,8 +112,9 @@ CREATE TABLE [dbo].[Character](
 	[ClassId] [int] NULL,
 	[RaceId] [int] NULL,
 	[AllianceId] [int] NULL,
-	[EnlightenedPool] [int] NULL,
+	[ChampionPointsEarned] [int] NULL,
 	[EffectiveLevel] [int] NULL,
+	[EnlightenedPool] [int] NULL,
  CONSTRAINT [PK_Character] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -661,6 +663,7 @@ BEGIN
     SELECT
         c.Id
       , c.Name
+      , c.ChampionPointsEarned
       , c.EnlightenedPool
       , c.EffectiveLevel
       , (SELECT cs.Rank FROM CharacterSkill cs INNER JOIN SkillLookup sl ON cs.SkillId = sl.Id WHERE cs.CharacterId = c.Id AND sl.Name = 'Blacksmithing') AS Blacksmithing

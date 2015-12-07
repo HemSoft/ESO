@@ -20,12 +20,14 @@
                         <th>Id</th>
                         <th>Name</th>
                         <th>Last Logged In</th>
+                        <th>CP</th>
                         <th>Enlightened Pool</th>
                     </tr>
                     <tr ng-repeat="account in accounts" ng-click="accountSelected()">
                         <td ng-bind="account.Id"/>
                         <td ng-bind="account.Name"/>
                         <td ng-bind="account.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
+                        <td ng-bind="account.ChampionPointsEarned" />
                         <td ng-bind="account.EnlightenedPool" />
                     <tr>
                 </table>
@@ -33,7 +35,7 @@
         </div>
         <div ng-show="selectedAccount" class="col-md-6 panel">
             <div class="panel-heading">
-                <h2 class="text-center" ng-bind="getSelectedAccountHeaderString()"></h2>
+                <h2 class="text-center"">Characters</h2>
             </div>
             <div class="panel-body">
                 <table class="table table-bordered table-striped table-hover">
@@ -42,14 +44,12 @@
                         <th>Name</th>
                         <th>Last Logged In</th>
                         <th>Effective Level</th>
-                        <th>Enlightened Pool</th>
                     </tr>
                     <tr ng-repeat="character in characters" ng-click="characterSelected()">
                         <td ng-bind="character.Id"/>
                         <td ng-bind="character.Name"/>
                         <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'"/>
                         <td ng-bind="character.EffectiveLevel" />
-                        <td ng-bind="character.EnlightenedPool" />
                     <tr>
                 </table>
             </div>

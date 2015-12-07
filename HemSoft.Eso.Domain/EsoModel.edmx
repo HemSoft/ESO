@@ -12,6 +12,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="ChampionPointsEarned" Type="int" />
           <Property Name="EnlightenedPool" Type="int" />
           <Property Name="LastLogin" Type="datetime" />
           <Property Name="Description" Type="varchar(max)" />
@@ -36,8 +37,9 @@
           <Property Name="ClassId" Type="int" />
           <Property Name="RaceId" Type="int" />
           <Property Name="AllianceId" Type="int" />
-          <Property Name="EnlightenedPool" Type="int" />
+          <Property Name="ChampionPointsEarned" Type="int" />
           <Property Name="EffectiveLevel" Type="int" />
+          <Property Name="EnlightenedPool" Type="int" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -277,6 +279,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Characters" Relationship="Self.FK_Character_Account" FromRole="Account" ToRole="Character" />
           <Property Name="EnlightenedPool" Type="Int32" />
+          <Property Name="ChampionPointsEarned" Type="Int32" />
         </EntityType>
         <EntityType Name="AllianceLookup">
           <Key>
@@ -307,6 +310,7 @@
           <NavigationProperty Name="CharacterSkills" Relationship="EsoModel.FK_CharacterSkill_Character" FromRole="Character" ToRole="CharacterSkill" />
           <Property Name="EnlightenedPool" Type="Int32" />
           <Property Name="EffectiveLevel" Type="Int32" />
+          <Property Name="ChampionPointsEarned" Type="Int32" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -663,6 +667,7 @@
           <Property Type="Int32" Name="LightArmor" Nullable="true" />
           <Property Type="Int32" Name="MediumArmor" Nullable="true" />
           <Property Type="Int32" Name="HeavyArmor" Nullable="true" />
+          <Property Type="Int32" Name="ChampionPointsEarned" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -673,6 +678,7 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="EsoModel.Account">
               <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="ChampionPointsEarned" ColumnName="ChampionPointsEarned" />
                 <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -694,6 +700,7 @@
           <EntitySetMapping Name="Characters">
             <EntityTypeMapping TypeName="EsoModel.Character">
               <MappingFragment StoreEntitySet="Character">
+                <ScalarProperty Name="ChampionPointsEarned" ColumnName="ChampionPointsEarned" />
                 <ScalarProperty Name="EffectiveLevel" ColumnName="EffectiveLevel" />
                 <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
@@ -939,6 +946,7 @@
                 <ScalarProperty Name="LightArmor" ColumnName="LightArmor" />
                 <ScalarProperty Name="MediumArmor" ColumnName="MediumArmor" />
                 <ScalarProperty Name="HeavyArmor" ColumnName="HeavyArmor" />
+                <ScalarProperty Name="ChampionPointsEarned" ColumnName="ChampionPointsEarned" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

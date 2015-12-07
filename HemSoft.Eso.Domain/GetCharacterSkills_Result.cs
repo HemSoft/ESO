@@ -26,5 +26,6 @@ namespace HemSoft.Eso.Domain
         public Nullable<int> LightArmor { get; set; }
         public Nullable<int> MediumArmor { get; set; }
         public Nullable<int> HeavyArmor { get; set; }
+        public Nullable<int> ChampionPointsEarned { get; set; }
     }
 }

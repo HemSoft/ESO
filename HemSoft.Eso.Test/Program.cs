@@ -387,10 +387,12 @@
             character.LastLogin = characterActivity.LastLogin.Value;
             if (character.EnlightenedPool == null || characterActivity.EnlightenedPool > character.EnlightenedPool)
             {
+                character.ChampionPointsEarned = characterActivity.ChampionPointsEarned;
                 character.EnlightenedPool = characterActivity.EnlightenedPool;
             }
             if (account.EnlightenedPool == null || characterActivity.EnlightenedPool > account.EnlightenedPool)
             {
+                account.ChampionPointsEarned = characterActivity.ChampionPointsEarned;
                 account.EnlightenedPool = characterActivity.EnlightenedPool;
             }
             character.EffectiveLevel = characterActivity.EffectiveLevel;

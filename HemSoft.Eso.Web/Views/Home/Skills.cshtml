@@ -18,6 +18,7 @@
                 <tr>
                     <th><a href="#" ng-click="skillSortType = 'Name'; skillSortReverse = !skillSortReverse">Name</a></th>
                     <th><a href="#" ng-click="skillSortType = 'EffectiveLevel'; skillSortReverse = !skillSortReverse">Level</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'ChampionPointsEarned'; skillSortReverse = !skillSortReverse">CP</a></th>
                     <th><a href="#" ng-click="skillSortType = 'EnlightenedPool'; skillSortReverse = !skillSortReverse">EP</a></th>
                     <th><a href="#" ng-click="skillSortType = 'Blacksmithing'; skillSortReverse = !skillSortReverse">Blacksmithing</a></th>
                     <th><a href="#" ng-click="skillSortType = 'Clothing'; skillSortReverse = !skillSortReverse">Clothing</a></th>
@@ -32,6 +33,7 @@
                 <tr ng-repeat="character in characterSkills | orderBy:skillSortType:skillSortReverse">
                     <td ng-bind="character.Name" />
                     <td ng-bind="character.EffectiveLevel" />
+                    <td ng-bind="character.ChampionPointsEarned" />
                     <td ng-bind="character.EnlightenedPool" />
                     <td ng-bind="character.Blacksmithing" />
                     <td ng-bind="character.Clothing" />

@@ -112,7 +112,7 @@ CREATE TABLE [dbo].[Character](
 	[RaceId] [int] NULL,
 	[AllianceId] [int] NULL,
 	[EnlightenedPool] [int] NULL,
-	[EffictiveLevel] [int] NULL,
+	[EffectiveLevel] [int] NULL,
  CONSTRAINT [PK_Character] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -148,7 +148,7 @@ CREATE TABLE [dbo].[CharacterActivity](
 	[ClothingSecondsMinimumTotal] [int] NULL,
 	[ClothingSlotsFree] [int] NULL,
 	[ClothingSlotsMax] [int] NULL,
-	[EffictiveLevel] [int] NULL,
+	[EffectiveLevel] [int] NULL,
 	[EnlightenedPool] [int] NULL,
 	[GuildCount] [int] NULL,
 	[IsVeteran] [bit] NULL,
@@ -642,6 +642,38 @@ BEGIN
         )
     ORDER BY
         NextInMinutes
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetCharacterSkills]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[GetCharacterSkills] AS' 
+END
+GO
+
+ALTER PROCEDURE [dbo].GetCharacterSkills
+AS
+BEGIN
+    SELECT
+        c.Id
+      , c.Name
+      , c.EnlightenedPool
+      , c.EffectiveLevel
+      , (SELECT cs.Rank FROM CharacterSkill cs INNER JOIN SkillLookup sl ON cs.SkillId = sl.Id WHERE cs.CharacterId = c.Id AND sl.Name = 'Blacksmithing') AS Blacksmithing
+      , (SELECT cs.Rank FROM CharacterSkill cs INNER JOIN SkillLookup sl ON cs.SkillId = sl.Id WHERE cs.CharacterId = c.Id AND sl.Name = 'Clothing') AS Clothing
+      , (SELECT cs.Rank FROM CharacterSkill cs INNER JOIN SkillLookup sl ON cs.SkillId = sl.Id WHERE cs.CharacterId = c.Id AND sl.Name = 'Woodworking') AS Woodworking
+      , (SELECT cs.Rank FROM CharacterSkill cs INNER JOIN SkillLookup sl ON cs.SkillId = sl.Id WHERE cs.CharacterId = c.Id AND sl.Name = 'Alchemy') AS Alchemy
+      , (SELECT cs.Rank FROM CharacterSkill cs INNER JOIN SkillLookup sl ON cs.SkillId = sl.Id WHERE cs.CharacterId = c.Id AND sl.Name = 'Enchanting') AS Enchanting
+      , (SELECT cs.Rank FROM CharacterSkill cs INNER JOIN SkillLookup sl ON cs.SkillId = sl.Id WHERE cs.CharacterId = c.Id AND sl.Name = 'Provisioning') AS Provisioning
+      , (SELECT cs.Rank FROM CharacterSkill cs INNER JOIN SkillLookup sl ON cs.SkillId = sl.Id WHERE cs.CharacterId = c.Id AND sl.Name = 'Light Armor') AS LightArmor
+      , (SELECT cs.Rank FROM CharacterSkill cs INNER JOIN SkillLookup sl ON cs.SkillId = sl.Id WHERE cs.CharacterId = c.Id AND sl.Name = 'Medium Armor') AS MediumArmor
+      , (SELECT cs.Rank FROM CharacterSkill cs INNER JOIN SkillLookup sl ON cs.SkillId = sl.Id WHERE cs.CharacterId = c.Id AND sl.Name = 'Heavy Armor') AS HeavyArmor
+    FROM
+        [Character] c
 END
 GO
 

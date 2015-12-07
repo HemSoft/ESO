@@ -67,6 +67,7 @@ CREATE TABLE [dbo].[Account](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50) NOT NULL,
 	[Password] [varchar](50) NULL,
+    [EnlightenedPool] [int] NULL,
 	[LastLogin] [datetime] NULL,
 	[Description] [varchar](max) NULL,
  CONSTRAINT [PK_Account] PRIMARY KEY CLUSTERED 
@@ -110,6 +111,8 @@ CREATE TABLE [dbo].[Character](
 	[ClassId] [int] NULL,
 	[RaceId] [int] NULL,
 	[AllianceId] [int] NULL,
+	[EnlightenedPool] [int] NULL,
+	[EffictiveLevel] [int] NULL,
  CONSTRAINT [PK_Character] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

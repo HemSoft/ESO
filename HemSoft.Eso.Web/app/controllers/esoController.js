@@ -47,6 +47,10 @@
         return characterActivity.UsedBankSlots + "/" + characterActivity.MaxBankSize;
     }
 
+    $scope.getCharacterSkills = function () {
+        $scope.characterSkills = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetCharacterSkills").query();
+    }
+
     $scope.getNextUpInResearch = function() {
         $scope.nextUpInResearch = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetNextUpInResearch").query();
     }

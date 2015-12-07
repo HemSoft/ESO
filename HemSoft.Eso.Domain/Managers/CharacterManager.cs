@@ -46,6 +46,16 @@
             }
         }
 
+        public static List<GetCharacterSkills_Result> GetCharacterSkills()
+        {
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+                return context.GetCharacterSkills().ToList();
+            }
+        }
+
         public static NextUpInResearch_Result GetNextUpInResearch()
         {
             using (var context = new EsoEntities())

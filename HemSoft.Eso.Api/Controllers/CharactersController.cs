@@ -42,6 +42,12 @@
             return CharacterManager.GetCharacterResearch();
         }
 
+        public List<GetCharacterSkills_Result> GetCharacterSkills()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return CharacterManager.GetCharacterSkills();
+        }
+
         public NextUpInResearch_Result GetNextUpInResearch()
         {
             db.Configuration.ProxyCreationEnabled = false;

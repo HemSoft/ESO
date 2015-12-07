@@ -20,11 +20,13 @@
                         <th>Id</th>
                         <th>Name</th>
                         <th>Last Logged In</th>
+                        <th>Enlightened Pool</th>
                     </tr>
-                        <tr ng-repeat="account in accounts" ng-click="accountSelected()">
+                    <tr ng-repeat="account in accounts" ng-click="accountSelected()">
                         <td ng-bind="account.Id"/>
                         <td ng-bind="account.Name"/>
                         <td ng-bind="account.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
+                        <td ng-bind="account.EnlightenedPool" />
                     <tr>
                 </table>
             </div>
@@ -39,11 +41,15 @@
                         <th>Id</th>
                         <th>Name</th>
                         <th>Last Logged In</th>
+                        <th>Effective Level</th>
+                        <th>Enlightened Pool</th>
                     </tr>
                     <tr ng-repeat="character in characters" ng-click="characterSelected()">
-                    <td ng-bind="character.Id"/>
-                    <td ng-bind="character.Name"/>
-                    <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'"/>
+                        <td ng-bind="character.Id"/>
+                        <td ng-bind="character.Name"/>
+                        <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'"/>
+                        <td ng-bind="character.EffectiveLevel" />
+                        <td ng-bind="character.EnlightenedPool" />
                     <tr>
                 </table>
             </div>

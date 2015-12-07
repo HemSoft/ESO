@@ -12,9 +12,9 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="EnlightenedPool" Type="int" />
           <Property Name="LastLogin" Type="datetime" />
           <Property Name="Description" Type="varchar(max)" />
-          <Property Name="EnlightenedPool" Type="int" />
         </EntityType>
         <EntityType Name="AllianceLookup">
           <Key>
@@ -37,7 +37,7 @@
           <Property Name="RaceId" Type="int" />
           <Property Name="AllianceId" Type="int" />
           <Property Name="EnlightenedPool" Type="int" />
-          <Property Name="EffictiveLevel" Type="int" />
+          <Property Name="EffectiveLevel" Type="int" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -63,7 +63,7 @@
           <Property Name="ClothingSecondsMinimumTotal" Type="int" />
           <Property Name="ClothingSlotsFree" Type="int" />
           <Property Name="ClothingSlotsMax" Type="int" />
-          <Property Name="EffictiveLevel" Type="int" />
+          <Property Name="EffectiveLevel" Type="int" />
           <Property Name="EnlightenedPool" Type="int" />
           <Property Name="GuildCount" Type="int" />
           <Property Name="IsVeteran" Type="bit" />
@@ -102,10 +102,10 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CharacterId" Type="int" Nullable="false" />
           <Property Name="SkillId" Type="int" Nullable="false" />
-          <Property Name="XP" Type="int" Nullable="false" />
           <Property Name="Rank" Type="int" Nullable="false" />
-          <Property Name="NextRankXP" Type="int" Nullable="false" />
+          <Property Name="XP" Type="int" Nullable="false" />
           <Property Name="LastRankXP" Type="int" Nullable="false" />
+          <Property Name="NextRankXP" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ClassLookup">
           <Key>
@@ -221,6 +221,7 @@
           <Parameter Name="hours" Type="int" Mode="In" />
         </Function>
         <Function Name="GetAccounts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetCharacterSkills" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetLastCharacterActivity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="NextUpInResearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="EsoModelStoreContainer">
@@ -304,8 +305,8 @@
           <NavigationProperty Name="CharacterActivities" Relationship="Self.FK_CharacterActivity_Character" FromRole="Character" ToRole="CharacterActivity" />
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CharacterSkills" Relationship="EsoModel.FK_CharacterSkill_Character" FromRole="Character" ToRole="CharacterSkill" />
-          <Property Name="EffictiveLevel" Type="Int32" />
           <Property Name="EnlightenedPool" Type="Int32" />
+          <Property Name="EffectiveLevel" Type="Int32" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -354,7 +355,6 @@
           <Property Name="MountSpeed" Type="Int32" />
           <Property Name="SecondsUntilMountTraining" Type="Int64" />
           <Property Name="EnlightenedPool" Type="Int32" />
-          <Property Name="EffictiveLevel" Type="Int32" />
           <Property Name="Level" Type="Int32" />
           <Property Name="Zone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="IsVeteran" Type="Boolean" />
@@ -363,6 +363,7 @@
           <Property Name="VPMax" Type="Int32" />
           <Property Name="XP" Type="Int32" />
           <Property Name="XPMax" Type="Int32" />
+          <Property Name="EffectiveLevel" Type="Int32" />
         </EntityType>
         <EntityType Name="ClassLookup">
           <Key>
@@ -503,6 +504,7 @@
             <End Role="CharacterSkill" EntitySet="CharacterSkills" />
           </AssociationSet>
           <FunctionImport Name="GetAccounts" ReturnType="Collection(EsoModel.GetAccounts_Result)" />
+          <FunctionImport Name="GetCharacterSkills" ReturnType="Collection(EsoModel.GetCharacterSkills_Result)" />
         </EntityContainer>
         <ComplexType Name="CharactersNeedingAttention_Result">
           <Property Type="Int32" Name="CharacterId" Nullable="false" />
@@ -647,6 +649,21 @@
           <Property Type="String" Name="CharacterName" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="EnlightenedPool" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="GetCharacterSkills_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="EnlightenedPool" Nullable="true" />
+          <Property Type="Int32" Name="EffectiveLevel" Nullable="true" />
+          <Property Type="Int32" Name="Blacksmithing" Nullable="true" />
+          <Property Type="Int32" Name="Clothing" Nullable="true" />
+          <Property Type="Int32" Name="Woodworking" Nullable="true" />
+          <Property Type="Int32" Name="Alchemy" Nullable="true" />
+          <Property Type="Int32" Name="Enchanting" Nullable="true" />
+          <Property Type="Int32" Name="Provisioning" Nullable="true" />
+          <Property Type="Int32" Name="LightArmor" Nullable="true" />
+          <Property Type="Int32" Name="MediumArmor" Nullable="true" />
+          <Property Type="Int32" Name="HeavyArmor" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -677,8 +694,8 @@
           <EntitySetMapping Name="Characters">
             <EntityTypeMapping TypeName="EsoModel.Character">
               <MappingFragment StoreEntitySet="Character">
+                <ScalarProperty Name="EffectiveLevel" ColumnName="EffectiveLevel" />
                 <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
-                <ScalarProperty Name="EffictiveLevel" ColumnName="EffictiveLevel" />
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -693,6 +710,7 @@
           <EntitySetMapping Name="CharacterActivities">
             <EntityTypeMapping TypeName="EsoModel.CharacterActivity">
               <MappingFragment StoreEntitySet="CharacterActivity">
+                <ScalarProperty Name="EffectiveLevel" ColumnName="EffectiveLevel" />
                 <ScalarProperty Name="XPMax" ColumnName="XPMax" />
                 <ScalarProperty Name="XP" ColumnName="XP" />
                 <ScalarProperty Name="VPMax" ColumnName="VPMax" />
@@ -701,7 +719,6 @@
                 <ScalarProperty Name="IsVeteran" ColumnName="IsVeteran" />
                 <ScalarProperty Name="Zone" ColumnName="Zone" />
                 <ScalarProperty Name="Level" ColumnName="Level" />
-                <ScalarProperty Name="EffictiveLevel" ColumnName="EffictiveLevel" />
                 <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
                 <ScalarProperty Name="SecondsUntilMountTraining" ColumnName="SecondsUntilMountTraining" />
                 <ScalarProperty Name="MountSpeed" ColumnName="MountSpeed" />
@@ -903,6 +920,25 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="CharacterName" ColumnName="CharacterName" />
                 <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCharacterSkills" FunctionName="EsoModel.Store.GetCharacterSkills">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EsoModel.GetCharacterSkills_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
+                <ScalarProperty Name="EffectiveLevel" ColumnName="EffectiveLevel" />
+                <ScalarProperty Name="Blacksmithing" ColumnName="Blacksmithing" />
+                <ScalarProperty Name="Clothing" ColumnName="Clothing" />
+                <ScalarProperty Name="Woodworking" ColumnName="Woodworking" />
+                <ScalarProperty Name="Alchemy" ColumnName="Alchemy" />
+                <ScalarProperty Name="Enchanting" ColumnName="Enchanting" />
+                <ScalarProperty Name="Provisioning" ColumnName="Provisioning" />
+                <ScalarProperty Name="LightArmor" ColumnName="LightArmor" />
+                <ScalarProperty Name="MediumArmor" ColumnName="MediumArmor" />
+                <ScalarProperty Name="HeavyArmor" ColumnName="HeavyArmor" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

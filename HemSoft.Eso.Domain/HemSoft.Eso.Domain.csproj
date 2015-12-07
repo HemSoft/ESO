@@ -96,6 +96,9 @@
     <Compile Include="GetAccounts_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="GetCharacterSkills_Result.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="GetLastCharacterActivity_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>

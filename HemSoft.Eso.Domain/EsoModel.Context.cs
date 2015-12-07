@@ -69,5 +69,10 @@ namespace HemSoft.Eso.Domain
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAccounts_Result>("GetAccounts");
         }
+    
+        public virtual ObjectResult<GetCharacterSkills_Result> GetCharacterSkills()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCharacterSkills_Result>("GetCharacterSkills");
+        }
     }
 }

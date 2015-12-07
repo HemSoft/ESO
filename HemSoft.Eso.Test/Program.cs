@@ -131,7 +131,7 @@
                                     esoProperty.Date = property.Value.ToString();
                                     break;
                                 case "EffectiveLevel":
-                                    characterActivity.EffictiveLevel = int.Parse(property.Value.ToString());
+                                    characterActivity.EffectiveLevel = int.Parse(property.Value.ToString());
                                     break;
                                 case "EnlightenedPool":
                                     characterActivity.EnlightenedPool = int.Parse(property.Value.ToString());
@@ -357,12 +357,12 @@
 
                         if (!character.LastLogin.HasValue)
                         {
-                            UpdateCharacterActvity(character, characterActivity, skillList);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
                         else if (DateTime.Compare(characterActivity.LastLogin.Value, character.LastLogin.Value) > 0)
                         {
-                            UpdateCharacterActvity(character, characterActivity, skillList);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
 
@@ -380,16 +380,22 @@
             }
         }
 
-        private static void UpdateCharacterActvity(Character character, CharacterActivity characterActivity,
+        private static void UpdateCharacterActvity(Account account, Character character, CharacterActivity characterActivity,
             List<CharacterSkill> skillList)
         {
+
             character.LastLogin = characterActivity.LastLogin.Value;
-            if (characterActivity.EnlightenedPool > character.EnlightenedPool)
+            if (character.EnlightenedPool == null || characterActivity.EnlightenedPool > character.EnlightenedPool)
             {
                 character.EnlightenedPool = characterActivity.EnlightenedPool;
             }
-            character.EffictiveLevel = characterActivity.EffictiveLevel;
+            if (account.EnlightenedPool == null || characterActivity.EnlightenedPool > account.EnlightenedPool)
+            {
+                account.EnlightenedPool = characterActivity.EnlightenedPool;
+            }
+            character.EffectiveLevel = characterActivity.EffectiveLevel;
 
+            AccountManager.Save(account);
             CharacterManager.SaveSkills(skillList, character.Id);
             CharacterManager.Save(character);
             CharacterActivityManager.Save(characterActivity);

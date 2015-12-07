@@ -29,8 +29,8 @@ namespace HemSoft.Eso.Domain
         public Nullable<int> RaceId { get; set; }
         public Nullable<int> AllianceId { get; set; }
         public Nullable<System.DateTime> LastLogin { get; set; }
-        public Nullable<int> EffictiveLevel { get; set; }
         public Nullable<int> EnlightenedPool { get; set; }
+        public Nullable<int> EffectiveLevel { get; set; }
     
         public virtual Account Account { get; set; }
         public virtual AllianceLookup AllianceLookup { get; set; }

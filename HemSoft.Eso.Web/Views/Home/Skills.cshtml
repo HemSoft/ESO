@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Skills";
+}
+
+<div ng-app="esoApp" ng-controller="esoController" ng-init="getCharacterSkills()" class="row">
+    <div class="row">
+        <div class="col-md-12 panel panel-default">
+            <div class="panel-body text-center" id="countdown" ng-Init="CountDown()">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">Character Skills</h2>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>Level</th>
+                    <th>EP</th>
+                    <th>Blacksmithing</th>
+                    <th>Clothing</th>
+                    <th>Woodworking</th>
+                    <th>Alchemy</th>
+                    <th>Enchanting</th>
+                    <th>Provisioning</th>
+                    <th>Light</th>
+                    <th>Medium</th>
+                    <th>Heavy</th>
+                </tr>
+                <tr ng-repeat="character in characterSkills">
+                    <td ng-bind="character.Name" />
+                    <td ng-bind="character.EffectiveLevel" />
+                    <td ng-bind="character.EnlightenedPool" />
+                    <td ng-bind="character.Blacksmithing" />
+                    <td ng-bind="character.Clothing" />
+                    <td ng-bind="character.Woodworking" />
+                    <td ng-bind="character.Alchemy" />
+                    <td ng-bind="character.Enchanting" />
+                    <td ng-bind="character.Provisioning" />
+                    <td ng-bind="character.LightArmor" />
+                    <td ng-bind="character.MediumArmor" />
+                    <td ng-bind="character.HeavyArmor" />
+                <tr>
+            </table>
+        </div>
+    </div>
+
+</div>

@@ -78,6 +78,7 @@
     <Compile Include="ClassLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Enums.cs" />
     <Compile Include="EsoModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

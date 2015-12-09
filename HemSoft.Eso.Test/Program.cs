@@ -139,6 +139,8 @@
                                 case "GuildCount":
                                     characterActivity.GuildCount = int.Parse(property.Value.ToString());
                                     break;
+                                case "Journal":
+                                    break;
                                 case "IsVeteran":
                                     characterActivity.IsVeteran = bool.Parse(property.Value.ToString());
                                     break;
@@ -385,15 +387,19 @@
         {
 
             character.LastLogin = characterActivity.LastLogin.Value;
-            if (character.EnlightenedPool == null || characterActivity.EnlightenedPool > character.EnlightenedPool)
+            if (character.EnlightenedPool == null || characterActivity.EnlightenedPool > 0)
             {
                 character.ChampionPointsEarned = characterActivity.ChampionPointsEarned;
                 character.EnlightenedPool = characterActivity.EnlightenedPool;
             }
-            if (account.EnlightenedPool == null || characterActivity.EnlightenedPool > account.EnlightenedPool)
+            if (account.EnlightenedPool == null || characterActivity.EnlightenedPool > 0)
             {
                 account.ChampionPointsEarned = characterActivity.ChampionPointsEarned;
                 account.EnlightenedPool = characterActivity.EnlightenedPool;
+            }
+            if (characterActivity.IsVeteran == null || !characterActivity.IsVeteran.Value)
+            {
+                account.EnlightenedPool = 0;
             }
             character.EffectiveLevel = characterActivity.EffectiveLevel;
 

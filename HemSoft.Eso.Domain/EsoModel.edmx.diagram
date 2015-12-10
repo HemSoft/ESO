@@ -21,6 +21,8 @@
         <EntityTypeShape EntityType="EsoModel.SkillLookup" Width="1.5" PointX="7.25" PointY="3.625" />
         <AssociationConnector Association="EsoModel.FK_CharacterSkill_Character" />
         <AssociationConnector Association="EsoModel.FK_CharacterSkill_SkillLookup" />
+        <EntityTypeShape EntityType="EsoModel.CharacterDailyQuest" Width="1.5" PointX="5.25" PointY="12.875" />
+        <AssociationConnector Association="EsoModel.FK_CharacterDailyQuest_Character" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

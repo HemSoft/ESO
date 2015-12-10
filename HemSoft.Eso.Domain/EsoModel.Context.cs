@@ -35,6 +35,7 @@ namespace HemSoft.Eso.Domain
         public virtual DbSet<RaceLookup> RaceLookups { get; set; }
         public virtual DbSet<CharacterSkill> CharacterSkills { get; set; }
         public virtual DbSet<SkillLookup> SkillLookups { get; set; }
+        public virtual DbSet<CharacterDailyQuest> CharacterDailyQuests { get; set; }
     
         public virtual ObjectResult<CharactersNeedingAttention_Result> CharactersNeedingAttention()
         {

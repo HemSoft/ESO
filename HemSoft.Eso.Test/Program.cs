@@ -63,6 +63,7 @@
 
                         var lastCharacterActivity = CharacterActivityManager.GetLastActivity(character.Id);
                         var characterActivity = new CharacterActivity {CharacterId = character.Id};
+                        var characterDailyQuest = new CharacterDailyQuest();
 
                         //Console.WriteLine($"    {c.Key} = {c.Value}");
                         Dictionary<object, object> properties = lua.GetTableDict(c.Value as LuaTable);

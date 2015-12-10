@@ -63,6 +63,9 @@
     <Compile Include="CharacterActivity.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CharacterDailyQuest.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="CharacterResearch_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>

@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Quests";
+}
+
+<div ng-app="esoApp" ng-controller="esoController" ng-init="getCharacterQuests()" class="row">
+    <div class="row">
+        <div class="col-md-12 panel panel-default">
+            <div class="panel-body text-center" id="countdown" ng-Init="CountDown()">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">Character Quests</h2>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th><a href="#" ng-click="skillSortType = 'Name'; skillSortReverse = !skillSortReverse">Name</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'EffectiveLevel'; skillSortReverse = !skillSortReverse">Level</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'ChampionPointsEarned'; skillSortReverse = !skillSortReverse">CP</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'EnlightenedPool'; skillSortReverse = !skillSortReverse">EP</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'Blacksmithing'; skillSortReverse = !skillSortReverse">Blacksmithing</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'Clothing'; skillSortReverse = !skillSortReverse">Clothing</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'Woodworking'; skillSortReverse = !skillSortReverse">Woodworking</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'Alchemy'; skillSortReverse = !skillSortReverse">Alchemy</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'Enchanting'; skillSortReverse = !skillSortReverse">Enchanting</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'Provisioning'; skillSortReverse = !skillSortReverse">Provisioning</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'LightArmor'; skillSortReverse = !skillSortReverse">Light</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'MediumArmor'; skillSortReverse = !skillSortReverse">Medium</a></th>
+                    <th><a href="#" ng-click="skillSortType = 'HeavyArmor'; skillSortReverse = !skillSortReverse">Heavy</a></th>
+                </tr>
+                <tr ng-repeat="characterQuest in characterQuests | orderBy:skillSortType:skillSortReverse">
+                    <td ng-bind="characterQuest.Name" />
+                <tr>
+            </table>
+        </div>
+    </div>
+
+</div>

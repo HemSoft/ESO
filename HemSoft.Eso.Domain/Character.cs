@@ -19,7 +19,7 @@ namespace HemSoft.Eso.Domain
         {
             this.CharacterActivities = new HashSet<CharacterActivity>();
             this.CharacterSkills = new HashSet<CharacterSkill>();
-            this.CharacterDailyQuests = new HashSet<CharacterDailyQuest>();
+            this.CharacterQuests = new HashSet<CharacterQuest>();
         }
     
         public int Id { get; set; }
@@ -43,6 +43,6 @@ namespace HemSoft.Eso.Domain
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CharacterSkill> CharacterSkills { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CharacterDailyQuest> CharacterDailyQuests { get; set; }
+        public virtual ICollection<CharacterQuest> CharacterQuests { get; set; }
     }
 }

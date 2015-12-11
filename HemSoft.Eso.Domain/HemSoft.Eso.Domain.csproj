@@ -63,7 +63,7 @@
     <Compile Include="CharacterActivity.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="CharacterDailyQuest.cs">
+    <Compile Include="CharacterQuest.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CharacterResearch_Result.cs">
@@ -106,6 +106,7 @@
     <Compile Include="GetLastCharacterActivity_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Managers\CharacterQuestManager.cs" />
     <Compile Include="Managers\SkillManager.cs" />
     <Compile Include="Managers\CharacterActivityManager.cs" />
     <Compile Include="Managers\CharacterManager.cs" />

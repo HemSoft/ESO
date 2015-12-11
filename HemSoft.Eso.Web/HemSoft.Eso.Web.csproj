@@ -249,6 +249,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Research.cshtml" />
     <Content Include="Views\Home\Skills.cshtml" />
+    <Content Include="Views\Home\Quests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

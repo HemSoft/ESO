@@ -1,69 +1,94 @@
-/****** Object:  StoredProcedure [dbo].[NextUpInResearch]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[NextUpInResearch]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[NextUpInResearch]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[NextUpInResearch]
 GO
-/****** Object:  StoredProcedure [dbo].[GetLastCharacterActivity]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[GetLastCharacterActivity]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetLastCharacterActivity]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[GetLastCharacterActivity]
 GO
-/****** Object:  StoredProcedure [dbo].[GetCharacterSkills]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[GetCharacterSkills]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetCharacterSkills]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[GetCharacterSkills]
 GO
-/****** Object:  StoredProcedure [dbo].[GetAccounts]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[GetAccounts]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetAccounts]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[GetAccounts]
 GO
-/****** Object:  StoredProcedure [dbo].[CharactersNeedingAttention]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[CharactersNeedingAttention]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CharactersNeedingAttention]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[CharactersNeedingAttention]
 GO
-/****** Object:  StoredProcedure [dbo].[CharacterResearch]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[CharacterResearch]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CharacterResearch]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[CharacterResearch]
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterSkill_SkillLookup]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterSkill]'))
 ALTER TABLE [dbo].[CharacterSkill] DROP CONSTRAINT [FK_CharacterSkill_SkillLookup]
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterSkill_Character]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterSkill]'))
 ALTER TABLE [dbo].[CharacterSkill] DROP CONSTRAINT [FK_CharacterSkill_Character]
 GO
-ALTER TABLE [dbo].[CharacterDailyQuest] DROP CONSTRAINT [FK_CharacterDailyQuest_Character]
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterQuest_Character]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterQuest]'))
+ALTER TABLE [dbo].[CharacterQuest] DROP CONSTRAINT [FK_CharacterQuest_Character]
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterActivity_Character]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterActivity]'))
 ALTER TABLE [dbo].[CharacterActivity] DROP CONSTRAINT [FK_CharacterActivity_Character]
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_Race]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character] DROP CONSTRAINT [FK_Character_Race]
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_Class]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character] DROP CONSTRAINT [FK_Character_Class]
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_AllianceLookup]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character] DROP CONSTRAINT [FK_Character_AllianceLookup]
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_Account]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character] DROP CONSTRAINT [FK_Character_Account]
 GO
-/****** Object:  Table [dbo].[SkillLookup]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[SkillLookup]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SkillLookup]') AND type in (N'U'))
 DROP TABLE [dbo].[SkillLookup]
 GO
-/****** Object:  Table [dbo].[RaceLookup]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[RaceLookup]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RaceLookup]') AND type in (N'U'))
 DROP TABLE [dbo].[RaceLookup]
 GO
-/****** Object:  Table [dbo].[ClassLookup]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[ClassLookup]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ClassLookup]') AND type in (N'U'))
 DROP TABLE [dbo].[ClassLookup]
 GO
-/****** Object:  Table [dbo].[CharacterSkill]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[CharacterSkill]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CharacterSkill]') AND type in (N'U'))
 DROP TABLE [dbo].[CharacterSkill]
 GO
-/****** Object:  Table [dbo].[CharacterDailyQuest]    Script Date: 12/9/2015 9:49:35 AM ******/
-DROP TABLE [dbo].[CharacterDailyQuest]
+/****** Object:  Table [dbo].[CharacterQuest]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CharacterQuest]') AND type in (N'U'))
+DROP TABLE [dbo].[CharacterQuest]
 GO
-/****** Object:  Table [dbo].[CharacterActivity]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[CharacterActivity]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CharacterActivity]') AND type in (N'U'))
 DROP TABLE [dbo].[CharacterActivity]
 GO
-/****** Object:  Table [dbo].[Character]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[Character]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Character]') AND type in (N'U'))
 DROP TABLE [dbo].[Character]
 GO
-/****** Object:  Table [dbo].[AllianceLookup]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[AllianceLookup]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AllianceLookup]') AND type in (N'U'))
 DROP TABLE [dbo].[AllianceLookup]
 GO
-/****** Object:  Table [dbo].[Account]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[Account]    Script Date: 12/10/2015 6:22:39 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Account]') AND type in (N'U'))
 DROP TABLE [dbo].[Account]
 GO
-/****** Object:  Table [dbo].[Account]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[Account]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Account]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[Account](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50) NOT NULL,
@@ -77,13 +102,15 @@ CREATE TABLE [dbo].[Account](
 	[Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
-
+END
 GO
-/****** Object:  Table [dbo].[AllianceLookup]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[AllianceLookup]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AllianceLookup]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[AllianceLookup](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50) NOT NULL,
@@ -93,13 +120,15 @@ CREATE TABLE [dbo].[AllianceLookup](
 	[Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
-
+END
 GO
-/****** Object:  Table [dbo].[Character]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[Character]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Character]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[Character](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50) NOT NULL,
@@ -117,13 +146,15 @@ CREATE TABLE [dbo].[Character](
 	[Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
-
+END
 GO
-/****** Object:  Table [dbo].[CharacterActivity]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[CharacterActivity]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CharacterActivity]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[CharacterActivity](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[CharacterId] [int] NOT NULL,
@@ -181,50 +212,42 @@ CREATE TABLE [dbo].[CharacterActivity](
 	[Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
-
+END
 GO
-/****** Object:  Table [dbo].[CharacterDailyQuest]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[CharacterQuest]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[CharacterDailyQuest](
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CharacterQuest]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[CharacterQuest](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[CharacterId] [int] NOT NULL,
-	[AlchemistCompleted] [datetime] NULL,
-	[AlchemistLevel] [int] NULL,
-	[BlacksmithCompleted] [datetime] NULL,
-	[BlacksmithLevel] [int] NULL,
-	[ClothierCompleted] [datetime] NULL,
-	[ClothierLevel] [int] NULL,
-	[EnchanterCompleted] [datetime] NULL,
-	[EnchanterLevel] [int] NULL,
-	[ProvisionerCompleted] [datetime] NULL,
-	[ProvisionerLevel] [int] NULL,
-	[OrsiniumHeresyOfIgnoranceCompleted] [datetime] NULL,
-	[OrsiniumHeresyOfIgnoranceLevel] [int] NULL,
-	[OrsiniumMadUrkazburCompleted] [datetime] NULL,
-	[OrsiniumMadUrkazburLevel] [int] NULL,
-	[OrsiniumMeatForTheMassesCompleted] [datetime] NULL,
-	[OrsiniumMeatForTheMassesLevel] [int] NULL,
-	[OrsiniumNaturesBountyCompleted] [datetime] NULL,
-	[OrsiniumNaturesBountyLevel] [int] NULL,
-	[OrsiniumReekingOfFoulPlayCompleted] [datetime] NULL,
-	[OrsiniumReekingOfFoulPlayLevel] [int] NULL,
-	[OrsiniumSnowAndSteamCompleted] [datetime] NULL,
-	[OrsiniumSnowAndSteamLevel] [int] NULL,
- CONSTRAINT [PK_CharacterDailyQuest] PRIMARY KEY CLUSTERED 
+	[Name] [varchar](100) NOT NULL,
+	[Completed] [datetime] NOT NULL,
+	[EventCode] [int] NOT NULL,
+	[Level] [int] NOT NULL,
+	[PreviousExperience] [int] NOT NULL,
+	[CurrentExperience] [int] NOT NULL,
+	[Rank] [int] NOT NULL,
+	[PreviousPoints] [int] NOT NULL,
+	[CurrentPoints] [int] NOT NULL,
+	[Zone] [varchar](100) NOT NULL,
+ CONSTRAINT [PK_CharacterQuest] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
-
+END
 GO
-/****** Object:  Table [dbo].[CharacterSkill]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[CharacterSkill]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CharacterSkill]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[CharacterSkill](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[CharacterId] [int] NOT NULL,
@@ -238,13 +261,15 @@ CREATE TABLE [dbo].[CharacterSkill](
 	[Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
-
+END
 GO
-/****** Object:  Table [dbo].[ClassLookup]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[ClassLookup]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ClassLookup]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[ClassLookup](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50) NOT NULL,
@@ -254,13 +279,15 @@ CREATE TABLE [dbo].[ClassLookup](
 	[Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
-
+END
 GO
-/****** Object:  Table [dbo].[RaceLookup]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[RaceLookup]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RaceLookup]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[RaceLookup](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50) NOT NULL,
@@ -270,13 +297,15 @@ CREATE TABLE [dbo].[RaceLookup](
 	[Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
-
+END
 GO
-/****** Object:  Table [dbo].[SkillLookup]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  Table [dbo].[SkillLookup]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SkillLookup]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[SkillLookup](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](50) NOT NULL,
@@ -286,7 +315,7 @@ CREATE TABLE [dbo].[SkillLookup](
 	[Id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF)
 )
-
+END
 GO
 SET IDENTITY_INSERT [dbo].[AllianceLookup] ON 
 
@@ -337,53 +366,74 @@ INSERT [dbo].[RaceLookup] ([Id], [Name], [Description]) VALUES (10, N'Imperial',
 GO
 SET IDENTITY_INSERT [dbo].[RaceLookup] OFF
 GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_Account]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character]  WITH CHECK ADD  CONSTRAINT [FK_Character_Account] FOREIGN KEY([AccountId])
 REFERENCES [dbo].[Account] ([Id])
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_Account]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character] CHECK CONSTRAINT [FK_Character_Account]
 GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_AllianceLookup]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character]  WITH CHECK ADD  CONSTRAINT [FK_Character_AllianceLookup] FOREIGN KEY([AllianceId])
 REFERENCES [dbo].[AllianceLookup] ([Id])
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_AllianceLookup]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character] CHECK CONSTRAINT [FK_Character_AllianceLookup]
 GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_Class]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character]  WITH CHECK ADD  CONSTRAINT [FK_Character_Class] FOREIGN KEY([ClassId])
 REFERENCES [dbo].[ClassLookup] ([Id])
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_Class]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character] CHECK CONSTRAINT [FK_Character_Class]
 GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_Race]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character]  WITH CHECK ADD  CONSTRAINT [FK_Character_Race] FOREIGN KEY([RaceId])
 REFERENCES [dbo].[RaceLookup] ([Id])
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Character_Race]') AND parent_object_id = OBJECT_ID(N'[dbo].[Character]'))
 ALTER TABLE [dbo].[Character] CHECK CONSTRAINT [FK_Character_Race]
 GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterActivity_Character]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterActivity]'))
 ALTER TABLE [dbo].[CharacterActivity]  WITH CHECK ADD  CONSTRAINT [FK_CharacterActivity_Character] FOREIGN KEY([CharacterId])
 REFERENCES [dbo].[Character] ([Id])
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterActivity_Character]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterActivity]'))
 ALTER TABLE [dbo].[CharacterActivity] CHECK CONSTRAINT [FK_CharacterActivity_Character]
 GO
-ALTER TABLE [dbo].[CharacterDailyQuest]  WITH CHECK ADD  CONSTRAINT [FK_CharacterDailyQuest_Character] FOREIGN KEY([CharacterId])
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterQuest_Character]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterQuest]'))
+ALTER TABLE [dbo].[CharacterQuest]  WITH CHECK ADD  CONSTRAINT [FK_CharacterQuest_Character] FOREIGN KEY([CharacterId])
 REFERENCES [dbo].[Character] ([Id])
 GO
-ALTER TABLE [dbo].[CharacterDailyQuest] CHECK CONSTRAINT [FK_CharacterDailyQuest_Character]
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterQuest_Character]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterQuest]'))
+ALTER TABLE [dbo].[CharacterQuest] CHECK CONSTRAINT [FK_CharacterQuest_Character]
 GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterSkill_Character]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterSkill]'))
 ALTER TABLE [dbo].[CharacterSkill]  WITH CHECK ADD  CONSTRAINT [FK_CharacterSkill_Character] FOREIGN KEY([CharacterId])
 REFERENCES [dbo].[Character] ([Id])
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterSkill_Character]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterSkill]'))
 ALTER TABLE [dbo].[CharacterSkill] CHECK CONSTRAINT [FK_CharacterSkill_Character]
 GO
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterSkill_SkillLookup]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterSkill]'))
 ALTER TABLE [dbo].[CharacterSkill]  WITH CHECK ADD  CONSTRAINT [FK_CharacterSkill_SkillLookup] FOREIGN KEY([SkillId])
 REFERENCES [dbo].[SkillLookup] ([Id])
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_CharacterSkill_SkillLookup]') AND parent_object_id = OBJECT_ID(N'[dbo].[CharacterSkill]'))
 ALTER TABLE [dbo].[CharacterSkill] CHECK CONSTRAINT [FK_CharacterSkill_SkillLookup]
 GO
-/****** Object:  StoredProcedure [dbo].[CharacterResearch]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[CharacterResearch]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CharacterResearch]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[CharacterResearch] AS' 
+END
+GO
 
-CREATE PROCEDURE [dbo].[CharacterResearch]
+ALTER PROCEDURE [dbo].[CharacterResearch]
 AS
 BEGIN
 
@@ -452,14 +502,20 @@ BEGIN
 END
 
 
+
 GO
-/****** Object:  StoredProcedure [dbo].[CharactersNeedingAttention]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[CharactersNeedingAttention]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CharactersNeedingAttention]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[CharactersNeedingAttention] AS' 
+END
+GO
 
-CREATE PROCEDURE [dbo].[CharactersNeedingAttention]
+ALTER PROCEDURE [dbo].[CharactersNeedingAttention]
 AS
 BEGIN
     -- Get Research Past Due:
@@ -519,14 +575,20 @@ BEGIN
 END
 
 
+
 GO
-/****** Object:  StoredProcedure [dbo].[GetAccounts]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[GetAccounts]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetAccounts]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[GetAccounts] AS' 
+END
+GO
 
-CREATE PROCEDURE [dbo].[GetAccounts]
+ALTER PROCEDURE [dbo].[GetAccounts]
 AS
 BEGIN
     SELECT
@@ -553,14 +615,20 @@ BEGIN
 END
 
 
+
 GO
-/****** Object:  StoredProcedure [dbo].[GetCharacterSkills]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[GetCharacterSkills]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetCharacterSkills]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[GetCharacterSkills] AS' 
+END
+GO
 
-CREATE PROCEDURE [dbo].[GetCharacterSkills]
+ALTER PROCEDURE [dbo].[GetCharacterSkills]
 AS
 BEGIN
     SELECT
@@ -582,14 +650,20 @@ BEGIN
         [Character] c
 END
 
+
 GO
-/****** Object:  StoredProcedure [dbo].[GetLastCharacterActivity]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[GetLastCharacterActivity]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetLastCharacterActivity]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[GetLastCharacterActivity] AS' 
+END
+GO
 
-CREATE PROCEDURE [dbo].[GetLastCharacterActivity]
+ALTER PROCEDURE [dbo].[GetLastCharacterActivity]
 AS
 BEGIN
 
@@ -646,14 +720,20 @@ BEGIN
 END
 
 
+
 GO
-/****** Object:  StoredProcedure [dbo].[NextUpInResearch]    Script Date: 12/9/2015 9:49:35 AM ******/
+/****** Object:  StoredProcedure [dbo].[NextUpInResearch]    Script Date: 12/10/2015 6:22:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[NextUpInResearch]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[NextUpInResearch] AS' 
+END
+GO
 
-CREATE PROCEDURE [dbo].[NextUpInResearch]
+ALTER PROCEDURE [dbo].[NextUpInResearch]
 AS
 BEGIN
 
@@ -717,5 +797,6 @@ BEGIN
     ORDER BY
         NextInMinutes
 END
+
 
 GO

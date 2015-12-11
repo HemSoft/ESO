@@ -53,7 +53,11 @@
         $scope.characterSkills = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetCharacterSkills").query();
     }
 
-    $scope.getNextUpInResearch = function() {
+    $scope.getCharacterQuests = function () {
+        $scope.characterQuests = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetCharacterSkills").query();
+    }
+
+    $scope.getNextUpInResearch = function () {
         $scope.nextUpInResearch = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetNextUpInResearch").query();
     }
 

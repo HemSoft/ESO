@@ -25,6 +25,7 @@
         {
             Lua lua = new Lua();
             var skillList = new List<CharacterSkill>();
+            var questList = new List<CharacterQuest>();
             var filePath = @"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua";
             //var filePath = @"..\..\..\AddOns\HSEventLog\SavedVariables\HSEventLog.lua";
             if (!File.Exists(filePath))
@@ -63,7 +64,6 @@
 
                         var lastCharacterActivity = CharacterActivityManager.GetLastActivity(character.Id);
                         var characterActivity = new CharacterActivity {CharacterId = character.Id};
-                        var characterDailyQuest = new CharacterDailyQuest();
 
                         //Console.WriteLine($"    {c.Key} = {c.Value}");
                         Dictionary<object, object> properties = lua.GetTableDict(c.Value as LuaTable);
@@ -171,6 +171,64 @@
                                     break;
                                 case "NumberOfFriends":
                                     characterActivity.NumberOfFriends = int.Parse(property.Value.ToString());
+                                    break;
+
+                                case "Quest":
+                                    questList.Clear();
+                                    Dictionary<object, object> quests = lua.GetTableDict(property.Value as LuaTable);
+                                    foreach (var q in quests)
+                                    {
+                                        Dictionary<object, object> quest = lua.GetTableDict(q.Value as LuaTable);
+                                        var characterQuest = new CharacterQuest();
+                                        characterQuest.CharacterId = character.Id;
+                                        foreach (var qp in quest)
+                                        {
+                                            switch (qp.Key.ToString().ToLower())
+                                            {
+                                                case "currexp":
+                                                    characterQuest.CurrentExperience = int.Parse(qp.Value.ToString());
+                                                    break;
+                                                case "currpoints":
+                                                    characterQuest.CurrentPoints = int.Parse(qp.Value.ToString());
+                                                    break;
+                                                case "eventcode":
+                                                    characterQuest.EventCode = int.Parse(qp.Value.ToString());
+                                                    break;
+                                                case "name":
+                                                    characterQuest.Name = qp.Value.ToString();
+                                                    break;
+                                                case "level":
+                                                    characterQuest.Level = int.Parse(qp.Value.ToString());
+                                                    break;
+                                                case "prevexp":
+                                                    characterQuest.PreviousExperience = int.Parse(qp.Value.ToString());
+                                                    break;
+                                                case "prevpoints":
+                                                    characterQuest.PreviousPoints = int.Parse(qp.Value.ToString());
+                                                    break;
+                                                case "questcompletiontime":
+                                                    // 20151210 06:47:56
+                                                    var dt = qp.Value.ToString();
+                                                    var year = int.Parse(dt.Substring(0, 4));
+                                                    var month = int.Parse(dt.Substring(4, 2));
+                                                    var day = int.Parse(dt.Substring(6, 2));
+                                                    var hour = int.Parse(dt.Substring(9, 2));
+                                                    var minute = int.Parse(dt.Substring(12, 2));
+                                                    var second = int.Parse(dt.Substring(15, 2));
+                                                    characterQuest.Completed = new DateTime(year, month, day, hour, minute, second);
+                                                    break;
+                                                case "rank":
+                                                    characterQuest.Rank = int.Parse(qp.Value.ToString());
+                                                    break;
+                                                case "zone":
+                                                    characterQuest.Zone = qp.Value.ToString();
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        questList.Add(characterQuest);
+                                    }
                                     break;
                                 case "SecondsPlayed":
                                     characterActivity.SecondsPlayed = int.Parse(property.Value.ToString());
@@ -360,12 +418,12 @@
 
                         if (!character.LastLogin.HasValue)
                         {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
                         else if (DateTime.Compare(characterActivity.LastLogin.Value, character.LastLogin.Value) > 0)
                         {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
 
@@ -374,6 +432,7 @@
                             if (DateTime.Compare(lastCharacterActivity.LastLogin.Value, characterActivity.LastLogin.Value) > 0)
                             {
                                 CharacterManager.SaveSkills(skillList, character.Id);
+                                CharacterQuestManager.Save(questList);
                                 CharacterActivityManager.Save(characterActivity);
                                 Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                             }
@@ -384,7 +443,7 @@
         }
 
         private static void UpdateCharacterActvity(Account account, Character character, CharacterActivity characterActivity,
-            List<CharacterSkill> skillList)
+            List<CharacterSkill> skillList, List<CharacterQuest> quests)
         {
 
             character.LastLogin = characterActivity.LastLogin.Value;
@@ -406,6 +465,7 @@
 
             AccountManager.Save(account);
             CharacterManager.SaveSkills(skillList, character.Id);
+            CharacterQuestManager.Save(quests);
             CharacterManager.Save(character);
             CharacterActivityManager.Save(characterActivity);
         }

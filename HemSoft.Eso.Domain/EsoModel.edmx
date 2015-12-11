@@ -97,34 +97,22 @@
           <Property Name="XPMax" Type="int" />
           <Property Name="Zone" Type="varchar" MaxLength="100" />
         </EntityType>
-        <EntityType Name="CharacterDailyQuest">
+        <EntityType Name="CharacterQuest">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CharacterId" Type="int" Nullable="false" />
-          <Property Name="AlchemistCompleted" Type="datetime" />
-          <Property Name="AlchemistLevel" Type="int" />
-          <Property Name="BlacksmithCompleted" Type="datetime" />
-          <Property Name="BlacksmithLevel" Type="int" />
-          <Property Name="ClothierCompleted" Type="datetime" />
-          <Property Name="ClothierLevel" Type="int" />
-          <Property Name="EnchanterCompleted" Type="datetime" />
-          <Property Name="EnchanterLevel" Type="int" />
-          <Property Name="ProvisionerCompleted" Type="datetime" />
-          <Property Name="ProvisionerLevel" Type="int" />
-          <Property Name="OrsiniumHeresyOfIgnoranceCompleted" Type="datetime" />
-          <Property Name="OrsiniumHeresyOfIgnoranceLevel" Type="int" />
-          <Property Name="OrsiniumMadUrkazburCompleted" Type="datetime" />
-          <Property Name="OrsiniumMadUrkazburLevel" Type="int" />
-          <Property Name="OrsiniumMeatForTheMassesCompleted" Type="datetime" />
-          <Property Name="OrsiniumMeatForTheMassesLevel" Type="int" />
-          <Property Name="OrsiniumNaturesBountyCompleted" Type="datetime" />
-          <Property Name="OrsiniumNaturesBountyLevel" Type="int" />
-          <Property Name="OrsiniumReekingOfFoulPlayCompleted" Type="datetime" />
-          <Property Name="OrsiniumReekingOfFoulPlayLevel" Type="int" />
-          <Property Name="OrsiniumSnowAndSteamCompleted" Type="datetime" />
-          <Property Name="OrsiniumSnowAndSteamLevel" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Completed" Type="datetime" Nullable="false" />
+          <Property Name="EventCode" Type="int" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+          <Property Name="PreviousExperience" Type="int" Nullable="false" />
+          <Property Name="CurrentExperience" Type="int" Nullable="false" />
+          <Property Name="Rank" Type="int" Nullable="false" />
+          <Property Name="PreviousPoints" Type="int" Nullable="false" />
+          <Property Name="CurrentPoints" Type="int" Nullable="false" />
+          <Property Name="Zone" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="CharacterSkill">
           <Key>
@@ -222,14 +210,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CharacterDailyQuest_Character">
+        <Association Name="FK_CharacterQuest_Character">
           <End Role="Character" Type="Self.Character" Multiplicity="1" />
-          <End Role="CharacterDailyQuest" Type="Self.CharacterDailyQuest" Multiplicity="*" />
+          <End Role="CharacterQuest" Type="Self.CharacterQuest" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Character">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CharacterDailyQuest">
+            <Dependent Role="CharacterQuest">
               <PropertyRef Name="CharacterId" />
             </Dependent>
           </ReferentialConstraint>
@@ -272,7 +260,7 @@
           <EntitySet Name="AllianceLookup" EntityType="Self.AllianceLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Character" EntityType="Self.Character" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterActivity" EntityType="Self.CharacterActivity" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CharacterDailyQuest" EntityType="Self.CharacterDailyQuest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CharacterQuest" EntityType="Self.CharacterQuest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterSkill" EntityType="Self.CharacterSkill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassLookup" EntityType="Self.ClassLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RaceLookup" EntityType="Self.RaceLookup" Schema="dbo" store:Type="Tables" />
@@ -297,9 +285,9 @@
             <End Role="Character" EntitySet="Character" />
             <End Role="CharacterActivity" EntitySet="CharacterActivity" />
           </AssociationSet>
-          <AssociationSet Name="FK_CharacterDailyQuest_Character" Association="Self.FK_CharacterDailyQuest_Character">
+          <AssociationSet Name="FK_CharacterQuest_Character" Association="Self.FK_CharacterQuest_Character">
             <End Role="Character" EntitySet="Character" />
-            <End Role="CharacterDailyQuest" EntitySet="CharacterDailyQuest" />
+            <End Role="CharacterQuest" EntitySet="CharacterQuest" />
           </AssociationSet>
           <AssociationSet Name="FK_CharacterSkill_Character" Association="Self.FK_CharacterSkill_Character">
             <End Role="Character" EntitySet="Character" />
@@ -357,7 +345,7 @@
           <Property Name="EnlightenedPool" Type="Int32" />
           <Property Name="EffectiveLevel" Type="Int32" />
           <Property Name="ChampionPointsEarned" Type="Int32" />
-          <NavigationProperty Name="CharacterDailyQuests" Relationship="EsoModel.FK_CharacterDailyQuest_Character" FromRole="Character" ToRole="CharacterDailyQuest" />
+          <NavigationProperty Name="CharacterQuests" Relationship="EsoModel.FK_CharacterQuest_Character" FromRole="Character" ToRole="CharacterQuest" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -556,10 +544,10 @@
           </AssociationSet>
           <FunctionImport Name="GetAccounts" ReturnType="Collection(EsoModel.GetAccounts_Result)" />
           <FunctionImport Name="GetCharacterSkills" ReturnType="Collection(EsoModel.GetCharacterSkills_Result)" />
-          <EntitySet Name="CharacterDailyQuests" EntityType="EsoModel.CharacterDailyQuest" />
-          <AssociationSet Name="FK_CharacterDailyQuest_Character" Association="EsoModel.FK_CharacterDailyQuest_Character">
+          <EntitySet Name="CharacterQuests" EntityType="EsoModel.CharacterQuest" />
+          <AssociationSet Name="FK_CharacterQuest_Character" Association="EsoModel.FK_CharacterQuest_Character">
             <End Role="Character" EntitySet="Characters" />
-            <End Role="CharacterDailyQuest" EntitySet="CharacterDailyQuests" />
+            <End Role="CharacterQuest" EntitySet="CharacterQuests" />
           </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CharactersNeedingAttention_Result">
@@ -721,44 +709,32 @@
           <Property Type="Int32" Name="HeavyArmor" Nullable="true" />
           <Property Type="Int32" Name="ChampionPointsEarned" Nullable="true" />
         </ComplexType>
-        <EntityType Name="CharacterDailyQuest">
+        <EntityType Name="CharacterQuest">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CharacterId" Type="Int32" Nullable="false" />
-          <Property Name="AlchemistCompleted" Type="DateTime" Precision="3" />
-          <Property Name="AlchemistLevel" Type="Int32" />
-          <Property Name="BlacksmithCompleted" Type="DateTime" Precision="3" />
-          <Property Name="BlacksmithLevel" Type="Int32" />
-          <Property Name="ClothierCompleted" Type="DateTime" Precision="3" />
-          <Property Name="ClothierLevel" Type="Int32" />
-          <Property Name="EnchanterCompleted" Type="DateTime" Precision="3" />
-          <Property Name="EnchanterLevel" Type="Int32" />
-          <Property Name="ProvisionerCompleted" Type="DateTime" Precision="3" />
-          <Property Name="ProvisionerLevel" Type="Int32" />
-          <Property Name="OrsiniumHeresyOfIgnoranceCompleted" Type="DateTime" Precision="3" />
-          <Property Name="OrsiniumHeresyOfIgnoranceLevel" Type="Int32" />
-          <Property Name="OrsiniumMadUrkazburCompleted" Type="DateTime" Precision="3" />
-          <Property Name="OrsiniumMadUrkazburLevel" Type="Int32" />
-          <Property Name="OrsiniumMeatForTheMassesCompleted" Type="DateTime" Precision="3" />
-          <Property Name="OrsiniumMeatForTheMassesLevel" Type="Int32" />
-          <Property Name="OrsiniumNaturesBountyCompleted" Type="DateTime" Precision="3" />
-          <Property Name="OrsiniumNaturesBountyLevel" Type="Int32" />
-          <Property Name="OrsiniumReekingOfFoulPlayCompleted" Type="DateTime" Precision="3" />
-          <Property Name="OrsiniumReekingOfFoulPlayLevel" Type="Int32" />
-          <Property Name="OrsiniumSnowAndSteamCompleted" Type="DateTime" Precision="3" />
-          <Property Name="OrsiniumSnowAndSteamLevel" Type="Int32" />
-          <NavigationProperty Name="Character" Relationship="EsoModel.FK_CharacterDailyQuest_Character" FromRole="CharacterDailyQuest" ToRole="Character" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Completed" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EventCode" Type="Int32" Nullable="false" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <Property Name="PreviousExperience" Type="Int32" Nullable="false" />
+          <Property Name="CurrentExperience" Type="Int32" Nullable="false" />
+          <Property Name="Rank" Type="Int32" Nullable="false" />
+          <Property Name="PreviousPoints" Type="Int32" Nullable="false" />
+          <Property Name="CurrentPoints" Type="Int32" Nullable="false" />
+          <Property Name="Zone" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Character" Relationship="EsoModel.FK_CharacterQuest_Character" FromRole="CharacterQuest" ToRole="Character" />
         </EntityType>
-        <Association Name="FK_CharacterDailyQuest_Character">
+        <Association Name="FK_CharacterQuest_Character">
           <End Type="EsoModel.Character" Role="Character" Multiplicity="1" />
-          <End Type="EsoModel.CharacterDailyQuest" Role="CharacterDailyQuest" Multiplicity="*" />
+          <End Type="EsoModel.CharacterQuest" Role="CharacterQuest" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Character">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CharacterDailyQuest">
+            <Dependent Role="CharacterQuest">
               <PropertyRef Name="CharacterId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1044,31 +1020,19 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="CharacterDailyQuests">
-            <EntityTypeMapping TypeName="EsoModel.CharacterDailyQuest">
-              <MappingFragment StoreEntitySet="CharacterDailyQuest">
-                <ScalarProperty Name="OrsiniumSnowAndSteamLevel" ColumnName="OrsiniumSnowAndSteamLevel" />
-                <ScalarProperty Name="OrsiniumSnowAndSteamCompleted" ColumnName="OrsiniumSnowAndSteamCompleted" />
-                <ScalarProperty Name="OrsiniumReekingOfFoulPlayLevel" ColumnName="OrsiniumReekingOfFoulPlayLevel" />
-                <ScalarProperty Name="OrsiniumReekingOfFoulPlayCompleted" ColumnName="OrsiniumReekingOfFoulPlayCompleted" />
-                <ScalarProperty Name="OrsiniumNaturesBountyLevel" ColumnName="OrsiniumNaturesBountyLevel" />
-                <ScalarProperty Name="OrsiniumNaturesBountyCompleted" ColumnName="OrsiniumNaturesBountyCompleted" />
-                <ScalarProperty Name="OrsiniumMeatForTheMassesLevel" ColumnName="OrsiniumMeatForTheMassesLevel" />
-                <ScalarProperty Name="OrsiniumMeatForTheMassesCompleted" ColumnName="OrsiniumMeatForTheMassesCompleted" />
-                <ScalarProperty Name="OrsiniumMadUrkazburLevel" ColumnName="OrsiniumMadUrkazburLevel" />
-                <ScalarProperty Name="OrsiniumMadUrkazburCompleted" ColumnName="OrsiniumMadUrkazburCompleted" />
-                <ScalarProperty Name="OrsiniumHeresyOfIgnoranceLevel" ColumnName="OrsiniumHeresyOfIgnoranceLevel" />
-                <ScalarProperty Name="OrsiniumHeresyOfIgnoranceCompleted" ColumnName="OrsiniumHeresyOfIgnoranceCompleted" />
-                <ScalarProperty Name="ProvisionerLevel" ColumnName="ProvisionerLevel" />
-                <ScalarProperty Name="ProvisionerCompleted" ColumnName="ProvisionerCompleted" />
-                <ScalarProperty Name="EnchanterLevel" ColumnName="EnchanterLevel" />
-                <ScalarProperty Name="EnchanterCompleted" ColumnName="EnchanterCompleted" />
-                <ScalarProperty Name="ClothierLevel" ColumnName="ClothierLevel" />
-                <ScalarProperty Name="ClothierCompleted" ColumnName="ClothierCompleted" />
-                <ScalarProperty Name="BlacksmithLevel" ColumnName="BlacksmithLevel" />
-                <ScalarProperty Name="BlacksmithCompleted" ColumnName="BlacksmithCompleted" />
-                <ScalarProperty Name="AlchemistLevel" ColumnName="AlchemistLevel" />
-                <ScalarProperty Name="AlchemistCompleted" ColumnName="AlchemistCompleted" />
+          <EntitySetMapping Name="CharacterQuests">
+            <EntityTypeMapping TypeName="EsoModel.CharacterQuest">
+              <MappingFragment StoreEntitySet="CharacterQuest">
+                <ScalarProperty Name="Zone" ColumnName="Zone" />
+                <ScalarProperty Name="CurrentPoints" ColumnName="CurrentPoints" />
+                <ScalarProperty Name="PreviousPoints" ColumnName="PreviousPoints" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="CurrentExperience" ColumnName="CurrentExperience" />
+                <ScalarProperty Name="PreviousExperience" ColumnName="PreviousExperience" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="EventCode" ColumnName="EventCode" />
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

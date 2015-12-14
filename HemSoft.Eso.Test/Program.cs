@@ -48,8 +48,8 @@
                     currentAccount = acc.Key.ToString().Substring(1);
 
                     var account = AccountManager.GetByName(currentAccount);
-                    account.Name = currentAccount;
-                    AccountManager.Save(account);
+//                    account.Name = currentAccount;
+//                    AccountManager.Save(account);
 
                     //Console.WriteLine($"  {acc.Key} = {acc.Value}");
                     Dictionary<object, object> characters = lua.GetTableDict(acc.Value as LuaTable);
@@ -235,6 +235,7 @@
                                     break;
                                 case "SecondsPlayed":
                                     characterActivity.SecondsPlayed = int.Parse(property.Value.ToString());
+                                    character.HoursPlayed = (int) characterActivity.SecondsPlayed.Value / 60 / 60;
                                     break;
                                 case "SecondsUntilMountTraining":
                                     characterActivity.SecondsUntilMountTraining = int.Parse(property.Value.ToString());
@@ -356,7 +357,31 @@
                             return;
                         }
 
-                        if (esoProperty.Time.Length == 3)
+                        if (esoProperty.Time.Length == 1)
+                        {
+                            characterActivity.LastLogin = new DateTime
+                            (
+                                int.Parse(esoProperty.Date.Substring(0, 4)),
+                                int.Parse(esoProperty.Date.Substring(4, 2)),
+                                int.Parse(esoProperty.Date.Substring(6, 2)),
+                                0,
+                                0,
+                                int.Parse(esoProperty.Time.Substring(0, 1))
+                            ).ToUniversalTime();
+                        }
+                        else if (esoProperty.Time.Length == 2)
+                        {
+                            characterActivity.LastLogin = new DateTime
+                            (
+                                int.Parse(esoProperty.Date.Substring(0, 4)),
+                                int.Parse(esoProperty.Date.Substring(4, 2)),
+                                int.Parse(esoProperty.Date.Substring(6, 2)),
+                                0,
+                                0,
+                                int.Parse(esoProperty.Time.Substring(0, 2))
+                            ).ToUniversalTime();
+                        }
+                        else if (esoProperty.Time.Length == 3)
                         {
                             characterActivity.LastLogin = new DateTime
                             (
@@ -470,6 +495,7 @@
             CharacterQuestManager.Save(quests);
             CharacterManager.Save(character);
             CharacterActivityManager.Save(characterActivity);
+            AccountManager.Save(account);
         }
     }
 

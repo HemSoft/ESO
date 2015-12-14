@@ -33,6 +33,11 @@
                 context.Configuration.LazyLoadingEnabled = false;
                 context.Configuration.ProxyCreationEnabled = false;
                 var result = context.Accounts.FirstOrDefault(x => x.Name.Contains(account.Name));
+                var charsInAccount = context.Characters.Where(x => x.AccountId == account.Id).ToList();
+                if (charsInAccount.Any())
+                {
+                    account.HoursPlayed = charsInAccount.Sum(x => x.HoursPlayed);
+                }
                 if (result == null)
                 {
                     context.Accounts.Add(account);

@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 panel">
+        <div class="col-md-12 panel">
             <div class="panel-heading">
                 <h2 class="text-center">Accounts</h2>
             </div>
@@ -22,18 +22,22 @@
                         <th>Last Logged In</th>
                         <th>CP</th>
                         <th>Enlightened Pool</th>
+                        <th>Hours Played</th>
                     </tr>
                     <tr ng-repeat="account in accounts" ng-click="accountSelected()">
-                        <td ng-bind="account.Id"/>
-                        <td ng-bind="account.Name"/>
+                        <td ng-bind="account.Id" />
+                        <td ng-bind="account.Name" />
                         <td ng-bind="account.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
                         <td ng-bind="account.ChampionPointsEarned" />
                         <td ng-bind="account.EnlightenedPool" />
+                        <td ng-bind="account.HoursPlayed" />
                     <tr>
                 </table>
             </div>
         </div>
-        <div ng-show="selectedAccount" class="col-md-6 panel">
+    </div>
+    <div class="row">
+        <div ng-show="selectedAccount" class="col-md-12 panel">
             <div class="panel-heading">
                 <h2 class="text-center">Characters</h2>
             </div>
@@ -45,13 +49,15 @@
                         <th>Last Logged In</th>
                         <th>Level</th>
                         <th>Achiev. Points</th>
+                        <th>Hours Played</th>
                     </tr>
                     <tr ng-repeat="character in characters" ng-click="characterSelected()">
-                        <td ng-bind="character.Id"/>
-                        <td ng-bind="character.Name"/>
-                        <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'"/>
+                        <td ng-bind="character.Id" />
+                        <td ng-bind="character.Name" />
+                        <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
                         <td ng-bind="character.EffectiveLevel" />
                         <td ng-bind="character.AchievementPoints" />
+                        <td ng-bind="character.HoursPlayed" />
                     <tr>
                 </table>
             </div>

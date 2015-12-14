@@ -5,9 +5,11 @@
     $scope.charactersNeedingAttention = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetCharactersNeedingAttention").query();
     $scope.characterResearch = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetCharacterResearch").query();
     $scope.nextUpInResearchPromise = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetNextUpInResearch");
-    $scope.skillSortType = 'Name';
+    $scope.skillSortType = "Name";
     $scope.skillSortReverse = false;
-    $scope.nextUpInResearch = $scope.nextUpInResearchPromise.get(function(resp) {
+    $scope.questSortType = "Completed";
+    $scope.questSortReverse = false;
+    $scope.nextUpInResearch = $scope.nextUpInResearchPromise.get(function (resp) {
         $scope.CountDown(resp);
     });
 
@@ -54,7 +56,7 @@
     }
 
     $scope.getCharacterQuests = function () {
-        $scope.characterQuests = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetCharacterSkills").query();
+        $scope.characterQuests = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetCharacterQuests").query();
     }
 
     $scope.getNextUpInResearch = function () {

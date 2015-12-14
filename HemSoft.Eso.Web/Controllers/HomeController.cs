@@ -13,6 +13,13 @@ namespace HemSoft.Eso.Web.Controllers
             return View();
         }
 
+        public ActionResult Quests()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
         public ActionResult Research()
         {
             ViewBag.Message = "Your application description page.";

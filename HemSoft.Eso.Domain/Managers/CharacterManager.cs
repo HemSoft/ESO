@@ -1,4 +1,6 @@
-﻿namespace HemSoft.Eso.Domain.Managers
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace HemSoft.Eso.Domain.Managers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -12,6 +14,16 @@
                 context.Configuration.LazyLoadingEnabled = false;
                 context.Configuration.ProxyCreationEnabled = false;
                 return context.Characters.Where(x => x.AccountId == accountId).ToList();
+            }
+        }
+
+        public static List<Character> GetAllWithQuests()
+        {
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+                return context.Characters.Include("CharacterQuests").ToList();
             }
         }
 

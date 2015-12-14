@@ -72,6 +72,9 @@
                         {
                             switch (property.Key.ToString())
                             {
+                                case "AchievementPoints":
+                                    characterActivity.AchievementPoints = int.Parse(property.Value.ToString());
+                                    break;
                                 case "AlliancePoints":
                                     characterActivity.AlliancePoints = int.Parse(property.Value.ToString());
                                     break;
@@ -215,7 +218,7 @@
                                                     var hour = int.Parse(dt.Substring(9, 2));
                                                     var minute = int.Parse(dt.Substring(12, 2));
                                                     var second = int.Parse(dt.Substring(15, 2));
-                                                    characterQuest.Completed = new DateTime(year, month, day, hour, minute, second);
+                                                    characterQuest.Completed = new DateTime(year, month, day, hour, minute, second).ToUniversalTime();
                                                     break;
                                                 case "rank":
                                                     characterQuest.Rank = int.Parse(qp.Value.ToString());
@@ -421,19 +424,16 @@
                             UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
-                        else if (DateTime.Compare(characterActivity.LastLogin.Value, character.LastLogin.Value) > 0)
+                        else if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                         {
                             UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
-
-                        if (lastCharacterActivity.LastLogin.HasValue)
+                        else if (lastCharacterActivity.LastLogin.HasValue)
                         {
-                            if (DateTime.Compare(lastCharacterActivity.LastLogin.Value, characterActivity.LastLogin.Value) > 0)
+                            if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                             {
-                                CharacterManager.SaveSkills(skillList, character.Id);
-                                CharacterQuestManager.Save(questList);
-                                CharacterActivityManager.Save(characterActivity);
+                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
                                 Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                             }
                         }
@@ -445,7 +445,7 @@
         private static void UpdateCharacterActvity(Account account, Character character, CharacterActivity characterActivity,
             List<CharacterSkill> skillList, List<CharacterQuest> quests)
         {
-
+            character.AchievementPoints = characterActivity.AchievementPoints;
             character.LastLogin = characterActivity.LastLogin.Value;
             if (character.EnlightenedPool == null || characterActivity.EnlightenedPool > 0)
             {

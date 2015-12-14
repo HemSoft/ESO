@@ -32,14 +32,15 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
-          <Property Name="LastLogin" Type="datetime" />
           <Property Name="AccountId" Type="int" Nullable="false" />
           <Property Name="ClassId" Type="int" />
           <Property Name="RaceId" Type="int" />
           <Property Name="AllianceId" Type="int" />
+          <Property Name="AchievementPoints" Type="int" />
           <Property Name="ChampionPointsEarned" Type="int" />
           <Property Name="EffectiveLevel" Type="int" />
           <Property Name="EnlightenedPool" Type="int" />
+          <Property Name="LastLogin" Type="datetime" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -47,6 +48,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CharacterId" Type="int" Nullable="false" />
+          <Property Name="AchievementPoints" Type="int" />
           <Property Name="AlliancePoints" Type="int" />
           <Property Name="AvailableSkillPoints" Type="int" />
           <Property Name="BankedCash" Type="int" />
@@ -346,6 +348,7 @@
           <Property Name="EffectiveLevel" Type="Int32" />
           <Property Name="ChampionPointsEarned" Type="Int32" />
           <NavigationProperty Name="CharacterQuests" Relationship="EsoModel.FK_CharacterQuest_Character" FromRole="Character" ToRole="CharacterQuest" />
+          <Property Name="AchievementPoints" Type="Int32" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -403,6 +406,7 @@
           <Property Name="XP" Type="Int32" />
           <Property Name="XPMax" Type="Int32" />
           <Property Name="EffectiveLevel" Type="Int32" />
+          <Property Name="AchievementPoints" Type="Int32" />
         </EntityType>
         <EntityType Name="ClassLookup">
           <Key>
@@ -770,6 +774,7 @@
           <EntitySetMapping Name="Characters">
             <EntityTypeMapping TypeName="EsoModel.Character">
               <MappingFragment StoreEntitySet="Character">
+                <ScalarProperty Name="AchievementPoints" ColumnName="AchievementPoints" />
                 <ScalarProperty Name="ChampionPointsEarned" ColumnName="ChampionPointsEarned" />
                 <ScalarProperty Name="EffectiveLevel" ColumnName="EffectiveLevel" />
                 <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
@@ -787,6 +792,7 @@
           <EntitySetMapping Name="CharacterActivities">
             <EntityTypeMapping TypeName="EsoModel.CharacterActivity">
               <MappingFragment StoreEntitySet="CharacterActivity">
+                <ScalarProperty Name="AchievementPoints" ColumnName="AchievementPoints" />
                 <ScalarProperty Name="EffectiveLevel" ColumnName="EffectiveLevel" />
                 <ScalarProperty Name="XPMax" ColumnName="XPMax" />
                 <ScalarProperty Name="XP" ColumnName="XP" />

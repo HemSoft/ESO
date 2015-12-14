@@ -35,7 +35,7 @@
         </div>
         <div ng-show="selectedAccount" class="col-md-6 panel">
             <div class="panel-heading">
-                <h2 class="text-center"">Characters</h2>
+                <h2 class="text-center">Characters</h2>
             </div>
             <div class="panel-body">
                 <table class="table table-bordered table-striped table-hover">
@@ -43,13 +43,15 @@
                         <th>Id</th>
                         <th>Name</th>
                         <th>Last Logged In</th>
-                        <th>Effective Level</th>
+                        <th>Level</th>
+                        <th>Achiev. Points</th>
                     </tr>
                     <tr ng-repeat="character in characters" ng-click="characterSelected()">
                         <td ng-bind="character.Id"/>
                         <td ng-bind="character.Name"/>
                         <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'"/>
                         <td ng-bind="character.EffectiveLevel" />
+                        <td ng-bind="character.AchievementPoints" />
                     <tr>
                 </table>
             </div>

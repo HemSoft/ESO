@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace HemSoft.Eso.Domain.Managers
@@ -13,39 +14,18 @@ namespace HemSoft.Eso.Domain.Managers
             {
                 context.Configuration.LazyLoadingEnabled = false;
                 context.Configuration.ProxyCreationEnabled = false;
-                var s = context.CharacterQuests.Select(x => new
-                {
-                    Id = x.Id,
-                    x.CharacterId,
-                    x.CurrentExperience,
-                    x.CurrentPoints,
-                    x.Level,
-                    x.Name,
-                    x.PreviousExperience,
-                    x.PreviousPoints,
-                    x.Zone,
-                    Character = context.Characters.Where(y => y.Id == x.Id)
-
-                });
                 return context.CharacterQuests.Include("Character").ToList();
             }
         }
 
-        public static List<dynamic> GetSomething()
+        public static void Save(List<CharacterQuest> luaQuests)
         {
-            var ret = new
-            {
-
-            };
-            return null;
-        } 
-
-        public static void Save(List<CharacterQuest> characterQuests)
-        {
-            if (characterQuests == null || !characterQuests.Any())
+            if (luaQuests == null || !luaQuests.Any())
             {
                 return;
             }
+
+            var luaQuestsOrdered = luaQuests.OrderBy(x => x.Completed);
 
             using (var context = new EsoEntities())
             {
@@ -53,31 +33,28 @@ namespace HemSoft.Eso.Domain.Managers
                 context.Configuration.ProxyCreationEnabled = false;
 
                 // Get last saved quest for this character:
-                var characterId = characterQuests.FirstOrDefault()?.CharacterId;
+                var characterId = luaQuestsOrdered.FirstOrDefault()?.CharacterId;
                 if (characterId.HasValue)
                 {
-                    var charQuests = context.CharacterQuests.Where(x => x.CharacterId == characterId);
-                    if (charQuests.Any())
+                    foreach (var luaQuest in luaQuestsOrdered)
                     {
-                        var lastCompleted = charQuests.OrderByDescending(x => x.Completed).FirstOrDefault().Completed;
-
-                        foreach (var characterQuest in characterQuests)
+                        var dbQuests = context.CharacterQuests.Where(x => x.CharacterId == characterId);
+                        if (dbQuests.Any())
                         {
-                            if (DateTime.Compare(lastCompleted, characterQuest.Completed) < 0)
+                            var dbLastComplated = dbQuests.OrderByDescending(x => x.Completed).FirstOrDefault().Completed;
+
+                            if (DateTime.Compare(luaQuest.Completed, dbLastComplated) > 0)
                             {
-                                context.CharacterQuests.Add(characterQuest);
+                                context.CharacterQuests.Add(luaQuest);
+                                context.SaveChanges();
                             }
                         }
-                        context.SaveChanges();
-                    }
-                    else
-                    {
-                        // None in the database, go ahead and save:
-                        foreach (var characterQuest in characterQuests)
+                        else
                         {
-                            context.CharacterQuests.Add(characterQuest);
+                            // None in the database, go ahead and save:
+                            context.CharacterQuests.Add(luaQuest);
+                            context.SaveChanges();
                         }
-                        context.SaveChanges();
                     }
                 }
             }
@@ -87,10 +64,17 @@ namespace HemSoft.Eso.Domain.Managers
         {
             using (var context = new EsoEntities())
             {
-                context.Configuration.LazyLoadingEnabled = false;
-                context.Configuration.ProxyCreationEnabled = false;
-                context.CharacterQuests.Add(characterQuest);
-                context.SaveChanges();
+                try
+                {
+                    context.Configuration.LazyLoadingEnabled = false;
+                    context.Configuration.ProxyCreationEnabled = false;
+                    context.CharacterQuests.Add(characterQuest);
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                }
             }
         }
     }

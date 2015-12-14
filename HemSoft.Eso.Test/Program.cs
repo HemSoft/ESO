@@ -48,25 +48,29 @@
                     currentAccount = acc.Key.ToString().Substring(1);
 
                     var account = AccountManager.GetByName(currentAccount);
-//                    account.Name = currentAccount;
-//                    AccountManager.Save(account);
+                    if (string.IsNullOrEmpty(account.Name))
+                    {
+                        account.Name = currentAccount;
+                        AccountManager.Save(account);
+                    }
 
-                    //Console.WriteLine($"  {acc.Key} = {acc.Value}");
-                    Dictionary<object, object> characters = lua.GetTableDict(acc.Value as LuaTable);
+                    var characters = lua.GetTableDict(acc.Value as LuaTable);
                     foreach (var c in characters)
                     {
                         currentCharacter = c.Key.ToString();
 
                         var character = CharacterManager.GetByName(account.Id, currentCharacter);
-                        character.Name = currentCharacter;
-                        character.AccountId = account.Id;
-                        CharacterManager.Save(character);
+                        if (string.IsNullOrWhiteSpace(character.Name))
+                        {
+                            character.Name = currentCharacter;
+                            character.AccountId = account.Id;
+                            CharacterManager.Save(character);
+                        }
 
                         var lastCharacterActivity = CharacterActivityManager.GetLastActivity(character.Id);
                         var characterActivity = new CharacterActivity {CharacterId = character.Id};
 
-                        //Console.WriteLine($"    {c.Key} = {c.Value}");
-                        Dictionary<object, object> properties = lua.GetTableDict(c.Value as LuaTable);
+                        var properties = lua.GetTableDict(c.Value as LuaTable);
                         var esoProperty = new EsoProperty();
                         foreach (var property in properties)
                         {
@@ -517,14 +521,5 @@
         public string Time { get; set; }
         public int UsedBagSlots { get; set; }
         public int UsedBankSlots { get; set; }
-    }
-
-    public class Skill
-    {
-        public string Name { get; set; }
-        public int Rank { get; set; }
-        public int Xp { get; set; }
-        public int LastRankXp { get; set; }
-        public int NextRankXp { get; set; }
     }
 }

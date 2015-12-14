@@ -1,10 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-
-namespace HemSoft.Eso.Domain.Managers
+﻿namespace HemSoft.Eso.Domain.Managers
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
 
     public static class CharacterQuestManager
     {
@@ -15,6 +14,43 @@ namespace HemSoft.Eso.Domain.Managers
                 context.Configuration.LazyLoadingEnabled = false;
                 context.Configuration.ProxyCreationEnabled = false;
                 return context.CharacterQuests.Include("Character").ToList();
+            }
+        }
+
+        public static void GetWritStatus()
+        {
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+
+                // First step is to identify any characters that have skill 50 in one of the writ skill lines:
+                var characters =
+                (
+                    from c in context.Characters
+                    join s in context.CharacterSkills on c.Id equals s.CharacterId
+                    join sl in context.SkillLookups on s.SkillId equals sl.Id
+                    where
+                        s.Rank == 50 &&
+                        (
+                            sl.Name == "Alchemy" ||
+                            sl.Name == "Blacksmithing" ||
+                            sl.Name == "Clothing" ||
+                            sl.Name == "Enchanting" ||
+                            sl.Name == "Provisioning" ||
+                            sl.Name == "Woodworking"
+                        )
+                    select new
+                    {
+                        Character = c
+                      , Skill = s
+                      , SkillLookup = sl
+                    }
+                ).ToList();
+                foreach (var c in characters)
+                {
+                    Console.WriteLine($"{c.Character.Name}, {c.SkillLookup.Name}, {c.Skill.Rank}");
+                }
             }
         }
 

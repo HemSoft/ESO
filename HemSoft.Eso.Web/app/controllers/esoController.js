@@ -84,6 +84,14 @@
         return "";
     }
 
+    $scope.getOrsiniumStatus = function() {
+        $scope.orsiniumStatus = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetOrsiniumStatus").query();
+    }
+
+    $scope.getWritStatus = function() {
+        $scope.writStatus = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetWritStatus").query();
+    }
+
     $scope.CountDown = function (nextUp) {
         if (nextUp === undefined) {
             return;

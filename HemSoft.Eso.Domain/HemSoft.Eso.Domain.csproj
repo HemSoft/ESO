@@ -81,6 +81,7 @@
     <Compile Include="ClassLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Domain\OrsiniumDaily.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="EsoModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -107,6 +108,7 @@
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Managers\CharacterQuestManager.cs" />
+    <Compile Include="Domain\DailyWrit.cs" />
     <Compile Include="Managers\SkillManager.cs" />
     <Compile Include="Managers\CharacterActivityManager.cs" />
     <Compile Include="Managers\CharacterManager.cs" />

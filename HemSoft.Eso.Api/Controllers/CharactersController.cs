@@ -17,6 +17,37 @@
     {
         private EsoEntities db = new EsoEntities();
 
+        private bool CharacterExists(int id)
+        {
+            return db.Characters.Count(e => e.Id == id) > 0;
+        }
+
+        // DELETE: api/Characters/5
+        [ResponseType(typeof(Character))]
+        public async Task<IHttpActionResult> DeleteCharacter(int id)
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            Character character = await db.Characters.FindAsync(id);
+            if (character == null)
+            {
+                return NotFound();
+            }
+
+            db.Characters.Remove(character);
+            await db.SaveChangesAsync();
+
+            return Ok(character);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         // GET: api/Characters
         public IQueryable<Character> GetCharacters()
         {
@@ -54,12 +85,6 @@
             return CharacterManager.GetCharacterSkills();
         }
 
-        public NextUpInResearch_Result GetNextUpInResearch()
-        {
-            db.Configuration.ProxyCreationEnabled = false;
-            return CharacterManager.GetNextUpInResearch();
-        }
-
         // GET: api/Characters/5
         [ResponseType(typeof(Character))]
         public async Task<IHttpActionResult> GetCharacter(int id)
@@ -72,6 +97,41 @@
             }
 
             return Ok(character);
+        }
+
+        public List<OrsiniumDaily> GetOrsiniumStatus()
+        {
+            var status = CharacterQuestManager.GetOrsiniumDailiesStatus();
+            return status;
+        }
+
+
+        public List<DailyWrit> GetWritStatus()
+        {
+            var dailyWritStatus = CharacterQuestManager.GetWritStatus();
+            return dailyWritStatus;
+        }
+
+        public NextUpInResearch_Result GetNextUpInResearch()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return CharacterManager.GetNextUpInResearch();
+        }
+
+        // POST: api/Characters
+        [ResponseType(typeof(Character))]
+        public async Task<IHttpActionResult> PostCharacter(Character character)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.Configuration.ProxyCreationEnabled = false;
+            db.Characters.Add(character);
+            await db.SaveChangesAsync();
+
+            return CreatedAtRoute("DefaultApi", new { id = character.Id }, character);
         }
 
         // PUT: api/Characters/5
@@ -108,53 +168,6 @@
             }
 
             return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Characters
-        [ResponseType(typeof(Character))]
-        public async Task<IHttpActionResult> PostCharacter(Character character)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Configuration.ProxyCreationEnabled = false;
-            db.Characters.Add(character);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = character.Id }, character);
-        }
-
-        // DELETE: api/Characters/5
-        [ResponseType(typeof(Character))]
-        public async Task<IHttpActionResult> DeleteCharacter(int id)
-        {
-            db.Configuration.ProxyCreationEnabled = false;
-            Character character = await db.Characters.FindAsync(id);
-            if (character == null)
-            {
-                return NotFound();
-            }
-
-            db.Characters.Remove(character);
-            await db.SaveChangesAsync();
-
-            return Ok(character);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool CharacterExists(int id)
-        {
-            return db.Characters.Count(e => e.Id == id) > 0;
         }
     }
 }

@@ -23,7 +23,10 @@
 
         private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            Lua lua = new Lua();
+            var x = CharacterQuestManager.GetOrsiniumDailiesStatus();
+            return;
+
+            var lua = new Lua();
             var skillList = new List<CharacterSkill>();
             var questList = new List<CharacterQuest>();
             var filePath = @"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua";
@@ -34,15 +37,15 @@
             }
             lua.DoFile(filePath);
             var luaTable = lua["HSEventLogSavedVariables"] as LuaTable;
-            Dictionary<object, object> dict = lua.GetTableDict(luaTable);
+            var dict = lua.GetTableDict(luaTable);
 
-            var currentAccount = string.Empty;
-            var currentCharacter = string.Empty;
+            string currentAccount;
+            string currentCharacter;
 
             foreach (var tables in dict)
             {
                 //Console.WriteLine($"{tables.Key} = {tables.Value}");
-                Dictionary<object, object> accounts = lua.GetTableDict(tables.Value as LuaTable);
+                var accounts = lua.GetTableDict(tables.Value as LuaTable);
                 foreach (var acc in accounts)
                 {
                     currentAccount = acc.Key.ToString().Substring(1);

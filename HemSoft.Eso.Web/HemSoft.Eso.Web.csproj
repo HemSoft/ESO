@@ -194,7 +194,6 @@
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
     <None Include="Properties\PublishProfiles\HemSoftEsoWeb - FTP %282%29.pubxml" />
@@ -250,6 +249,7 @@
     <Content Include="Views\Home\Research.cshtml" />
     <Content Include="Views\Home\Skills.cshtml" />
     <Content Include="Views\Home\Quests.cshtml" />
+    <Content Include="Views\Home\Dailies.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

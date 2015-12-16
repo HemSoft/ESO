@@ -23,9 +23,6 @@
 
         private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            var x = CharacterQuestManager.GetOrsiniumDailiesStatus();
-            return;
-
             var lua = new Lua();
             var skillList = new List<CharacterSkill>();
             var questList = new List<CharacterQuest>();

@@ -35,16 +35,14 @@
                         var completedCount = 0;
                         foreach (var q in c.CharacterQuests)
                         {
-                            if (q.Completed.ToLocalTime().Date == DateTime.Today)
+                            // Dailies reset on CST time:
+                            if (q.Completed.AddHours(-6).Date == DateTime.UtcNow.AddHours(-6).Date)
                             {
                                 switch (q.Name)
                                 {
+                                    // Dolmen
                                     case "Heresy of Ignorance":
                                         daily.HeresyOfIgnorance = true;
-                                        completedCount++;
-                                        break;
-                                    case "Mad Urkazbur":
-                                        daily.MadUrkazbur = true;
                                         completedCount++;
                                         break;
                                     case "Meat for the Masses":
@@ -55,8 +53,12 @@
                                         daily.NaturesBounty = true;
                                         completedCount++;
                                         break;
-                                    case "Reeking of fould Play":
+                                    case "Reeking of Foul Play":
                                         daily.ReekingOfFoulPlay = true;
+                                        completedCount++;
+                                        break;
+                                    case "Scholarly Salvage":
+                                        daily.MadUrkazbur = true;
                                         completedCount++;
                                         break;
                                     case "Snow and Steam":
@@ -142,46 +144,29 @@
 
                     foreach (var q in quests)
                     {
-                        if (q.Completed.ToLocalTime().Date == DateTime.Today)
+                        // Writs reset at midnight CST.
+                        if (q.Completed.AddHours(-6).Date == DateTime.UtcNow.AddHours(-6).Date)
                         {
                             switch (q.Name)
                             {
                                 case "Alchemist Writ":
-                                    if (c.SkillLookup.Name == "Alchemy")
-                                    {
-                                        dailyWrit.AlchemyCompleted = true;
-                                    }
+                                    dailyWrit.AlchemyCompleted = true;
                                     break;
                                 case "Blacksmith Writ":
-                                    if (c.SkillLookup.Name == "Blacksmithing")
-                                    {
-                                        dailyWrit.BlacksmithingCompleted = true;
-                                    }
+                                    dailyWrit.BlacksmithingCompleted = true;
                                     break;
                                 case "Clothier Writ":
-                                    if (c.SkillLookup.Name == "Clothing")
-                                    {
-                                        dailyWrit.ClothingCompleted = true;
-                                    }
+                                    dailyWrit.ClothingCompleted = true;
                                     break;
                                 case "Enchanter Writ":
-                                    if (c.SkillLookup.Name == "Enchanting")
-                                    {
-                                        dailyWrit.EnchantingCompleted = true;
-                                    }
+                                    dailyWrit.EnchantingCompleted = true;
                                     break;
                                 case "Provisioner Writ":
-                                    if (c.SkillLookup.Name == "Provisioning")
-                                    {
-                                        dailyWrit.ProvisioningCompleted = true;
-                                    }
+                                    dailyWrit.ProvisioningCompleted = true;
                                     break;
                                 case "Woodworker Writ":
-                                    if (c.SkillLookup.Name == "Woodworking")
-                                    {
-                                        dailyWrit.WoodworkingCompleted = true;
-                                    }
-                                    break;
+                                   dailyWrit.WoodworkingCompleted = true;
+                                   break;
                             }
                         }
                     }

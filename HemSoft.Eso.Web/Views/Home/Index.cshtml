@@ -20,6 +20,7 @@
                         <th>Id</th>
                         <th>Name</th>
                         <th>Last Logged In</th>
+                        <th>Telvar Stones</th>
                         <th>CP</th>
                         <th>Enlightened Pool</th>
                         <th>Hours Played</th>
@@ -28,6 +29,7 @@
                         <td ng-bind="account.Id" />
                         <td ng-bind="account.Name" />
                         <td ng-bind="account.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
+                        <td ng-bind="account.BankedTelvarStornes" />
                         <td ng-bind="account.ChampionPointsEarned" />
                         <td ng-bind="account.EnlightenedPool" />
                         <td ng-bind="account.HoursPlayed" />
@@ -49,6 +51,7 @@
                         <th>Last Logged In</th>
                         <th>Level</th>
                         <th>Achiev. Points</th>
+                        <td>Alliance Points</td>
                         <th>Hours Played</th>
                     </tr>
                     <tr ng-repeat="character in characters" ng-click="characterSelected()">
@@ -57,6 +60,7 @@
                         <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
                         <td ng-bind="character.EffectiveLevel" />
                         <td ng-bind="character.AchievementPoints" />
+                        <td ng-bind="character.AlliancePoints" />
                         <td ng-bind="character.HoursPlayed" />
                     <tr>
                 </table>

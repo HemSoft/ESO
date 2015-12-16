@@ -12,6 +12,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="BankedTelvarStones" Type="int" />
           <Property Name="ChampionPointsEarned" Type="int" />
           <Property Name="Description" Type="varchar(max)" />
           <Property Name="EnlightenedPool" Type="int" />
@@ -37,7 +38,9 @@
           <Property Name="ClassId" Type="int" />
           <Property Name="RaceId" Type="int" />
           <Property Name="AllianceId" Type="int" />
+          <Property Name="AlliancePoints" Type="int" />
           <Property Name="AchievementPoints" Type="int" />
+          <Property Name="BankedTelvarStones" Type="int" />
           <Property Name="ChampionPointsEarned" Type="int" />
           <Property Name="EffectiveLevel" Type="int" />
           <Property Name="EnlightenedPool" Type="int" />
@@ -319,6 +322,7 @@
           <Property Name="EnlightenedPool" Type="Int32" />
           <Property Name="ChampionPointsEarned" Type="Int32" />
           <Property Name="HoursPlayed" Type="Int32" />
+          <Property Name="BankedTelvarStones" Type="Int32" />
         </EntityType>
         <EntityType Name="AllianceLookup">
           <Key>
@@ -353,6 +357,8 @@
           <NavigationProperty Name="CharacterQuests" Relationship="EsoModel.FK_CharacterQuest_Character" FromRole="Character" ToRole="CharacterQuest" />
           <Property Name="AchievementPoints" Type="Int32" />
           <Property Name="HoursPlayed" Type="Int32" />
+          <Property Name="BankedTelvarStones" Type="Int32" />
+          <Property Name="AlliancePoints" Type="Int32" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -756,6 +762,7 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="EsoModel.Account">
               <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="BankedTelvarStones" ColumnName="BankedTelvarStones" />
                 <ScalarProperty Name="HoursPlayed" ColumnName="HoursPlayed" />
                 <ScalarProperty Name="ChampionPointsEarned" ColumnName="ChampionPointsEarned" />
                 <ScalarProperty Name="EnlightenedPool" ColumnName="EnlightenedPool" />
@@ -779,6 +786,8 @@
           <EntitySetMapping Name="Characters">
             <EntityTypeMapping TypeName="EsoModel.Character">
               <MappingFragment StoreEntitySet="Character">
+                <ScalarProperty Name="AlliancePoints" ColumnName="AlliancePoints" />
+                <ScalarProperty Name="BankedTelvarStones" ColumnName="BankedTelvarStones" />
                 <ScalarProperty Name="HoursPlayed" ColumnName="HoursPlayed" />
                 <ScalarProperty Name="AchievementPoints" ColumnName="AchievementPoints" />
                 <ScalarProperty Name="ChampionPointsEarned" ColumnName="ChampionPointsEarned" />

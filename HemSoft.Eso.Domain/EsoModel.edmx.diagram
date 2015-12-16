@@ -6,10 +6,10 @@
     <edmx:Diagrams>
       <Diagram DiagramId="2a21f7ddc47b40eaa8e8a464bd9846eb" Name="Diagram1">
         <EntityTypeShape EntityType="EsoModel.Account" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EsoModel.AllianceLookup" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EsoModel.AllianceLookup" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
         <EntityTypeShape EntityType="EsoModel.Character" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="EsoModel.CharacterActivity" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="EsoModel.ClassLookup" Width="1.5" PointX="3.125" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EsoModel.ClassLookup" Width="1.5" PointX="3.125" PointY="7.625" IsExpanded="true" />
         <EntityTypeShape EntityType="EsoModel.RaceLookup" Width="1.5" PointX="0.75" PointY="0.5" IsExpanded="true" />
         <AssociationConnector Association="EsoModel.FK_Character_Account" ManuallyRouted="false" />
         <AssociationConnector Association="EsoModel.FK_Character_Account1" ManuallyRouted="false" />
@@ -21,7 +21,7 @@
         <EntityTypeShape EntityType="EsoModel.SkillLookup" Width="1.5" PointX="7.25" PointY="3.625" />
         <AssociationConnector Association="EsoModel.FK_CharacterSkill_Character" />
         <AssociationConnector Association="EsoModel.FK_CharacterSkill_SkillLookup" />
-        <EntityTypeShape EntityType="EsoModel.CharacterQuest" Width="1.5" PointX="0.75" PointY="7.5" />
+        <EntityTypeShape EntityType="EsoModel.CharacterQuest" Width="1.5" PointX="0.75" PointY="8.75" />
         <AssociationConnector Association="EsoModel.FK_CharacterDailyQuest_Character1" />
         <AssociationConnector Association="EsoModel.FK_CharacterQuest_Character" />
       </Diagram>

@@ -475,6 +475,9 @@
             List<CharacterSkill> skillList, List<CharacterQuest> quests)
         {
             character.AchievementPoints = characterActivity.AchievementPoints;
+            character.AlliancePoints = characterActivity.AlliancePoints;
+            character.BankedTelvarStones = characterActivity.BankedTelvarStones;
+            account.BankedTelvarStones = character.BankedTelvarStones;
             character.LastLogin = characterActivity.LastLogin.Value;
             if (character.EnlightenedPool == null || characterActivity.EnlightenedPool > 0)
             {

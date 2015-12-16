@@ -35,6 +35,8 @@ namespace HemSoft.Eso.Domain
         public Nullable<int> ChampionPointsEarned { get; set; }
         public Nullable<int> AchievementPoints { get; set; }
         public Nullable<int> HoursPlayed { get; set; }
+        public Nullable<int> BankedTelvarStones { get; set; }
+        public Nullable<int> AlliancePoints { get; set; }
     
         public virtual Account Account { get; set; }
         public virtual AllianceLookup AllianceLookup { get; set; }

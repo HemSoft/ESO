@@ -28,6 +28,7 @@ namespace HemSoft.Eso.Domain
         public Nullable<int> EnlightenedPool { get; set; }
         public Nullable<int> ChampionPointsEarned { get; set; }
         public Nullable<int> HoursPlayed { get; set; }
+        public Nullable<int> BankedTelvarStones { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Character> Characters { get; set; }

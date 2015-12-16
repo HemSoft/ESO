@@ -1,1 +1,5 @@
-﻿var esoApp = angular.module("esoApp", ["ngResource"]);
+﻿(function () {
+
+    angular.module("app", ["ngResource"]);
+
+})();

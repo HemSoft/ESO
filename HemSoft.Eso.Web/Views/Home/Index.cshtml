@@ -2,10 +2,10 @@
     ViewBag.Title = "Home Page";
 }
 
-<div ng-app="esoApp" ng-controller="esoController" class="row">
+<div ng-app="app" ng-controller="esoController as vmeso" class="row">
     <div class="row">
         <div class="col-md-12 panel panel-default">
-            <div class="panel-body text-center" id="countdown" ng-Init="CountDown()">
+            <div class="panel-body text-center" id="countdown" ng-Init="vmeso.CountDown()">
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
                         <th>Enlightened Pool</th>
                         <th>Hours Played</th>
                     </tr>
-                    <tr ng-repeat="account in accounts" ng-click="accountSelected()">
+                    <tr ng-repeat="account in vmeso.accounts" ng-click="vmeso.accountSelected(account)">
                         <td ng-bind="account.Id" />
                         <td ng-bind="account.Name" />
                         <td ng-bind="account.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="row">
-        <div ng-show="selectedAccount" class="col-md-12 panel">
+        <div ng-show="vmeso.selectedAccount" class="col-md-12 panel">
             <div class="panel-heading">
                 <h2 class="text-center">Characters</h2>
             </div>
@@ -54,7 +54,7 @@
                         <td>Alliance Points</td>
                         <th>Hours Played</th>
                     </tr>
-                    <tr ng-repeat="character in characters" ng-click="characterSelected()">
+                    <tr ng-repeat="character in vmeso.characters" ng-click="vmeso.characterSelected(character)">
                         <td ng-bind="character.Id" />
                         <td ng-bind="character.Name" />
                         <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
@@ -69,9 +69,9 @@
     </div>
 
     <div class="row">
-        <div ng-show="selectedCharacter" class="col-md-12 panel">
+        <div ng-show="vmeso.selectedCharacter" class="col-md-12 panel">
             <div class="panel-heading">
-                <h2 class="text-center" ng-bind="getSelectedCharacterHeaderString()"/>
+                <h2 class="text-center" ng-bind="vmeso.getSelectedCharacterHeaderString()"/>
             </div>
             <div class="panel-body">
                 <table class="table table-bordered table-striped table-hover">
@@ -86,7 +86,7 @@
                         <th>Banked Cash</th>
                         <th>Hours Played</th>
                     </tr>
-                    <tr ng-repeat="characterActivity in characterActivities">
+                    <tr ng-repeat="characterActivity in vmeso.characterActivities">
                     <td ng-bind="characterActivity.Id"/>
                     <td ng-bind="characterActivity.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'"/>
                     <td ng-bind="characterActivity.ChampionPointsEarned"/>

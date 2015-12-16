@@ -2,10 +2,10 @@
     ViewBag.Title = "Quests";
 }
 
-<div ng-app="esoApp" ng-controller="esoController" ng-init="getCharacterQuests()" class="row">
+<div ng-app="app" ng-controller="esoController as vmeso" ng-init="vmeso.getCharacterQuests()" class="row">
     <div class="row">
         <div class="col-md-12 panel panel-default">
-            <div class="panel-body text-center" id="countdown" ng-Init="CountDown()">
+            <div class="panel-body text-center" id="countdown" ng-Init="vmeso.CountDown()">
             </div>
         </div>
     </div>
@@ -14,7 +14,7 @@
             <h2 class="text-center">Character Quests</h2>
         </div>
         <div class="panel-body">
-            <div ng-repeat="c in characterQuests">
+            <div ng-repeat="c in vmeso.characterQuests">
                 <div class="col-md-12 panel">
                     <div class="panel-heading">
                         <h2 class="text-center">{{ c.Name }}</h2>

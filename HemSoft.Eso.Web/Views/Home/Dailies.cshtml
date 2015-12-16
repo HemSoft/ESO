@@ -2,14 +2,14 @@
     ViewBag.Title = "Dailies";
 }
 
-<div ng-app="esoApp" ng-controller="esoController" class="row">
+<div ng-app="app" ng-controller="esoController as vmeso" class="row">
     <div class="row">
         <div class="col-md-12 panel panel-default">
-            <div class="panel-body text-center" id="countdown" ng-Init="CountDown()">
+            <div class="panel-body text-center" id="countdown" ng-Init="vmeso.CountDown()">
             </div>
         </div>
     </div>
-    <div class="col-md-12 panel" ng-init="getWritStatus()">
+    <div class="col-md-12 panel" ng-init="vmeso.getWritStatus()">
         <div class="panel-heading">
             <h2 class="text-center">Writs</h2>
         </div>
@@ -24,7 +24,7 @@
                     <th>Provisioning</th>
                     <th>Woodworking</th>
                 </tr>
-                <tr ng-repeat="ws in writStatus" class="{{ ws.AllWritsCompletedClass}}">
+                <tr ng-repeat="ws in vmeso.writStatus" class="{{ ws.AllWritsCompletedClass}}">
                     <td ng-bind="ws.Character.Name" />
                     <td ng-show="{{ ws.AlchemyCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
                     <td ng-show="{{ ws.AlchemyCompleted === null }}"></td>
@@ -54,7 +54,7 @@
         </div>
     </div>
 
-    <div class="col-md-12 panel" ng-init="getOrsiniumStatus()" >
+    <div class="col-md-12 panel" ng-init="vmeso.getOrsiniumStatus()" >
         <div class="panel-heading">
             <h2 class="text-center">Orsinium</h2>
         </div>
@@ -69,7 +69,7 @@
                     <th>Reeking of foul Play / Edu</th>
                     <th>Snow and Steam / Nyz</th>
                 </tr>
-                <tr ng-repeat="s in orsiniumStatus" class="{{ ws.AllQuestsCompletedClass }}">
+                <tr ng-repeat="s in vmeso.orsiniumStatus" class="{{ ws.AllQuestsCompletedClass }}">
                     <td ng-bind="s.Character.Name"/>
 
                     <td ng-show="{{ s.HeresyOfIgnorance }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>

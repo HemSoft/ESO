@@ -2,13 +2,18 @@
     ViewBag.Title = "Home Page";
 }
 
-<div ng-app="app" ng-controller="esoController as vmeso" class="row">
+<div ng-controller="esoController as vmeso" class="row">
     <div class="row">
         <div class="col-md-12 panel panel-default">
             <div class="panel-body text-center" id="countdown" ng-Init="vmeso.CountDown()">
             </div>
         </div>
     </div>
+
+    <div ng-include="~/app/accounts/accountListView.cshtml">
+
+    </div>
+
     <div class="row">
         <div class="col-md-12 panel">
             <div class="panel-heading">
@@ -29,7 +34,7 @@
                         <td ng-bind="account.Id" />
                         <td ng-bind="account.Name" />
                         <td ng-bind="account.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
-                        <td ng-bind="account.BankedTelvarStornes" />
+                        <td ng-bind="account.BankedTelvarStones" />
                         <td ng-bind="account.ChampionPointsEarned" />
                         <td ng-bind="account.EnlightenedPool" />
                         <td ng-bind="account.HoursPlayed" />
@@ -91,11 +96,11 @@
                     <td ng-bind="characterActivity.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'"/>
                     <td ng-bind="characterActivity.ChampionPointsEarned"/>
                     <td ng-bind="characterActivity.EnlightenedPool"/>
-                    <td ng-bind="getCharacterActivityBagUsageString(characterActivity)"/>
-                    <td ng-bind="getCharacterActivityBankUsageString(characterActivity)"/>
+                    <td ng-bind="vmeso.getCharacterActivityBagUsageString(characterActivity)"/>
+                    <td ng-bind="vmeso.getCharacterActivityBankUsageString(characterActivity)"/>
                     <td ng-bind="characterActivity.Cash"/>
                     <td ng-bind="characterActivity.BankedCash"/>
-                    <td ng-bind="getCharacterActivityTimePlayed(characterActivity)"/>
+                    <td ng-bind="vmeso.getCharacterActivityTimePlayed(characterActivity)"/>
                     <tr>
                 </table>
             </div>

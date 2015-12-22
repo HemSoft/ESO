@@ -358,6 +358,7 @@
 
                         if (esoProperty.Time == null)
                         {
+                            Console.WriteLine($"Invalid time information for { character.Name }");
                             return;
                         }
 
@@ -434,36 +435,39 @@
                             ).ToUniversalTime();
                         }
 
-                        if (!account.LastLogin.HasValue)
+                        if (character.EffectiveLevel >= 10)
                         {
-                            account.LastLogin = characterActivity.LastLogin.Value;
-                            AccountManager.Save(account);
-                        }
-                        else
-                        {
-                            if (DateTime.Compare(characterActivity.LastLogin.Value, account.LastLogin.Value) > 0)
+                            if (!account.LastLogin.HasValue)
                             {
                                 account.LastLogin = characterActivity.LastLogin.Value;
                                 AccountManager.Save(account);
                             }
-                        }
+                            else
+                            {
+                                if (DateTime.Compare(characterActivity.LastLogin.Value, account.LastLogin.Value) > 0)
+                                {
+                                    account.LastLogin = characterActivity.LastLogin.Value;
+                                    AccountManager.Save(account);
+                                }
+                            }
 
-                        if (!character.LastLogin.HasValue)
-                        {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
-                            Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
-                        }
-                        else if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
-                        {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
-                            Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
-                        }
-                        else if (lastCharacterActivity.LastLogin.HasValue)
-                        {
-                            if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
+                            if (!character.LastLogin.HasValue)
                             {
                                 UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
                                 Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
+                            }
+                            else if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
+                            {
+                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
+                                Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
+                            }
+                            else if (lastCharacterActivity.LastLogin.HasValue)
+                            {
+                                if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
+                                {
+                                    UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
+                                    Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
+                                }
                             }
                         }
                     }

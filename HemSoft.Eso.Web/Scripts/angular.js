@@ -5798,7 +5798,7 @@ function Browser(window, document, $log, $sniffer) {
    *
    * @description
    * Returns current <base href>
-   * (always relative - without domain)
+   * (always relative - without Domain)
    *
    * @returns {string} The current base href
    */
@@ -10070,14 +10070,14 @@ function $HttpProvider() {
      * an unauthorized site can gain your user's private data. Angular provides a mechanism
      * to counter XSRF. When performing XHR requests, the $http service reads a token from a cookie
      * (by default, `XSRF-TOKEN`) and sets it as an HTTP header (`X-XSRF-TOKEN`). Since only
-     * JavaScript that runs on your domain could read the cookie, your server can be assured that
-     * the XHR came from JavaScript running on your domain. The header will not be set for
-     * cross-domain requests.
+     * JavaScript that runs on your Domain could read the cookie, your server can be assured that
+     * the XHR came from JavaScript running on your Domain. The header will not be set for
+     * cross-Domain requests.
      *
      * To take advantage of this, your server needs to set a token in a JavaScript readable session
      * cookie called `XSRF-TOKEN` on the first HTTP GET request. On subsequent XHR requests the
      * server can verify that the cookie matches `X-XSRF-TOKEN` HTTP header, and therefore be sure
-     * that only JavaScript running on your domain could have sent the request. The token must be
+     * that only JavaScript running on your Domain could have sent the request. The token must be
      * unique for each user and must be verifiable by the server (to prevent the JavaScript from
      * making up its own tokens). We recommend that the token is a digest of your site's
      * authentication cookie with a [salt](https://en.wikipedia.org/wiki/Salt_(cryptography&#41;)
@@ -10088,7 +10088,7 @@ function $HttpProvider() {
      * or the per-request config object.
      *
      * In order to prevent collisions in environments where multiple Angular apps share the
-     * same domain or subdomain, we recommend that each application uses unique cookie name.
+     * same Domain or subdomain, we recommend that each application uses unique cookie name.
      *
      * @param {object} config Object describing the request to be made and how it should be
      *    processed. The object has following properties:
@@ -16648,7 +16648,7 @@ function adjustMatchers(matchers) {
  *    $sceDelegateProvider.resourceUrlWhitelist([
  *      // Allow same origin resource loads.
  *      'self',
- *      // Allow loading from our assets domain.  Notice the difference between * and **.
+ *      // Allow loading from our assets Domain.  Notice the difference between * and **.
  *      'http://srv*.assets.example.com/**'
  *    ]);
  *
@@ -16709,8 +16709,8 @@ function $SceDelegateProvider() {
    *     allowed in this array.
    *
    *     The typical usage for the blacklist is to **block
-   *     [open redirects](http://cwe.mitre.org/data/definitions/601.html)** served by your domain as
-   *     these would otherwise be trusted but actually return content from the redirected domain.
+   *     [open redirects](http://cwe.mitre.org/data/definitions/601.html)** served by your Domain as
+   *     these would otherwise be trusted but actually return content from the redirected Domain.
    *
    *     Finally, **the blacklist overrides the whitelist** and has the final say.
    *
@@ -17010,7 +17010,7 @@ function $SceDelegateProvider() {
  * This applies both to the {@link ng.directive:ngInclude `ng-include`} directive as well as
  * `templateUrl`'s specified by {@link guide/directive directives}.
  *
- * By default, Angular only loads templates from the same domain and protocol as the application
+ * By default, Angular only loads templates from the same Domain and protocol as the application
  * document.  This is done by calling {@link ng.$sce#getTrustedResourceUrl
  * $sce.getTrustedResourceUrl} on the template URL.  To load templates from other domains and/or
  * protocols, you may either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist
@@ -17021,7 +17021,7 @@ function $SceDelegateProvider() {
  * [Same Origin Policy](https://code.google.com/p/browsersec/wiki/Part2#Same-origin_policy_for_XMLHttpRequest)
  * and [Cross-Origin Resource Sharing (CORS)](http://www.w3.org/TR/cors/)
  * policy apply in addition to this and may further restrict whether the template is successfully
- * loaded.  This means that without the right CORS policy, loading templates from a different domain
+ * loaded.  This means that without the right CORS policy, loading templates from a different Domain
  * won't work on all browsers.  Also, loading templates from `file://` URL does not work on some
  * browsers.
  *
@@ -17037,7 +17037,7 @@ function $SceDelegateProvider() {
  * through {@link ng.$sce#getTrusted $sce.getTrusted}.  SCE doesn't play a role here.
  *
  * The included {@link ng.$sceDelegate $sceDelegate} comes with sane defaults to allow you to load
- * templates in `ng-include` from your application's domain without having to even know about SCE.
+ * templates in `ng-include` from your application's Domain without having to even know about SCE.
  * It blocks loading templates from other domains or loading templates over http from an https
  * served document.  You can change these by setting your own custom {@link
  * ng.$sceDelegateProvider#resourceUrlWhitelist whitelists} and {@link
@@ -17064,7 +17064,7 @@ function $SceDelegateProvider() {
  *
  *  - **'self'**
  *    - The special **string**, `'self'`, can be used to match against all URLs of the **same
- *      domain** as the application document using the **same protocol**.
+ *      Domain** as the application document using the **same protocol**.
  *  - **String** (except the special value `'self'`)
  *    - The string is matched against the full *normalized / absolute URL* of the resource
  *      being tested (substring matches are not good enough.)
@@ -17074,7 +17074,7 @@ function $SceDelegateProvider() {
  *      characters: '`:`', '`/`', '`.`', '`?`', '`&`' and '`;`'.  It's a useful wildcard for use
  *      in a whitelist.
  *    - `**`: matches zero or more occurrences of *any* character.  As such, it's not
- *      appropriate for use in a scheme, domain, etc. as it would match too much.  (e.g.
+ *      appropriate for use in a scheme, Domain, etc. as it would match too much.  (e.g.
  *      http://**.example.com/ would match http://evil.com/?ignore=.example.com/ and that might
  *      not have been the intention.)  Its usage at the very end of the path is ok.  (e.g.
  *      http://foo.example.com/templates/**).
@@ -21472,7 +21472,7 @@ var inputType = {
    *
    * <div class="alert alert-warning">
    * **Note:** `input[email]` uses a regex to validate email addresses that is derived from the regex
-   * used in Chromium. If you need stricter validation (e.g. requiring a top-level domain), you can
+   * used in Chromium. If you need stricter validation (e.g. requiring a top-level Domain), you can
    * use `ng-pattern` or modify the built-in validators (see the {@link guide/forms Forms guide})
    * </div>
    *
@@ -24165,7 +24165,7 @@ var ngIfDirective = ['$animate', function($animate) {
  * @description
  * Fetches, compiles and includes an external HTML fragment.
  *
- * By default, the template URL is restricted to the same domain and protocol as the
+ * By default, the template URL is restricted to the same Domain and protocol as the
  * application document. This is done by calling {@link $sce#getTrustedResourceUrl
  * $sce.getTrustedResourceUrl} on it. To load templates from other domains or protocols
  * you may either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist them} or
@@ -24176,7 +24176,7 @@ var ngIfDirective = ['$animate', function($animate) {
  * [Same Origin Policy](https://code.google.com/p/browsersec/wiki/Part2#Same-origin_policy_for_XMLHttpRequest)
  * and [Cross-Origin Resource Sharing (CORS)](http://www.w3.org/TR/cors/)
  * policy may further restrict whether the template is successfully loaded.
- * For example, `ngInclude` won't work for cross-domain requests on all browsers and for `file://`
+ * For example, `ngInclude` won't work for cross-Domain requests on all browsers and for `file://`
  * access on some browsers.
  *
  * @animations

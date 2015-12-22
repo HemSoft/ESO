@@ -1,0 +1,20 @@
+﻿<table class="table table-bordered table-striped table-hover" ng-controller="accountController as ac">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Last Logged In</th>
+        <th>Telvar Stones</th>
+        <th>CP</th>
+        <th>Enlightened Pool</th>
+        <th>Hours Played</th>
+    </tr>
+    <tr ng-repeat="account in ac.accounts" ng-click="ac.accountSelected(account)">
+        <td ng-bind="account.Id" />
+        <td ng-bind="account.Name" />
+        <td ng-bind="account.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
+        <td ng-bind="account.BankedTelvarStones" />
+        <td ng-bind="account.ChampionPointsEarned" />
+        <td ng-bind="account.EnlightenedPool" />
+        <td ng-bind="account.HoursPlayed" />
+    <tr>
+</table>

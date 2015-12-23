@@ -26,6 +26,8 @@
             var lua = new Lua();
             var skillList = new List<CharacterSkill>();
             var questList = new List<CharacterQuest>();
+            var inventoryList = new List<CharacterInventory>();
+
             var filePath = @"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua";
             //var filePath = @"..\..\..\AddOns\HSEventLog\SavedVariables\HSEventLog.lua";
             if (!File.Exists(filePath))
@@ -148,6 +150,94 @@
                                     characterActivity.GuildCount = int.Parse(property.Value.ToString());
                                     break;
                                 case "Journal":
+                                    break;
+                                case "Inventory":
+                                    inventoryList.Clear();
+                                    Dictionary<object, object> inventoryDictList = lua.GetTableDict(property.Value as LuaTable);
+                                    foreach (var i in inventoryDictList)
+                                    {
+                                        Dictionary<object, object> inventoryProperties = lua.GetTableDict(i.Value as LuaTable);
+                                        var inventory = new CharacterInventory();
+                                        inventory.CharacterId = character.Id;
+                                        foreach (var ip in inventoryProperties)
+                                        {
+                                            switch (ip.Key.ToString().ToLower())
+                                            {
+                                                case "armortype":
+                                                    inventory.ArmorType = int.Parse(ip.Value.ToString());
+                                                    break;
+                                                case "consumable":
+                                                    inventory.IsConsumable = (bool) ip.Value;
+                                                    break;
+                                                case "equiptype":
+                                                    inventory.EqiuipType = int.Parse(ip.Value.ToString());
+                                                    break;
+                                                case "icon":
+                                                    inventory.Icon = ip.Value.ToString();
+                                                    break;
+                                                case "info":
+                                                    inventory.Info = ip.Value.ToString();
+                                                    break;
+                                                case "instanceid":
+                                                    inventory.InstanceId = long.Parse(ip.Value.ToString());
+                                                    break;
+                                                case "isbound":
+                                                    inventory.IsBound = (bool) ip.Value;
+                                                    break;
+                                                case "isequipable":
+                                                    inventory.IsEquipable = (bool) ip.Value;
+                                                    break;
+                                                case "isjunk":
+                                                    inventory.IsJunk = (bool) ip.Value;
+                                                    break;
+                                                case "isusable":
+                                                    inventory.IsUsable = (bool) ip.Value;
+                                                    break;
+                                                case "itemstyle":
+                                                    inventory.ItemStyle = ip.Value.ToString();
+                                                    break;
+                                                case "link":
+                                                    inventory.Link = ip.Value.ToString();
+                                                    break;
+                                                case "location":
+                                                    inventory.Location = int.Parse(ip.Value.ToString());
+                                                    break;
+                                                case "meetsusagerequirement":
+                                                    inventory.MeetsUsageRequirement = (bool) ip.Value;
+                                                    break;
+                                                case "name":
+                                                    inventory.Name = ip.Value.ToString();
+                                                    break;
+                                                case "requiredlevel":
+                                                    inventory.RequiredLevel = int.Parse(ip.Value.ToString());
+                                                    break;
+                                                case "requiredveteranrank":
+                                                    inventory.RequiredVeteranRank = int.Parse(ip.Value.ToString());
+                                                    break;
+                                                case "sellprice":
+                                                    inventory.SellPrice = int.Parse(ip.Value.ToString());
+                                                    break;
+                                                case "stacksize":
+                                                    inventory.StackSize = int.Parse(ip.Value.ToString());
+                                                    break;
+                                                case "statvalue":
+                                                    inventory.StatValue = int.Parse(ip.Value.ToString());
+                                                    break;
+                                                case "totalcount":
+                                                    inventory.TotalCount = int.Parse(ip.Value.ToString());
+                                                    break;
+                                                case "trait":
+                                                    inventory.Trait = int.Parse(ip.Value.ToString());
+                                                    break;
+                                                case "type":
+                                                    inventory.ItemType = int.Parse(ip.Value.ToString());
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        inventoryList.Add(inventory);
+                                    }
                                     break;
                                 case "IsVeteran":
                                     characterActivity.IsVeteran = bool.Parse(property.Value.ToString());
@@ -334,7 +424,6 @@
                                 case "version":
                                 case "left":
                                 case "top":
-                                case "Inventory":
                                 case "Alliance":
                                 case "HealthMax":
                                 case "Title":
@@ -453,19 +542,19 @@
 
                             if (!character.LastLogin.HasValue)
                             {
-                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
+                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList);
                                 Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                             }
                             else if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                             {
-                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
+                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList);
                                 Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                             }
                             else if (lastCharacterActivity.LastLogin.HasValue)
                             {
                                 if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                                 {
-                                    UpdateCharacterActvity(account, character, characterActivity, skillList, questList);
+                                    UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList);
                                     Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                                 }
                             }
@@ -476,7 +565,7 @@
         }
 
         private static void UpdateCharacterActvity(Account account, Character character, CharacterActivity characterActivity,
-            List<CharacterSkill> skillList, List<CharacterQuest> quests)
+            List<CharacterSkill> skillList, List<CharacterQuest> quests, List<CharacterInventory> inventoryList)
         {
             character.AchievementPoints = characterActivity.AchievementPoints;
             character.AlliancePoints = characterActivity.AlliancePoints;
@@ -503,6 +592,7 @@
 
             AccountManager.Save(account);
             CharacterManager.SaveSkills(skillList, character.Id);
+            CharacterInventoryManager.Save(inventoryList);
             CharacterQuestManager.Save(quests);
             CharacterManager.Save(character);
             CharacterActivityManager.Save(characterActivity);

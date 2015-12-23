@@ -104,6 +104,36 @@
           <Property Name="XPMax" Type="int" />
           <Property Name="Zone" Type="varchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="CharacterInventory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CharacterId" Type="int" Nullable="false" />
+          <Property Name="ArmorType" Type="int" />
+          <Property Name="EqiuipType" Type="int" />
+          <Property Name="Icon" Type="varchar(max)" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Info" Type="varchar(max)" Nullable="false" />
+          <Property Name="InstanceId" Type="bigint" Nullable="false" />
+          <Property Name="IsBound" Type="bit" Nullable="false" />
+          <Property Name="IsConsumable" Type="bit" Nullable="false" />
+          <Property Name="IsEquipable" Type="bit" Nullable="false" />
+          <Property Name="IsJunk" Type="bit" Nullable="false" />
+          <Property Name="IsUsable" Type="bit" Nullable="false" />
+          <Property Name="ItemStyle" Type="varchar(max)" Nullable="false" />
+          <Property Name="ItemType" Type="int" Nullable="false" />
+          <Property Name="Location" Type="int" Nullable="false" />
+          <Property Name="Link" Type="varchar(max)" Nullable="false" />
+          <Property Name="MeetsUsageRequirement" Type="bit" />
+          <Property Name="RequiredLevel" Type="int" Nullable="false" />
+          <Property Name="RequiredVeteranRank" Type="int" Nullable="false" />
+          <Property Name="SellPrice" Type="int" />
+          <Property Name="StackSize" Type="int" Nullable="false" />
+          <Property Name="StatValue" Type="int" Nullable="false" />
+          <Property Name="TotalCount" Type="int" Nullable="false" />
+          <Property Name="Trait" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="CharacterQuest">
           <Key>
             <PropertyRef Name="Id" />
@@ -217,6 +247,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CharacterInventory_Character">
+          <End Role="Character" Type="Self.Character" Multiplicity="1" />
+          <End Role="CharacterInventory" Type="Self.CharacterInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Character">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterInventory">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CharacterQuest_Character">
           <End Role="Character" Type="Self.Character" Multiplicity="1" />
           <End Role="CharacterQuest" Type="Self.CharacterQuest" Multiplicity="*" />
@@ -267,6 +309,7 @@
           <EntitySet Name="AllianceLookup" EntityType="Self.AllianceLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Character" EntityType="Self.Character" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterActivity" EntityType="Self.CharacterActivity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CharacterInventory" EntityType="Self.CharacterInventory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterQuest" EntityType="Self.CharacterQuest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterSkill" EntityType="Self.CharacterSkill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassLookup" EntityType="Self.ClassLookup" Schema="dbo" store:Type="Tables" />
@@ -291,6 +334,10 @@
           <AssociationSet Name="FK_CharacterActivity_Character" Association="Self.FK_CharacterActivity_Character">
             <End Role="Character" EntitySet="Character" />
             <End Role="CharacterActivity" EntitySet="CharacterActivity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CharacterInventory_Character" Association="Self.FK_CharacterInventory_Character">
+            <End Role="Character" EntitySet="Character" />
+            <End Role="CharacterInventory" EntitySet="CharacterInventory" />
           </AssociationSet>
           <AssociationSet Name="FK_CharacterQuest_Character" Association="Self.FK_CharacterQuest_Character">
             <End Role="Character" EntitySet="Character" />
@@ -359,6 +406,7 @@
           <Property Name="HoursPlayed" Type="Int32" />
           <Property Name="BankedTelvarStones" Type="Int32" />
           <Property Name="AlliancePoints" Type="Int32" />
+          <NavigationProperty Name="CharacterInventories" Relationship="EsoModel.FK_CharacterInventory_Character" FromRole="Character" ToRole="CharacterInventory" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -563,6 +611,11 @@
             <End Role="Character" EntitySet="Characters" />
             <End Role="CharacterQuest" EntitySet="CharacterQuests" />
           </AssociationSet>
+          <EntitySet Name="CharacterInventories" EntityType="EsoModel.CharacterInventory" />
+          <AssociationSet Name="FK_CharacterInventory_Character" Association="EsoModel.FK_CharacterInventory_Character">
+            <End Role="Character" EntitySet="Characters" />
+            <End Role="CharacterInventory" EntitySet="CharacterInventories" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CharactersNeedingAttention_Result">
           <Property Type="Int32" Name="CharacterId" Nullable="false" />
@@ -749,6 +802,49 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="CharacterQuest">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CharacterInventory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CharacterId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Info" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="InstanceId" Type="Int64" Nullable="false" />
+          <Property Name="IsBound" Type="Boolean" Nullable="false" />
+          <Property Name="IsConsumable" Type="Boolean" Nullable="false" />
+          <Property Name="IsEquipable" Type="Boolean" Nullable="false" />
+          <Property Name="IsJunk" Type="Boolean" Nullable="false" />
+          <Property Name="IsUsable" Type="Boolean" Nullable="false" />
+          <Property Name="ItemStyle" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ItemType" Type="Int32" Nullable="false" />
+          <Property Name="Location" Type="Int32" Nullable="false" />
+          <Property Name="Link" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="RequiredLevel" Type="Int32" Nullable="false" />
+          <Property Name="RequiredVeteranRank" Type="Int32" Nullable="false" />
+          <Property Name="StackSize" Type="Int32" Nullable="false" />
+          <Property Name="StatValue" Type="Int32" Nullable="false" />
+          <Property Name="TotalCount" Type="Int32" Nullable="false" />
+          <Property Name="Trait" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Character" Relationship="EsoModel.FK_CharacterInventory_Character" FromRole="CharacterInventory" ToRole="Character" />
+          <Property Name="MeetsUsageRequirement" Type="Boolean" />
+          <Property Name="SellPrice" Type="Int32" />
+          <Property Name="EqiuipType" Type="Int32" />
+          <Property Name="Icon" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ArmorType" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_CharacterInventory_Character">
+          <End Type="EsoModel.Character" Role="Character" Multiplicity="1" />
+          <End Type="EsoModel.CharacterInventory" Role="CharacterInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Character">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterInventory">
               <PropertyRef Name="CharacterId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1053,6 +1149,37 @@
                 <ScalarProperty Name="Level" ColumnName="Level" />
                 <ScalarProperty Name="EventCode" ColumnName="EventCode" />
                 <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CharacterInventories">
+            <EntityTypeMapping TypeName="EsoModel.CharacterInventory">
+              <MappingFragment StoreEntitySet="CharacterInventory">
+                <ScalarProperty Name="ArmorType" ColumnName="ArmorType" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="EqiuipType" ColumnName="EqiuipType" />
+                <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
+                <ScalarProperty Name="MeetsUsageRequirement" ColumnName="MeetsUsageRequirement" />
+                <ScalarProperty Name="Trait" ColumnName="Trait" />
+                <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+                <ScalarProperty Name="StatValue" ColumnName="StatValue" />
+                <ScalarProperty Name="StackSize" ColumnName="StackSize" />
+                <ScalarProperty Name="RequiredVeteranRank" ColumnName="RequiredVeteranRank" />
+                <ScalarProperty Name="RequiredLevel" ColumnName="RequiredLevel" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="ItemType" ColumnName="ItemType" />
+                <ScalarProperty Name="ItemStyle" ColumnName="ItemStyle" />
+                <ScalarProperty Name="IsUsable" ColumnName="IsUsable" />
+                <ScalarProperty Name="IsJunk" ColumnName="IsJunk" />
+                <ScalarProperty Name="IsEquipable" ColumnName="IsEquipable" />
+                <ScalarProperty Name="IsConsumable" ColumnName="IsConsumable" />
+                <ScalarProperty Name="IsBound" ColumnName="IsBound" />
+                <ScalarProperty Name="InstanceId" ColumnName="InstanceId" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

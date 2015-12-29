@@ -1,4 +1,4 @@
-﻿<table class="table table-bordered table-striped table-hover" ng-controller="accountController as ac">
+﻿<table class="table table-bordered table-striped table-hover">
     <tr>
         <th>Id</th>
         <th>Name</th>
@@ -8,7 +8,7 @@
         <th>Enlightened Pool</th>
         <th>Hours Played</th>
     </tr>
-    <tr ng-repeat="account in ac.accounts" ng-click="ac.accountSelected(account)">
+    <tr ng-repeat="account in vmac.accounts" style="cursor: pointer;" ng-click="vmac.selectAccount(account)">
         <td ng-bind="account.Id" />
         <td ng-bind="account.Name" />
         <td ng-bind="account.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />

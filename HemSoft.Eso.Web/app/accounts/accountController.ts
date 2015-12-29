@@ -1,24 +1,26 @@
 ﻿module App.AccountController {
 
-    export interface IAccountViewModel {
+    interface IAccountViewModel {
         title: string;
         accounts: App.Domain.Account[];
         selectedAccount: App.Domain.Account;
         selectAccount: Function;
     }
 
-    export class AccountController implements IAccountViewModel {
-        resource: Function;
-        constants: any[];
-
+    class AccountController implements IAccountViewModel {
         title: string;
-        accounts: App.Domain.Account[]; //resource(constants.apiUrl + "Accounts/:id").query();
+        accounts: App.Domain.Account[];
         selectedAccount: App.Domain.Account;
 
-        constructor($resource, constants) {
+        static $inject = ["dataAccessService"];
+        constructor(private dataAccessService: App.Common.DataAccessService) {
             this.title = "Accounts";
-            this.resource = $resource;
-            this.constants = constants
+
+            var accountResource = dataAccessService.getAccountResource();
+            accountResource.query((data: App.Domain.IAccount[]) => {
+                this.accounts = data;
+            });
+
         }
 
         selectAccount(account) {

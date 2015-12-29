@@ -3,17 +3,21 @@ var App;
     var AccountController;
     (function (AccountController_1) {
         var AccountController = (function () {
-            function AccountController($resource, constants) {
+            function AccountController(dataAccessService) {
+                var _this = this;
+                this.dataAccessService = dataAccessService;
                 this.title = "Accounts";
-                this.resource = $resource;
-                this.constants = constants;
+                var accountResource = dataAccessService.getAccountResource();
+                accountResource.query(function (data) {
+                    _this.accounts = data;
+                });
             }
             AccountController.prototype.selectAccount = function (account) {
                 this.selectedAccount = account;
             };
+            AccountController.$inject = ["dataAccessService"];
             return AccountController;
         })();
-        AccountController_1.AccountController = AccountController;
         angular.module("app").controller("accountController", AccountController);
     })(AccountController = App.AccountController || (App.AccountController = {}));
 })(App || (App = {}));

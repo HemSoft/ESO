@@ -2,11 +2,12 @@
 
     angular
         .module("common.services", ["ngResource"])
-        .constant("constants", (() => {
-            return {
-                apiUrl: "http://hemsoftesoapi.azurewebsites.net/api/",
-                xxx: "johndoe"
+        .constant
+        (
+            "appSettings",
+            {
+                serverPath: "http://hemsoftesoapi.azurewebsites.net"
             }
-        })());
+        );
 
 }

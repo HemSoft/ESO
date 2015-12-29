@@ -182,8 +182,14 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\characters\characterListView.html" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
     <Content Include="tsd.json" />
+    <Content Include="Views\Home\CharacterDetail.cshtml" />
     <TypeScriptCompile Include="app\accounts\accountController.ts" />
+    <TypeScriptCompile Include="app\characters\characterController.ts" />
+    <TypeScriptCompile Include="app\characters\character.ts" />
     <TypeScriptCompile Include="app\common\dataAccess.service.ts" />
     <TypeScriptCompile Include="app\common\common.services.ts" />
     <TypeScriptCompile Include="app\controllers\esoController.ts" />
@@ -202,12 +208,13 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
-    <Content Include="app\accounts\accountListView.cshtml" />
-    <Content Include="app\accounts\accountDetailView.cshtml" />
+    <Content Include="app\accounts\accountListView.html" />
+    <Content Include="app\accounts\accountDetailView.html" />
     <None Include="Properties\PublishProfiles\HemSoftEsoWeb - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\HemSoftEsoWeb - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\HemSoftEsoWeb - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\HemSoftEsoWeb - Web Deploy.pubxml" />
+    <Content Include="Scripts\angular-route.min.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -259,6 +266,7 @@
     <Content Include="Views\Home\Quests.cshtml" />
     <Content Include="Views\Home\Dailies.cshtml" />
     <TypeScriptCompile Include="typings\angularjs\angular-resource.d.ts" />
+    <TypeScriptCompile Include="typings\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="typings\tsd.d.ts" />

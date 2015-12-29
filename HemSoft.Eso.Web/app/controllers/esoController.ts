@@ -1,15 +1,13 @@
-﻿module app.eso {
+﻿module App.Eso {
 
-    angular.module("app").controller("esoController", function($resource, constants) {
+    angular.module("app").controller("esoController", function($resource) {
 
         var vmeso = this;
 
-        vmeso.accounts = $resource(constants.apiUrl + "Accounts/:id").query();
-        vmeso.selectedAccount = null;
         vmeso.selectedCharacter = null;
-        vmeso.charactersNeedingAttention = $resource(constants.apiUrl + "Characters/GetCharactersNeedingAttention").query();
-        vmeso.characterResearch = $resource(constants.apiUrl + "Characters/GetCharacterResearch").query();
-        vmeso.nextUpInResearchPromise = $resource(constants.apiUrl + "Characters/GetNextUpInResearch");
+        //vmeso.charactersNeedingAttention = $resource(constants.apiUrl + "Characters/GetCharactersNeedingAttention").query();
+        //vmeso.characterResearch = $resource(constants.apiUrl + "Characters/GetCharacterResearch").query();
+        vmeso.nextUpInResearchPromise = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetNextUpInResearch");
         vmeso.skillSortType = "Name";
         vmeso.skillSortReverse = false;
         vmeso.questSortType = "Completed";
@@ -31,22 +29,22 @@
 
         vmeso.getCharactersForSelectedAccount = function() {
             if (vmeso.selectedAccount !== null) {
-                vmeso.characters =
-                    $resource(constants.apiUrl + "Characters/GetCharactersByAccountId?accountId="
-                        + this.selectedAccount.Id).query();
+                //vmeso.characters =
+                //    $resource(constants.apiUrl + "Characters/GetCharactersByAccountId?accountId="
+                //        + this.selectedAccount.Id).query();
             }
         }
 
         vmeso.getCharacterActivitiesForSelectedCharacter = function() {
             if (this.selectedAccount !== null) {
-                vmeso.characterActivities =
-                    $resource(constants.apiUrl + "CharacterActivities/GetCharacterActivitiesByCharacterId?characterId="
-                        + vmeso.selectedCharacter.Id).query();
+                //vmeso.characterActivities =
+                //    $resource(constants.apiUrl + "CharacterActivities/GetCharacterActivitiesByCharacterId?characterId="
+                //        + vmeso.selectedCharacter.Id).query();
             }
         }
 
         vmeso.getCharactersNeedingAttention = function() {
-            vmeso.charactersNeedingAttention = $resource(constants.apiUrl + "Characters/GetCharactersNeedingAttention").query();
+            //vmeso.charactersNeedingAttention = $resource(constants.apiUrl + "Characters/GetCharactersNeedingAttention").query();
         }
 
         vmeso.getCharacterActivityBagUsageString = characterActivity => (characterActivity.UsedBagSlots + "/" + characterActivity.MaxBagSize)
@@ -54,15 +52,15 @@
         vmeso.getCharacterActivityBankUsageString = characterActivity => (characterActivity.UsedBankSlots + "/" + characterActivity.MaxBankSize)
 
         vmeso.getCharacterSkills = () => {
-            this.characterSkills = $resource(constants.apiUrl + "Characters/GetCharacterSkills").query();
+            //this.characterSkills = $resource(constants.apiUrl + "Characters/GetCharacterSkills").query();
         }
 
         vmeso.getCharacterQuests = () => {
-            this.characterQuests = $resource(constants.apiUrl + "Characters/GetCharacterQuests").query();
+            //this.characterQuests = $resource(constants.apiUrl + "Characters/GetCharacterQuests").query();
         }
 
         vmeso.getNextUpInResearch = () => {
-            this.nextUpInResearch = $resource(constants.apiUrl + "Characters/GetNextUpInResearch").query();
+            this.nextUpInResearch = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetNextUpInResearch").query();
         }
 
         vmeso.getSelectedAccountHeaderString = () => {
@@ -87,11 +85,11 @@
         }
 
         vmeso.getOrsiniumStatus = () => {
-            this.orsiniumStatus = $resource(constants.apiUrl + "Characters/GetOrsiniumStatus").query();
+            //this.orsiniumStatus = $resource(constants.apiUrl + "Characters/GetOrsiniumStatus").query();
         }
 
         vmeso.getWritStatus = () => {
-            this.writStatus = $resource(constants.apiUrl + "Characters/GetWritStatus").query();
+            //this.writStatus = $resource(constants.apiUrl + "Characters/GetWritStatus").query();
         }
 
         vmeso.CountDown = nextUp => {
@@ -134,9 +132,11 @@
                 if (counter >= 60) {
                     counter = 0;
 
-                    this.nextUpInResearch = this.nextUpInResearchPromise.get(resp => {
-                        nextUp = resp;
-                    });
+                    if (this.nextUpInResearchPromise !== undefined && this.nextUpInResearch !== null) {
+                        this.nextUpInResearch = this.nextUpInResearchPromise.get(resp => {
+                            nextUp = resp;
+                        });
+                    }
                 }
 
             }, 1000);

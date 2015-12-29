@@ -4,12 +4,9 @@ var App;
     (function (Common) {
         angular
             .module("common.services", ["ngResource"])
-            .constant("constants", (function () {
-            return {
-                apiUrl: "http://hemsoftesoapi.azurewebsites.net/api/",
-                xxx: "johndoe"
-            };
-        })());
+            .constant("appSettings", {
+            serverPath: "http://hemsoftesoapi.azurewebsites.net"
+        });
     })(Common = App.Common || (App.Common = {}));
 })(App || (App = {}));
 //# sourceMappingURL=common.services.js.map

@@ -34,8 +34,14 @@
         </div>
     </div>
     <div class="container body-content">
+        <div class="row">
+            <div class="col-md-12 panel panel-default">
+                <div class="panel-body text-center" id="countdown" ng-controller="esoController as vmeso" ng-Init="vmeso.CountDown()"></div>
+            </div>
+        </div>
+
         @RenderBody()
-        <hr />
+        <hr/>
         <footer>
             <p>&copy; @DateTime.Now.Year - by HemSoft Developments</p>
         </footer>

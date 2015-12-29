@@ -1,0 +1,20 @@
+﻿<table class="table table-bordered table-striped table-hover">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Last Logged In</th>
+        <th>Level</th>
+        <th>Achiev. Points</th>
+        <td>Alliance Points</td>
+        <th>Hours Played</th>
+    </tr>
+    <tr ng-repeat="character in vmcc.characters" ng-click="vmcc.characterSelected(character)">
+        <td ng-bind="character.Id" />
+        <td ng-bind="character.Name" />
+        <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
+        <td ng-bind="character.EffectiveLevel" />
+        <td ng-bind="character.AchievementPoints" />
+        <td ng-bind="character.AlliancePoints" />
+        <td ng-bind="character.HoursPlayed" />
+    <tr>
+</table>

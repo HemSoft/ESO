@@ -3,13 +3,18 @@ var App;
     var Common;
     (function (Common) {
         var DataAccessService = (function () {
-            function DataAccessService($resource) {
+            function DataAccessService($resource, appSettings) {
                 this.$resource = $resource;
+                this.appSettings = appSettings;
+                this.serverPath = appSettings.serverPath;
             }
             DataAccessService.prototype.getAccountResource = function () {
-                return this.$resource("/api/Account/:Id");
+                return this.$resource(this.serverPath + "/api/Accounts/:Id");
             };
-            DataAccessService.$inject = ["$resource"];
+            DataAccessService.prototype.getCharacterResource = function () {
+                return this.$resource(this.serverPath + "/api/Characters/:Id");
+            };
+            DataAccessService.$inject = ["$resource", "appSettings"];
             return DataAccessService;
         })();
         Common.DataAccessService = DataAccessService;

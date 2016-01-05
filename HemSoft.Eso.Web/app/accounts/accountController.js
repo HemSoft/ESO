@@ -3,19 +3,24 @@ var App;
     var AccountController;
     (function (AccountController_1) {
         var AccountController = (function () {
-            function AccountController(dataAccessService) {
+            function AccountController(dataService, $rootscope) {
                 var _this = this;
-                this.dataAccessService = dataAccessService;
+                this.dataService = dataService;
+                this.$rootscope = $rootscope;
                 this.title = "Accounts";
-                var accountResource = dataAccessService.getAccountResource();
+                this.dataAccessService = dataService;
+                this.rootScope = $rootscope;
+                var accountResource = dataService.getAccountResource();
                 accountResource.query(function (data) {
                     _this.accounts = data;
                 });
             }
             AccountController.prototype.selectAccount = function (account) {
                 this.selectedAccount = account;
+                this.dataAccessService.selectedAccount = account;
+                this.rootScope.$broadcast("accountSelected");
             };
-            AccountController.$inject = ["dataAccessService"];
+            AccountController.$inject = ["dataAccessService", "$rootScope"];
             return AccountController;
         })();
         angular.module("app").controller("accountController", AccountController);

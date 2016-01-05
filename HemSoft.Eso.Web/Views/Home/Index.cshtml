@@ -2,126 +2,32 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="row">
-
-    <div class="row">
-        <div class="col-md-12 panel">
-            <div class="panel-heading">
-                <h2 class="text-center">Accounts</h2>
-            </div>
-            <div class="panel-body">
-                <ng-view></ng-view>
-            </div>
+<div class="row" ng-controller="accountController as vmac">
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">Accounts</h2>
+        </div>
+        <div class="panel-body" ng-include="'/app/accounts/accountListView.html'">
         </div>
     </div>
+</div>
 
-    <div class="row" ng-controller="accountController as vmac">
-        Hello: {{ vmac.selectedAccount }}
-    </div>
-
-    <div class="row" ng-controller="accountController as vmac" ng-show="vmac.selectedAccount">
-        <div class="col-md-12 panel">
-            <div class="panel-heading">
-                <h2 class="text-center">Characters</h2>
-            </div>
-            <div class="panel-body" ng-include="'/app/characters/characterListView.html'">
-            </div>
+<div class="row" ng-controller="characterController as vmcc" ng-show="vmcc.selectedAccount">
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">Characters</h2>
+        </div>
+        <div class="panel-body" ng-include="'/app/characters/characterListView.html'">
         </div>
     </div>
+</div>
 
-        @*<div class="row">
-                <div class="col-md-12 panel">
-                    <div class="panel-heading">
-                        <h2 class="text-center">Accounts</h2>
-                    </div>
-                    <div class="panel-body">
-                        <table class="table table-bordered table-striped table-hover">
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Last Logged In</th>
-                                <th>Telvar Stones</th>
-                                <th>CP</th>
-                                <th>Enlightened Pool</th>
-                                <th>Hours Played</th>
-                            </tr>
-                            <tr ng-repeat="account in vmeso.accounts" style="cursor: pointer;" ng-click="vmeso.accountSelected(account)">
-                                <td ng-bind="account.Id" />
-                                <td ng-bind="account.Name" />
-                                <td ng-bind="account.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
-                                <td ng-bind="account.BankedTelvarStones" />
-                                <td ng-bind="account.ChampionPointsEarned" />
-                                <td ng-bind="account.EnlightenedPool" />
-                                <td ng-bind="account.HoursPlayed" />
-                            <tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="row">
-                <div ng-show="vmeso.selectedAccount" class="col-md-12 panel">
-                    <div class="panel-heading">
-                        <h2 class="text-center">Characters</h2>
-                    </div>
-                    <div class="panel-body">
-                        <table class="table table-bordered table-striped table-hover">
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Last Logged In</th>
-                                <th>Level</th>
-                                <th>Achiev. Points</th>
-                                <td>Alliance Points</td>
-                                <th>Hours Played</th>
-                            </tr>
-                            <tr ng-repeat="character in vmeso.characters" ng-click="vmeso.characterSelected(character)">
-                                <td ng-bind="character.Id" />
-                                <td ng-bind="character.Name" />
-                                <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
-                                <td ng-bind="character.EffectiveLevel" />
-                                <td ng-bind="character.AchievementPoints" />
-                                <td ng-bind="character.AlliancePoints" />
-                                <td ng-bind="character.HoursPlayed" />
-                            <tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div ng-show="vmeso.selectedCharacter" class="col-md-12 panel">
-                    <div class="panel-heading">
-                        <h2 class="text-center" ng-bind="vmeso.getSelectedCharacterHeaderString()"/>
-                    </div>
-                    <div class="panel-body">
-                        <table class="table table-bordered table-striped table-hover">
-                            <tr>
-                                <th>Id</th>
-                                <th>Time</th>
-                                <th>CP</th>
-                                <th>Enlightened Pool</th>
-                                <th>Bag</th>
-                                <th>Bank</th>
-                                <th>Cash</th>
-                                <th>Banked Cash</th>
-                                <th>Hours Played</th>
-                            </tr>
-                            <tr ng-repeat="characterActivity in vmeso.characterActivities">
-                            <td ng-bind="characterActivity.Id"/>
-                            <td ng-bind="characterActivity.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'"/>
-                            <td ng-bind="characterActivity.ChampionPointsEarned"/>
-                            <td ng-bind="characterActivity.EnlightenedPool"/>
-                            <td ng-bind="vmeso.getCharacterActivityBagUsageString(characterActivity)"/>
-                            <td ng-bind="vmeso.getCharacterActivityBankUsageString(characterActivity)"/>
-                            <td ng-bind="characterActivity.Cash"/>
-                            <td ng-bind="characterActivity.BankedCash"/>
-                            <td ng-bind="vmeso.getCharacterActivityTimePlayed(characterActivity)"/>
-                            <tr>
-                        </table>
-                    </div>
-                </div>
-            </div>*@
+<div class="row" ng-controller="characterActivityController as vmcac" ng-show="vmcac.selectedCharacter">
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">Character Activity</h2>
+        </div>
+        <div class="panel-body" ng-include="'/app/characters/characterActivityListView.html'">
+        </div>
     </div>
+</div>

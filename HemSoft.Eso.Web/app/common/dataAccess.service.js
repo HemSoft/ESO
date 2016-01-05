@@ -14,6 +14,12 @@ var App;
             DataAccessService.prototype.getCharacterResource = function () {
                 return this.$resource(this.serverPath + "/api/Characters/:Id");
             };
+            DataAccessService.prototype.getCharactersByAccountId = function (accountId) {
+                return this.$resource(this.serverPath + ("/api/Characters/GetCharactersByAccountId?accountId=" + accountId));
+            };
+            DataAccessService.prototype.getCharacterActivityByCharacterId = function (characterId) {
+                return this.$resource(this.serverPath + ("/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId=" + characterId));
+            };
             DataAccessService.$inject = ["$resource", "appSettings"];
             return DataAccessService;
         })();

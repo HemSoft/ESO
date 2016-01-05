@@ -2,10 +2,8 @@
 
     angular
         .module("common.services", ["ngResource"])
-        .constant
-        (
-            "appSettings",
-            {
+        .constant(
+            "appSettings", {
                 serverPath: "http://hemsoftesoapi.azurewebsites.net"
             }
         );

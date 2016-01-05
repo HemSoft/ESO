@@ -3,23 +3,23 @@ var App;
     var Domain;
     (function (Domain) {
         var Character = (function () {
-            function Character(id, name, description, accountId, classId, raceId, allianceId, lastLogin, enlightenedPool, effectiveLevel, championPointsEarned, achievementPoints, hoursPlayed, bankedTelvarStones, alliancePoints, account) {
-                this.id = id;
-                this.name = name;
-                this.description = description;
-                this.accountId = accountId;
-                this.classId = classId;
-                this.raceId = raceId;
-                this.allianceId = allianceId;
-                this.lastLogin = lastLogin;
-                this.enlightenedPool = enlightenedPool;
-                this.effectiveLevel = effectiveLevel;
-                this.championPointsEarned = championPointsEarned;
-                this.achievementPoints = achievementPoints;
-                this.hoursPlayed = hoursPlayed;
-                this.bankedTelvarStones = bankedTelvarStones;
-                this.alliancePoints = alliancePoints;
-                this.account = account;
+            function Character(Id, Name, Description, AccountId, ClassId, RaceId, AllianceId, LastLogin, EnlightenedPool, EffectiveLevel, ChampionPointsEarned, AchievementPoints, HoursPlayed, BankedTelvarStones, AlliancePoints, Account) {
+                this.Id = Id;
+                this.Name = Name;
+                this.Description = Description;
+                this.AccountId = AccountId;
+                this.ClassId = ClassId;
+                this.RaceId = RaceId;
+                this.AllianceId = AllianceId;
+                this.LastLogin = LastLogin;
+                this.EnlightenedPool = EnlightenedPool;
+                this.EffectiveLevel = EffectiveLevel;
+                this.ChampionPointsEarned = ChampionPointsEarned;
+                this.AchievementPoints = AchievementPoints;
+                this.HoursPlayed = HoursPlayed;
+                this.BankedTelvarStones = BankedTelvarStones;
+                this.AlliancePoints = AlliancePoints;
+                this.Account = Account;
             }
             return Character;
         })();

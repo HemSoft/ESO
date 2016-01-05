@@ -3,17 +3,17 @@ var App;
     var Domain;
     (function (Domain) {
         var Account = (function () {
-            function Account(id, name, password, lastLogin, description, enlightenedPool, championPointsEarned, hoursePlayed, bankedTelvarStones, characters) {
-                this.id = id;
-                this.name = name;
-                this.password = password;
-                this.lastLogin = lastLogin;
-                this.description = description;
-                this.enlightenedPool = enlightenedPool;
-                this.championPointsEarned = championPointsEarned;
-                this.hoursePlayed = hoursePlayed;
-                this.bankedTelvarStones = bankedTelvarStones;
-                this.characters = characters;
+            function Account(Id, Name, Password, LastLogin, Description, EnlightenedPool, ChampionPointsEarned, HoursePlayed, BankedTelvarStones, Characters) {
+                this.Id = Id;
+                this.Name = Name;
+                this.Password = Password;
+                this.LastLogin = LastLogin;
+                this.Description = Description;
+                this.EnlightenedPool = EnlightenedPool;
+                this.ChampionPointsEarned = ChampionPointsEarned;
+                this.HoursePlayed = HoursePlayed;
+                this.BankedTelvarStones = BankedTelvarStones;
+                this.Characters = Characters;
             }
             return Account;
         })();

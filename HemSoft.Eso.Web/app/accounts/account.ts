@@ -1,32 +1,28 @@
 ﻿module App.Domain {
-
     export interface IAccount {
-        id: number;
-        name: string;
-        password: string;
-        lastLogin: Date;
-        description: string;
-        enlightenedPool: number;
-        championPointsEarned: number;
-        hoursePlayed: number;
-        bankedTelvarStones: number;
-        characters: any[];
+        Id: number;
+        Name: string;
+        Password: string;
+        LastLogin: Date;
+        Description: string;
+        EnlightenedPool: number;
+        ChampionPointsEarned: number;
+        HoursePlayed: number;
+        BankedTelvarStones: number;
+        Characters: any[];
     }
 
     export class Account implements IAccount {
-
-        constructor(public id: number,
-                    public name: string,
-                    public password: string,
-                    public lastLogin: Date,
-                    public description: string,
-                    public enlightenedPool: number,
-                    public championPointsEarned: number,
-                    public hoursePlayed: number,
-                    public bankedTelvarStones: number,
-                    public characters: any[]) {
+        constructor(public Id: number,
+                    public Name: string,
+                    public Password: string,
+                    public LastLogin: Date,
+                    public Description: string,
+                    public EnlightenedPool: number,
+                    public ChampionPointsEarned: number,
+                    public HoursePlayed: number,
+                    public BankedTelvarStones: number,
+                    public Characters: any[]) {
         }
-
     }
-
 }

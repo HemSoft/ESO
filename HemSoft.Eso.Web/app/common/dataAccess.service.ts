@@ -13,10 +13,11 @@
 
     export class DataAccessService implements IDataAccessService {
         serverPath: string;
+        selectedAccount: App.Domain.IAccount;
+        selectedCharacter: App.Domain.ICharacter;
 
         static $inject = ["$resource", "appSettings"];
-        constructor(private $resource: ng.resource.IResourceService,
-                    private appSettings) {
+        constructor(private $resource: ng.resource.IResourceService, private appSettings) {
             this.serverPath = appSettings.serverPath;
         }
 
@@ -28,6 +29,13 @@
             return this.$resource(this.serverPath + "/api/Characters/:Id");
         }
 
+        getCharactersByAccountId(accountId: number): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + `/api/Characters/GetCharactersByAccountId?accountId=${accountId}`);
+        }
+
+        getCharacterActivityByCharacterId(characterId: number): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + `/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId=${characterId}`);
+        }
     }
 
     angular.module("common.services")

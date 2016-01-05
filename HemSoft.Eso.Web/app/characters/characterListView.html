@@ -8,7 +8,7 @@
         <td>Alliance Points</td>
         <th>Hours Played</th>
     </tr>
-    <tr ng-repeat="character in vmcc.characters" ng-click="vmcc.characterSelected(character)">
+    <tr ng-repeat="character in vmcc.characters" ng-click="vmcc.selectCharacter(character)">
         <td ng-bind="character.Id" />
         <td ng-bind="character.Name" />
         <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />

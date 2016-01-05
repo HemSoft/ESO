@@ -1,7 +1,7 @@
 var App;
 (function (App) {
-    var CharacterActivityControllerCharacterController;
-    (function (CharacterActivityControllerCharacterController) {
+    var CharacterController;
+    (function (CharacterController_1) {
         var CharacterController = (function () {
             function CharacterController(dataService, $rootScope, $scope) {
                 var _this = this;
@@ -37,6 +37,5 @@ var App;
             return CharacterController;
         })();
         angular.module("app").controller("characterController", CharacterController);
-    })(CharacterActivityControllerCharacterController = App.CharacterActivityControllerCharacterController || (App.CharacterActivityControllerCharacterController = {}));
+    })(CharacterController = App.CharacterController || (App.CharacterController = {}));
 })(App || (App = {}));
-//# sourceMappingURL=characterController.js.map

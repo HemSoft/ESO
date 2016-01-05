@@ -33,4 +33,3 @@ var App;
         angular.module("app").controller("characterActivityController", CharacterActivityController);
     })(CharacterActivityController = App.CharacterActivityController || (App.CharacterActivityController = {}));
 })(App || (App = {}));
-//# sourceMappingURL=characterActivityController.js.map

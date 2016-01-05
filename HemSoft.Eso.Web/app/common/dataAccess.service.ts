@@ -25,6 +25,10 @@
             return this.$resource(this.serverPath + "/api/Accounts/:Id");
         }
 
+        getCharacterActivityByCharacterId(characterId: number): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + `/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId=${characterId}`);
+        }
+
         getCharacterResource(): ng.resource.IResourceClass<ICharacterResource> {
             return this.$resource(this.serverPath + "/api/Characters/:Id");
         }
@@ -33,9 +37,10 @@
             return this.$resource(this.serverPath + `/api/Characters/GetCharactersByAccountId?accountId=${accountId}`);
         }
 
-        getCharacterActivityByCharacterId(characterId: number): ng.resource.IResourceClass<ICharacterResource> {
-            return this.$resource(this.serverPath + `/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId=${characterId}`);
+        getCharactersNeedingAttention(): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + "/api/Characters/GetCharactersNeedingAttention");
         }
+
     }
 
     angular.module("common.services")

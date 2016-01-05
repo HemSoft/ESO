@@ -1,4 +1,4 @@
-﻿module App.CharacterActivityControllerCharacterController {
+﻿module App.CharacterController {
 
     interface ICharacterViewModel {
         title: string;

@@ -182,6 +182,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\characters\charactersNeedingAttention.html" />
     <Content Include="app\characters\characterListView.html" />
     <Content Include="app\characters\characterActivityListView.html" />
     <Content Include="Scripts\angular-route.js" />
@@ -191,6 +192,7 @@
     <TypeScriptCompile Include="app\accounts\accountController.ts" />
     <TypeScriptCompile Include="app\characters\characterActivity.ts" />
     <TypeScriptCompile Include="app\characters\characterActivityController.ts" />
+    <TypeScriptCompile Include="app\characters\charactersNeedingAttentionController.ts" />
     <TypeScriptCompile Include="app\characters\characterController.ts" />
     <TypeScriptCompile Include="app\characters\character.ts" />
     <TypeScriptCompile Include="app\common\dataAccess.service.ts" />

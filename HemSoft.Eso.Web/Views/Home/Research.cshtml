@@ -2,54 +2,24 @@
     ViewBag.Title = "Research";
 }
 
-<div ng-app="app" ng-controller="esoController as vmeso" class="row">
-    <div class="row">
-        <div class="col-md-12 panel panel-default">
-            <div class="panel-body text-center" id="countdown" ng-Init="vmeso.CountDown()">
-            </div>
+<div class="row">
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">Overdue</h2>
+        </div>
+        <div class="panel-body" ng-controller="charactersNeedingAttentionController as vmcna">
+            <div ng-include="'/app/characters/charactersNeedingAttention.html'"></div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12 panel">
-            <div class="panel-heading">
-                <h2 class="text-center">Overdue</h2>
-            </div>
-            <div class="panel-body" ng-controller="charactersNeedingAttentionController as vmcna">
-                <div ng-include="'/app/characters/charactersNeedingAttention.html'"></div>
-            </div>
-        </div>
-    </div>
+</div>
 
-    <div class="row">
-        <div class="col-md-12 panel">
-            <div class="panel-heading">
-                <h2 class="text-center">Upcoming</h2>
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered table-striped table-hover">
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Last Login</th>
-                        <th>Horse</th>
-                        <th>Blacksmthing</th>
-                        <th>Clothing</th>
-                        <th>Woodworking</th>
-                        <th>Next</th>
-                    </tr>
-                    <tr ng-repeat="character in vmeso.characterResearch" ng-cloak>
-                        <td>{{character.CharacterId}}</td>
-                        <td>{{character.CharacterName}}</td>
-                        <td>{{character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'}}</td>
-                        <td>{{character.HorseInMinutes}}</td>
-                        <td>{{character.BlacksmithingInMinutes}}</td>
-                        <td>{{character.ClothingInMinutes}}</td>
-                        <td>{{character.WoodworkingInMinutes}}</td>
-                        <td>{{character.NextInMinutes}}</td>
-                    <tr>
-                </table>
-            </div>
+<div class="row">
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">Upcoming</h2>
+        </div>
+        <div class="panel-body" ng-controller="characterResearchController as vmcrc">
+            <div ng-include="'/app/characters/characterResearch.html'"></div>
         </div>
     </div>
-
 </div>

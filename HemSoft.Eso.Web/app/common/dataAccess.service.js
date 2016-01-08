@@ -23,6 +23,9 @@ var App;
             DataAccessService.prototype.getCharactersNeedingAttention = function () {
                 return this.$resource(this.serverPath + "/api/Characters/GetCharactersNeedingAttention");
             };
+            DataAccessService.prototype.getCharactersResearching = function () {
+                return this.$resource(this.serverPath + "/api/Characters/GetCharacterResearch");
+            };
             DataAccessService.$inject = ["$resource", "appSettings"];
             return DataAccessService;
         })();
@@ -31,3 +34,4 @@ var App;
             .service("dataAccessService", DataAccessService);
     })(Common = App.Common || (App.Common = {}));
 })(App || (App = {}));
+//# sourceMappingURL=dataAccess.service.js.map

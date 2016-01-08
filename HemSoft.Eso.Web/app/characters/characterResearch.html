@@ -1,0 +1,22 @@
+﻿<table class="table table-bordered table-striped table-hover">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Last Login</th>
+        <th>Horse</th>
+        <th>Blacksmthing</th>
+        <th>Clothing</th>
+        <th>Woodworking</th>
+        <th>Next</th>
+    </tr>
+    <tr ng-repeat="character in vmcrc.characters" ng-cloak>
+        <td>{{character.CharacterId}}</td>
+        <td>{{character.CharacterName}}</td>
+        <td>{{character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'}}</td>
+        <td>{{character.HorseInMinutes}}</td>
+        <td>{{character.BlacksmithingInMinutes}}</td>
+        <td>{{character.ClothingInMinutes}}</td>
+        <td>{{character.WoodworkingInMinutes}}</td>
+        <td>{{character.NextInMinutes}}</td>
+    <tr>
+</table>

@@ -26,3 +26,4 @@ var App;
         angular.module("app").controller("accountController", AccountController);
     })(AccountController = App.AccountController || (App.AccountController = {}));
 })(App || (App = {}));
+//# sourceMappingURL=accountController.js.map

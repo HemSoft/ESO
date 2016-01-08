@@ -41,6 +41,10 @@
             return this.$resource(this.serverPath + "/api/Characters/GetCharactersNeedingAttention");
         }
 
+        getCharactersResearching(): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + "/api/Characters/GetCharacterResearch");
+        }
+
     }
 
     angular.module("common.services")

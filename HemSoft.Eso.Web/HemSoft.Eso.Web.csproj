@@ -188,6 +188,7 @@
     <Content Include="app\characters\charactersNeedingAttention.html" />
     <Content Include="app\characters\characterListView.html" />
     <Content Include="app\characters\characterActivityListView.html" />
+    <Content Include="app\dailies\dailiesWrits.html" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="tsd.json" />
@@ -276,6 +277,7 @@
     <Content Include="Views\Home\Skills.cshtml" />
     <Content Include="Views\Home\Quests.cshtml" />
     <Content Include="Views\Home\Dailies.cshtml" />
+    <TypeScriptCompile Include="app\dailies\characterQuestsController.ts" />
     <TypeScriptCompile Include="typings\angularjs\angular-resource.d.ts" />
     <TypeScriptCompile Include="typings\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="typings\angularjs\angular.d.ts" />

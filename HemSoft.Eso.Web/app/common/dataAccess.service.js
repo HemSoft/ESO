@@ -20,6 +20,9 @@ var App;
             DataAccessService.prototype.getCharacterResource = function () {
                 return this.$resource(this.serverPath + "/api/Characters/:Id");
             };
+            DataAccessService.prototype.getCharacterSkills = function () {
+                return this.$resource(this.serverPath + "/api/Characters/GetCharacterSkills");
+            };
             DataAccessService.prototype.getCharactersByAccountId = function (accountId) {
                 return this.$resource(this.serverPath + ("/api/Characters/GetCharactersByAccountId?accountId=" + accountId));
             };

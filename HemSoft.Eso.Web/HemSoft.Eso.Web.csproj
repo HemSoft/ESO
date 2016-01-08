@@ -182,6 +182,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\characters\characterSkills.html" />
     <Content Include="app\characters\characterQuests.html" />
     <Content Include="app\characters\characterResearch.html" />
     <Content Include="app\characters\charactersNeedingAttention.html" />
@@ -194,6 +195,7 @@
     <TypeScriptCompile Include="app\accounts\accountController.ts" />
     <TypeScriptCompile Include="app\characters\characterActivity.ts" />
     <TypeScriptCompile Include="app\characters\characterActivityController.ts" />
+    <TypeScriptCompile Include="app\characters\characterSkillsController.ts" />
     <TypeScriptCompile Include="app\characters\characterQuestsController.ts" />
     <TypeScriptCompile Include="app\characters\characterResearchController.ts" />
     <TypeScriptCompile Include="app\characters\charactersNeedingAttentionController.ts" />

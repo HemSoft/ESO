@@ -2,32 +2,6 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="row" ng-controller="accountController as vmac">
-    <div class="col-md-12 panel">
-        <div class="panel-heading">
-            <h2 class="text-center">Accounts</h2>
-        </div>
-        <div class="panel-body" ng-include="'/app/accounts/accountListView.html'">
-        </div>
-    </div>
-</div>
-
-<div class="row" ng-controller="characterController as vmcc" ng-show="vmcc.selectedAccount">
-    <div class="col-md-12 panel">
-        <div class="panel-heading">
-            <h2 class="text-center">Characters</h2>
-        </div>
-        <div class="panel-body" ng-include="'/app/characters/characterListView.html'">
-        </div>
-    </div>
-</div>
-
-<div class="row" ng-controller="characterActivityController as vmcac" ng-show="vmcac.selectedCharacter">
-    <div class="col-md-12 panel">
-        <div class="panel-heading">
-            <h2 class="text-center">Character Activity</h2>
-        </div>
-        <div class="panel-body" ng-include="'/app/characters/characterActivityListView.html'">
-        </div>
-    </div>
-</div>
+<div ng-include="'/app/accounts/accountListView.html'"></div>
+<div ng-include="'/app/characters/characterListView.html'"></div>
+<div ng-include="'/app/characters/characterActivityListView.html'"></div>

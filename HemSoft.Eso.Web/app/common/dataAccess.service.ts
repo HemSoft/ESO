@@ -37,6 +37,10 @@
             return this.$resource(this.serverPath + "/api/Characters/:Id");
         }
 
+        getCharacterSkills(): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + "/api/Characters/GetCharacterSkills");
+        }
+
         getCharactersByAccountId(accountId: number): ng.resource.IResourceClass<ICharacterResource> {
             return this.$resource(this.serverPath + `/api/Characters/GetCharactersByAccountId?accountId=${accountId}`);
         }

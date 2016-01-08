@@ -1,24 +1,33 @@
-﻿<table class="table table-bordered table-striped table-hover">
-    <tr>
-        <th>Id</th>
-        <th>Time</th>
-        <th>CP</th>
-        <th>Enlightened Pool</th>
-        <th>Bag</th>
-        <th>Bank</th>
-        <th>Cash</th>
-        <th>Banked Cash</th>
-        <th>Hours Played</th>
-    </tr>
-    <tr ng-repeat="characterActivity in vmcac.characterActivities">
-        <td ng-bind="characterActivity.Id" />
-        <td ng-bind="characterActivity.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
-        <td ng-bind="characterActivity.ChampionPointsEarned" />
-        <td ng-bind="characterActivity.EnlightenedPool" />
-        <td ng-bind="vmeso.getCharacterActivityBagUsageString(characterActivity)" />
-        <td ng-bind="vmeso.getCharacterActivityBankUsageString(characterActivity)" />
-        <td ng-bind="characterActivity.Cash" />
-        <td ng-bind="characterActivity.BankedCash" />
-        <td ng-bind="vmeso.getCharacterActivityTimePlayed(characterActivity)" />
-    <tr>
-</table>
+﻿<div class="row" ng-controller="characterActivityController as vmcac" ng-show="vmcac.selectedCharacter">
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">Character Activity</h2>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Time</th>
+                    <th>CP</th>
+                    <th>Enlightened Pool</th>
+                    <th>Bag</th>
+                    <th>Bank</th>
+                    <th>Cash</th>
+                    <th>Banked Cash</th>
+                    <th>Hours Played</th>
+                </tr>
+                <tr ng-repeat="characterActivity in vmcac.characterActivities">
+                    <td ng-bind="characterActivity.Id" />
+                    <td ng-bind="characterActivity.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
+                    <td ng-bind="characterActivity.ChampionPointsEarned" />
+                    <td ng-bind="characterActivity.EnlightenedPool" />
+                    <td ng-bind="vmeso.getCharacterActivityBagUsageString(characterActivity)" />
+                    <td ng-bind="vmeso.getCharacterActivityBankUsageString(characterActivity)" />
+                    <td ng-bind="characterActivity.Cash" />
+                    <td ng-bind="characterActivity.BankedCash" />
+                    <td ng-bind="vmeso.getCharacterActivityTimePlayed(characterActivity)" />
+                <tr>
+            </table>
+        </div>
+    </div>
+</div>

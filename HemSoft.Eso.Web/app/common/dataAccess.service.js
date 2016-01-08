@@ -14,6 +14,9 @@ var App;
             DataAccessService.prototype.getCharacterActivityByCharacterId = function (characterId) {
                 return this.$resource(this.serverPath + ("/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId=" + characterId));
             };
+            DataAccessService.prototype.getCharacterQuests = function () {
+                return this.$resource(this.serverPath + "/api/Characters/GetCharacterQuests");
+            };
             DataAccessService.prototype.getCharacterResource = function () {
                 return this.$resource(this.serverPath + "/api/Characters/:Id");
             };

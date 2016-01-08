@@ -29,6 +29,10 @@
             return this.$resource(this.serverPath + `/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId=${characterId}`);
         }
 
+        getCharacterQuests(): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + "/api/Characters/GetCharacterQuests");
+        }
+
         getCharacterResource(): ng.resource.IResourceClass<ICharacterResource> {
             return this.$resource(this.serverPath + "/api/Characters/:Id");
         }

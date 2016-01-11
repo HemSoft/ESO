@@ -17,15 +17,31 @@
                     <th>Hours Played</th>
                 </tr>
                 <tr ng-repeat="characterActivity in vmcac.characterActivities">
-                    <td ng-bind="characterActivity.Id" />
-                    <td ng-bind="characterActivity.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
-                    <td ng-bind="characterActivity.ChampionPointsEarned" />
-                    <td ng-bind="characterActivity.EnlightenedPool" />
-                    <td ng-bind="vmcac.getCharacterActivityBagUsageString(characterActivity)" />
-                    <td ng-bind="vmcac.getCharacterActivityBankUsageString(characterActivity)" />
-                    <td ng-bind="characterActivity.Cash" />
-                    <td ng-bind="characterActivity.BankedCash" />
-                    <td ng-bind="vmcac.getCharacterActivityTimePlayed(characterActivity)" />
+                <td ng-bind="characterActivity.Id"/>
+                <td ng-bind="characterActivity.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'"/>
+                <td>
+                    <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{characterActivity.ChampionPointsEarned}}" aria-valuemin="0" aria-valuemax="501" ng-attr-style="width: {{(characterActivity.ChampionPointsEarned / 501) * 100}}%;">
+                        {{characterActivity.ChampionPointsEarned}}
+                    </div>
+                </td>
+                <td>
+                    <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{characterActivity.EnlightenedPool}}" aria-valuemin="0" aria-valuemax="1200000" ng-attr-style="width: {{(characterActivity.EnlightenedPool / 1200000) * 100}}%;">
+                        {{characterActivity.EnlightenedPool}}
+                    </div>
+                </td>
+                <td>
+                    <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{characterActivity.UsedBagSlots}}" aria-valuemin="0" aria-valuemax="{{characterActivity.MaxBagSize}}" ng-attr-style="width: {{(characterActivity.UsedBagSlots / characterActivity.MaxBagSize) * 100}}%;">
+                        {{ vmcac.getCharacterActivityBagUsageString(characterActivity) }}
+                    </div>
+                </td>
+                <td>
+                    <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{characterActivity.UsedBankSlots}}" aria-valuemin="0" aria-valuemax="{{characterActivity.MaxBankSize}}" ng-attr-style="width: {{(characterActivity.UsedBagSlots / characterActivity.MaxBankSize) * 100}}%;">
+                        {{ vmcac.getCharacterActivityBankUsageString(characterActivity) }}
+                    </div>
+                </td>
+                <td ng-bind="characterActivity.Cash"/>
+                <td ng-bind="characterActivity.BankedCash"/>
+                <td ng-bind="vmcac.getCharacterActivityTimePlayed(characterActivity)"/>
                 <tr>
             </table>
         </div>

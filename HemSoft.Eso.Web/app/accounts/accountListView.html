@@ -20,12 +20,12 @@
                     <td ng-bind="account.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
                     <td ng-bind="account.BankedTelvarStones" />
                     <td>
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{account.ChampionPointsEarned}}" aria-valuemin="0" aria-valuemax="501" ng-attr-style="width: {{(account.ChampionPointsEarned / 501) * 100}}%;">
+                        <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{account.ChampionPointsEarned}}" aria-valuemin="0" aria-valuemax="501" ng-attr-style="width: {{(account.ChampionPointsEarned / 501) * 100}}%;">
                             {{account.ChampionPointsEarned}}
                         </div>
                     </td>
                     <td>
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{account.EnlightenedPool}}" aria-valuemin="0" aria-valuemax="1200000" ng-attr-style="width: {{(account.EnlightenedPool / 1200000) * 100}}%;">
+                        <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{account.EnlightenedPool}}" aria-valuemin="0" aria-valuemax="1200000" ng-attr-style="width: {{(account.EnlightenedPool / 1200000) * 100}}%;">
                             {{account.EnlightenedPool}}
                         </div>
                     </td>

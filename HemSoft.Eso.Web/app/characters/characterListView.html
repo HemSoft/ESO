@@ -19,12 +19,12 @@
                     <td ng-bind="character.Name" />
                     <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
                     <td>
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{character.EffectiveLevel}}" aria-valuemin="0" aria-valuemax="66" ng-attr-style="width: {{(character.EffectiveLevel / 66) * 100}}%;">
+                        <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{character.EffectiveLevel}}" aria-valuemin="0" aria-valuemax="66" ng-attr-style="width: {{(character.EffectiveLevel / 66) * 100}}%;">
                             {{character.EffectiveLevel}}
                         </div>
                     </td>
                     <td>
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{character.AchievementPoints}}" aria-valuemin="0" aria-valuemax="16950" ng-attr-style="width: {{(character.AchievementPoints / 16950) * 100}}%;">
+                        <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{character.AchievementPoints}}" aria-valuemin="0" aria-valuemax="16950" ng-attr-style="width: {{(character.AchievementPoints / 16950) * 100}}%;">
                             {{character.AchievementPoints}}
                         </div>
                     </td>

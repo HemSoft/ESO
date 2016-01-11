@@ -31,3 +31,6 @@ textarea {
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
 }
+
+/*.progress {background: rgba(201, 60, 60, 0.67); border: 2px solid rgba(245, 245, 245, 1); border-radius: 4px; height: 20px;}*/
+.progress-bar-custom {background: rgba(148, 155, 161, 1);}

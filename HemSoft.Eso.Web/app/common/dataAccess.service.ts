@@ -53,6 +53,13 @@
             return this.$resource(this.serverPath + "/api/Characters/GetCharacterResearch");
         }
 
+        getWritStatus(): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + "/api/Characters/GetWritStatus");
+        }
+
+        getWrothgarStatus(): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + "/api/Characters/GetOrsiniumStatus");
+        }
     }
 
     angular.module("common.services")

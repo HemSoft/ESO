@@ -1,41 +1,44 @@
-﻿<div class="col-md-12 panel">
+﻿<div class="col-md-12 panel" ng-controller="dailiesWritsController as vmdwc">
     <div class="panel-heading">
-        <h2 class="text-center">Character Quests</h2>
+        <h2 class="text-center">Writs</h2>
     </div>
-    <div class="panel-body" ng-controller="characterQuestsController as vmcqc">
-        <div ng-repeat="c in vmcqc.characters">
-            <div class="col-md-12 panel">
-                <div class="panel-heading">
-                    <h2 class="text-center">{{ c.Name }}</h2>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-bordered table-striped table-hover">
-                        <tr>
-                            <th><a href="#" ng-click="questSortType = 'Name'; questSortReverse = !questSortReverse">Name</a></th>
-                            <th><a href="#" ng-click="questSortType = 'Completed'; questSortReverse = !questSortReverse">Completed</a></th>
-                            <th><a href="#" ng-click="questSortType = 'Level'; questSortReverse = !questSortReverse">Level</a></th>
-                            <th><a href="#" ng-click="questSortType = 'PrevXP'; questSortReverse = !questSortReverse">PrevXP</a></th>
-                            <th><a href="#" ng-click="questSortType = 'CurrXP'; questSortReverse = !questSortReverse">CurrXP</a></th>
-                            <th><a href="#" ng-click="questSortType = 'Rank'; questSortReverse = !questSortReverse">Rank</a></th>
-                            <th><a href="#" ng-click="questSortType = 'PreviousExperience'; questSortReverse = !questSortReverse">PrevPts</a></th>
-                            <th><a href="#" ng-click="questSortType = 'CurrentExperience'; questSortReverse = !questSortReverse">CurrPts</a></th>
-                            <th><a href="#" ng-click="questSortType = 'Zone'; questSortReverse = !questSortReverse">Zone</a></th>
-                        </tr>
-                        <tr ng-repeat="cq in c.CharacterQuests | orderBy:questSortType:questSortReverse">
-                            <td ng-bind="cq.Name" />
-                            <td ng-bind="cq.Completed | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
-                            <td ng-bind="cq.Level" />
-                            <td ng-bind="cq.PreviousExperience" />
-                            <td ng-bind="cq.CurrentExperience" />
-                            <td ng-bind="cq.Rank" />
-                            <td ng-bind="cq.PreviousPoints" />
-                            <td ng-bind="cq.CurrentPoints" />
-                            <td ng-bind="cq.Zone" />
-                        <tr>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>Name</th>
+                <th>Alchemy</th>
+                <th>Blacksmithing</th>
+                <th>Clothing</th>
+                <th>Enchanting</th>
+                <th>Provisioning</th>
+                <th>Woodworking</th>
+            </tr>
+            <tr ng-repeat="ws in vmdwc.writs" class="{{ ws.AllWritsCompletedClass }}">
+                <td ng-bind="ws.Character.Name" />
+                <td ng-show="{{ ws.AlchemyCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ ws.AlchemyCompleted === null }}"></td>
+                <td ng-show="{{ ws.AlchemyCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+
+                <td ng-show="{{ ws.BlacksmithingCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ ws.BlacksmithingCompleted === null }}"></td>
+                <td ng-show="{{ ws.BlacksmithingCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+
+                <td ng-show="{{ ws.ClothingCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ ws.ClothingCompleted === null }}"></td>
+                <td ng-show="{{ ws.ClothingCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+
+                <td ng-show="{{ ws.EnchantingCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ ws.EnchantingCompleted === null }}"></td>
+                <td ng-show="{{ ws.EnchantingCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+
+                <td ng-show="{{ ws.ProvisioningCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ ws.ProvisioningCompleted === null }}"></td>
+                <td ng-show="{{ ws.ProvisioningCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+
+                <td ng-show="{{ ws.WoodworkingCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ ws.WoodworkingCompleted === null }}"></td>
+                <td ng-show="{{ ws.WoodworkingCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+            <tr>
+        </table>
     </div>
 </div>
-

@@ -1,0 +1,46 @@
+﻿<div class="col-md-12 panel" ng-controller="dailiesWrothgarController as vmdwc">
+    <div class="panel-heading">
+        <h2 class="text-center">Orsinium</h2>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>Name</th>
+                <th>Heresy of Ignorance / Dolmen</th>
+                <th>Mad Urkazbur / Mad Ogre</th>
+                <th>Meat for the Masses / Poachers</th>
+                <th>Nature's Bounty / Nursery / Abomination</th>
+                <th>Reeking of foul Play / Edu</th>
+                <th>Snow and Steam / Nyz</th>
+            </tr>
+            <tr ng-repeat="s in vmdwc.wrothgarStatus" class="{{ ws.AllQuestsCompletedClass }}">
+                <td ng-bind="s.Character.Name" />
+
+                <td ng-show="{{ s.HeresyOfIgnorance }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ s.HeresyOfIgnorance === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ s.HeresyOfIgnorance === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+
+                <td ng-show="{{ s.MadUrkazbur }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ s.MadUrkazbur === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ s.MadUrkazbur === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+
+                <td ng-show="{{ s.MeatForTheMasses }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ s.MeatForTheMasses === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ s.MeatForTheMasses === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+
+                <td ng-show="{{ s.NaturesBounty }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ s.NaturesBounty === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ s.NaturesBounty === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+
+                <td ng-show="{{ s.ReekingOfFoulPlay }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ s.ReekingOfFoulPlay === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ s.ReekingOfFoulPlay === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+
+                <td ng-show="{{ s.SnowAndSteam }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ s.SnowAndSteam === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ s.SnowAndSteam === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+
+            <tr>
+        </table>
+    </div>
+</div>

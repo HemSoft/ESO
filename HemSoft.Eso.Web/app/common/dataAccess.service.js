@@ -32,6 +32,12 @@ var App;
             DataAccessService.prototype.getCharactersResearching = function () {
                 return this.$resource(this.serverPath + "/api/Characters/GetCharacterResearch");
             };
+            DataAccessService.prototype.getWritStatus = function () {
+                return this.$resource(this.serverPath + "/api/Characters/GetWritStatus");
+            };
+            DataAccessService.prototype.getWrothgarStatus = function () {
+                return this.$resource(this.serverPath + "/api/Characters/GetOrsiniumStatus");
+            };
             DataAccessService.$inject = ["$resource", "appSettings"];
             return DataAccessService;
         })();

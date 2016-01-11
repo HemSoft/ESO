@@ -2,75 +2,8 @@ var App;
 (function (App) {
     var Eso;
     (function (Eso) {
-        angular.module("app").controller("esoController", function ($resource) {
-            var _this = this;
+        angular.module("app").controller("esoController", function () {
             var vmeso = this;
-            vmeso.selectedCharacter = null;
-            //vmeso.charactersNeedingAttention = $resource(constants.apiUrl + "Characters/GetCharactersNeedingAttention").query();
-            //vmeso.characterResearch = $resource(constants.apiUrl + "Characters/GetCharacterResearch").query();
-            vmeso.nextUpInResearchPromise = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetNextUpInResearch");
-            vmeso.skillSortType = "Name";
-            vmeso.skillSortReverse = false;
-            vmeso.questSortType = "Completed";
-            vmeso.questSortReverse = false;
-            vmeso.nextUpInResearch = vmeso.nextUpInResearchPromise.get(function (resp) {
-                _this.CountDown(resp);
-            });
-            vmeso.accountSelected = function (account) {
-                _this.selectedAccount = account;
-                _this.selectedCharacter = null;
-                _this.getCharactersForSelectedAccount();
-            };
-            vmeso.characterSelected = function (character) {
-                _this.selectedCharacter = character;
-                _this.getCharacterActivitiesForSelectedCharacter();
-            };
-            vmeso.getCharactersForSelectedAccount = function () {
-                if (vmeso.selectedAccount !== null) {
-                }
-            };
-            vmeso.getCharacterActivitiesForSelectedCharacter = function () {
-                if (this.selectedAccount !== null) {
-                }
-            };
-            vmeso.getCharactersNeedingAttention = function () {
-                //vmeso.charactersNeedingAttention = $resource(constants.apiUrl + "Characters/GetCharactersNeedingAttention").query();
-            };
-            vmeso.getCharacterActivityBagUsageString = function (characterActivity) { return (characterActivity.UsedBagSlots + "/" + characterActivity.MaxBagSize); };
-            vmeso.getCharacterActivityBankUsageString = function (characterActivity) { return (characterActivity.UsedBankSlots + "/" + characterActivity.MaxBankSize); };
-            vmeso.getCharacterSkills = function () {
-                //this.characterSkills = $resource(constants.apiUrl + "Characters/GetCharacterSkills").query();
-            };
-            vmeso.getCharacterQuests = function () {
-                //this.characterQuests = $resource(constants.apiUrl + "Characters/GetCharacterQuests").query();
-            };
-            vmeso.getNextUpInResearch = function () {
-                _this.nextUpInResearch = $resource("http://hemsoftesoapi.azurewebsites.net/api/Characters/GetNextUpInResearch").query();
-            };
-            vmeso.getSelectedAccountHeaderString = function () {
-                if (_this.selectedAccount !== null) {
-                    return "Characters for " + _this.selectedAccount.Name + " account:";
-                }
-                return "";
-            };
-            vmeso.getSelectedCharacterHeaderString = function () {
-                if (_this.selectedCharacter !== null) {
-                    return "Character activity for " + _this.selectedCharacter.Name;
-                }
-                return "";
-            };
-            vmeso.getCharacterActivityTimePlayed = function (characterActivity) {
-                if (characterActivity !== undefined && characterActivity !== null) {
-                    return (characterActivity.SecondsPlayed / 60 / 60) | 0;
-                }
-                return -1;
-            };
-            vmeso.getOrsiniumStatus = function () {
-                //this.orsiniumStatus = $resource(constants.apiUrl + "Characters/GetOrsiniumStatus").query();
-            };
-            vmeso.getWritStatus = function () {
-                //this.writStatus = $resource(constants.apiUrl + "Characters/GetWritStatus").query();
-            };
             vmeso.CountDown = function (nextUp) {
                 if (nextUp === undefined || nextUp === null) {
                     return;

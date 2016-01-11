@@ -1,13 +1,24 @@
-﻿<div class="col-md-12 panel">
+﻿<div class="col-md-12 panel" ng-controller="characterQuestsController as vmcqc">
     <div class="panel-heading">
-        <h2 class="text-center">Character Quests</h2>
+        <h2 class="text-center">
+            Character Quests
+            <span class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    {{ vmcqc.selectedCharacter.Name || 'Select Character' }}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li ng-repeat="c in vmcqc.characters">
+                        <a ng-click="vmcqc.characterSelected(c);">{{ c.Name }}</a>
+                    </li>
+                </ul>
+            </span>
+        </h2>
     </div>
-    <div class="panel-body" ng-controller="characterQuestsController as vmcqc">
-        <div ng-repeat="c in vmcqc.characters">
+
+    <div class="panel-body">
+        <div ng-repeat="c in vmcqc.characterQuests">
             <div class="col-md-12 panel">
-                <div class="panel-heading">
-                    <h2 class="text-center">{{ c.Name }}</h2>
-                </div>
                 <div class="panel-body">
                     <table class="table table-bordered table-striped table-hover">
                         <tr>
@@ -22,15 +33,15 @@
                             <th><a href="#" ng-click="questSortType = 'Zone'; questSortReverse = !questSortReverse">Zone</a></th>
                         </tr>
                         <tr ng-repeat="cq in c.CharacterQuests | orderBy:questSortType:questSortReverse">
-                            <td ng-bind="cq.Name" />
-                            <td ng-bind="cq.Completed | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
-                            <td ng-bind="cq.Level" />
-                            <td ng-bind="cq.PreviousExperience" />
-                            <td ng-bind="cq.CurrentExperience" />
-                            <td ng-bind="cq.Rank" />
-                            <td ng-bind="cq.PreviousPoints" />
-                            <td ng-bind="cq.CurrentPoints" />
-                            <td ng-bind="cq.Zone" />
+                        <td ng-bind="cq.Name"/>
+                        <td ng-bind="cq.Completed | date: 'EEEE MMM d, yyyy HH:mm:ss'"/>
+                        <td ng-bind="cq.Level"/>
+                        <td ng-bind="cq.PreviousExperience"/>
+                        <td ng-bind="cq.CurrentExperience"/>
+                        <td ng-bind="cq.Rank"/>
+                        <td ng-bind="cq.PreviousPoints"/>
+                        <td ng-bind="cq.CurrentPoints"/>
+                        <td ng-bind="cq.Zone"/>
                         <tr>
                     </table>
                 </div>

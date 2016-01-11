@@ -21,11 +21,11 @@
                     <td ng-bind="characterActivity.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
                     <td ng-bind="characterActivity.ChampionPointsEarned" />
                     <td ng-bind="characterActivity.EnlightenedPool" />
-                    <td ng-bind="vmeso.getCharacterActivityBagUsageString(characterActivity)" />
-                    <td ng-bind="vmeso.getCharacterActivityBankUsageString(characterActivity)" />
+                    <td ng-bind="vmcac.getCharacterActivityBagUsageString(characterActivity)" />
+                    <td ng-bind="vmcac.getCharacterActivityBankUsageString(characterActivity)" />
                     <td ng-bind="characterActivity.Cash" />
                     <td ng-bind="characterActivity.BankedCash" />
-                    <td ng-bind="vmeso.getCharacterActivityTimePlayed(characterActivity)" />
+                    <td ng-bind="vmcac.getCharacterActivityTimePlayed(characterActivity)" />
                 <tr>
             </table>
         </div>

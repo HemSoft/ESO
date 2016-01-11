@@ -4,6 +4,8 @@
         title: string;
         characters: App.Domain.ICharacter[];
         dataAccessService: App.Common.DataAccessService;
+        selectedCharacter: App.Domain.ICharacter;
+        characterQuests: any[];
         questSortType: string;
         questSortReverse: boolean;
     }
@@ -12,6 +14,8 @@
         title: string;
         characters: App.Domain.ICharacter[];
         dataAccessService: App.Common.DataAccessService;
+        selectedCharacter: App.Domain.ICharacter;
+        characterQuests: any[];
         questSortType: string;
         questSortReverse: boolean;
 
@@ -19,16 +23,28 @@
         constructor(private dataService: App.Common.DataAccessService) {
             this.title = "Upcoming";
             this.dataAccessService = dataService;
-            this.selectCharactersResearching();
+            this.getCharacters();
+            this.selectedCharacter = null;
+            this.characterQuests = null;
             this.questSortType = "Completed";
             this.questSortReverse = true;
         }
 
-        selectCharactersResearching() {
-            var res = this.dataAccessService.getCharacterQuests();
+        getCharacters() {
+            var res = this.dataAccessService.getCharacters();
             res.query((data: App.Domain.ICharacter[]) => {
                 this.characters = data;
             });
+        }
+
+        characterSelected(item) {
+            this.selectedCharacter = item;
+            if (this.selectedCharacter !== undefined && this.selectedCharacter !== null) {
+                var res = this.dataAccessService.getCharacterQuests(this.selectedCharacter.Id);
+                res.query((data: App.Domain.ICharacter[]) => {
+                    this.characterQuests = data;
+                });
+            }
         }
     }
 

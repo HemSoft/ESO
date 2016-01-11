@@ -30,6 +30,20 @@
             });
         }
 
+        getCharacterActivityBagUsageString(characterActivity: App.Domain.ICharacterActivity) {
+            return characterActivity.UsedBagSlots + "/" + characterActivity.MaxBagSize;
+        }
+
+        getCharacterActivityBankUsageString(characterActivity: App.Domain.ICharacterActivity) {
+            return characterActivity.UsedBankSlots + "/" + characterActivity.MaxBankSize;
+        }
+
+        getCharacterActivityTimePlayed(characterActivity: App.Domain.ICharacterActivity) {
+            if (characterActivity !== undefined && characterActivity !== null) {
+                return (characterActivity.SecondsPlayed / 60 / 60) | 0;
+            }
+        }
+
         selectCharacter() {
             this.selectedCharacter = this.dataAccessService.selectedCharacter;
             if (this.selectedCharacter === undefined) {

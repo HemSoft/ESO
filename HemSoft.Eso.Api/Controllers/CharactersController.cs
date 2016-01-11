@@ -48,7 +48,12 @@
             base.Dispose(disposing);
         }
 
-        // GET: api/Characters
+        public List<Character> GetAllCharacterQuests()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return CharacterManager.GetAllWithQuests();
+        }
+
         public IQueryable<Character> GetCharacters()
         {
             db.Configuration.ProxyCreationEnabled = false;
@@ -67,16 +72,16 @@
             return CharacterManager.GetCharactersNeedingAttention();
         }
 
+        public List<Character> GetCharacterQuests(int characterId)
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return CharacterManager.GetCharacterQuests(characterId);
+        }
+
         public List<CharacterResearch_Result> GetCharacterResearch()
         {
             db.Configuration.ProxyCreationEnabled = false;
             return CharacterManager.GetCharacterResearch();
-        }
-
-        public List<Character> GetCharacterQuests()
-        {
-            db.Configuration.ProxyCreationEnabled = false;
-            return CharacterManager.GetAllWithQuests();
         }
 
         public List<GetCharacterSkills_Result> GetCharacterSkills()

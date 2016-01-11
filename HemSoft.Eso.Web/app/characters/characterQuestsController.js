@@ -7,16 +7,28 @@ var App;
                 this.dataService = dataService;
                 this.title = "Upcoming";
                 this.dataAccessService = dataService;
-                this.selectCharactersResearching();
+                this.getCharacters();
+                this.selectedCharacter = null;
+                this.characterQuests = null;
                 this.questSortType = "Completed";
                 this.questSortReverse = true;
             }
-            CharacterQuestsController.prototype.selectCharactersResearching = function () {
+            CharacterQuestsController.prototype.getCharacters = function () {
                 var _this = this;
-                var res = this.dataAccessService.getCharacterQuests();
+                var res = this.dataAccessService.getCharacters();
                 res.query(function (data) {
                     _this.characters = data;
                 });
+            };
+            CharacterQuestsController.prototype.characterSelected = function (item) {
+                var _this = this;
+                this.selectedCharacter = item;
+                if (this.selectedCharacter !== undefined && this.selectedCharacter !== null) {
+                    var res = this.dataAccessService.getCharacterQuests(this.selectedCharacter.Id);
+                    res.query(function (data) {
+                        _this.characterQuests = data;
+                    });
+                }
             };
             CharacterQuestsController.$inject = ["dataAccessService"];
             return CharacterQuestsController;

@@ -29,12 +29,16 @@
             return this.$resource(this.serverPath + `/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId=${characterId}`);
         }
 
-        getCharacterQuests(): ng.resource.IResourceClass<ICharacterResource> {
-            return this.$resource(this.serverPath + "/api/Characters/GetCharacterQuests");
+        getCharacterQuests(characterId: number): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + "/api/Characters/GetCharacterQuests?characterId=" + characterId);
         }
 
         getCharacterResource(): ng.resource.IResourceClass<ICharacterResource> {
             return this.$resource(this.serverPath + "/api/Characters/:Id");
+        }
+
+        getCharacters(): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + "/api/characters/GetCharacters");
         }
 
         getCharacterSkills(): ng.resource.IResourceClass<ICharacterResource> {

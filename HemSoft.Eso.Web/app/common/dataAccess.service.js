@@ -14,11 +14,14 @@ var App;
             DataAccessService.prototype.getCharacterActivityByCharacterId = function (characterId) {
                 return this.$resource(this.serverPath + ("/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId=" + characterId));
             };
-            DataAccessService.prototype.getCharacterQuests = function () {
-                return this.$resource(this.serverPath + "/api/Characters/GetCharacterQuests");
+            DataAccessService.prototype.getCharacterQuests = function (characterId) {
+                return this.$resource(this.serverPath + "/api/Characters/GetCharacterQuests?characterId=" + characterId);
             };
             DataAccessService.prototype.getCharacterResource = function () {
                 return this.$resource(this.serverPath + "/api/Characters/:Id");
+            };
+            DataAccessService.prototype.getCharacters = function () {
+                return this.$resource(this.serverPath + "/api/characters/GetCharacters");
             };
             DataAccessService.prototype.getCharacterSkills = function () {
                 return this.$resource(this.serverPath + "/api/Characters/GetCharacterSkills");

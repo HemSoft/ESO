@@ -48,6 +48,16 @@ namespace HemSoft.Eso.Domain.Managers
             }
         }
 
+        public static List<Character> GetCharacterQuests(int characterId)
+        {
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+                return context.Characters.Include("CharacterQuests").Where(x => x.Id == characterId).ToList();
+            }
+        }
+
         public static List<CharacterResearch_Result> GetCharacterResearch()
         {
             using (var context = new EsoEntities())

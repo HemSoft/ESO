@@ -16,6 +16,17 @@ var App;
                     _this.selectCharacter();
                 });
             }
+            CharacterActivityController.prototype.getCharacterActivityBagUsageString = function (characterActivity) {
+                return characterActivity.UsedBagSlots + "/" + characterActivity.MaxBagSize;
+            };
+            CharacterActivityController.prototype.getCharacterActivityBankUsageString = function (characterActivity) {
+                return characterActivity.UsedBankSlots + "/" + characterActivity.MaxBankSize;
+            };
+            CharacterActivityController.prototype.getCharacterActivityTimePlayed = function (characterActivity) {
+                if (characterActivity !== undefined && characterActivity !== null) {
+                    return (characterActivity.SecondsPlayed / 60 / 60) | 0;
+                }
+            };
             CharacterActivityController.prototype.selectCharacter = function () {
                 var _this = this;
                 this.selectedCharacter = this.dataAccessService.selectedCharacter;

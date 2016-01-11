@@ -21,18 +21,18 @@
             </tr>
             <tr ng-repeat="character in vmcsc.characters | orderBy:skillSortType:skillSortReverse">
                 <td ng-bind="character.Name" />
-                <td ng-bind="character.EffectiveLevel" />
+                <td ng-style="character.EffectiveLevel == 66 && {'background-color':'green'}" ng-bind="character.EffectiveLevel"/>
                 <td ng-bind="character.ChampionPointsEarned" />
                 <td ng-bind="character.EnlightenedPool" />
-                <td ng-bind="character.Blacksmithing" />
-                <td ng-bind="character.Clothing" />
-                <td ng-bind="character.Woodworking" />
-                <td ng-bind="character.Alchemy" />
-                <td ng-bind="character.Enchanting" />
-                <td ng-bind="character.Provisioning" />
-                <td ng-bind="character.LightArmor" />
-                <td ng-bind="character.MediumArmor" />
-                <td ng-bind="character.HeavyArmor" />
+                <td ng-style="character.Blacksmithing == 50 && {'background-color':'green'}" ng-bind="character.Blacksmithing" />
+                <td ng-style="character.Clothing == 50 && {'background-color':'green'}" ng-bind="character.Clothing" />
+                <td ng-style="character.Woodworking == 50 && {'background-color':'green'}" ng-bind="character.Woodworking" />
+                <td ng-style="character.Alchemy == 50 && {'background-color':'green'}" ng-bind="character.Alchemy" />
+                <td ng-style="character.Enchanting == 50 && {'background-color':'green'}" ng-bind="character.Enchanting" />
+                <td ng-style="character.Provisioning == 50 && {'background-color':'green'}" ng-bind="character.Provisioning" />
+                <td ng-style="character.LightArmor == 50 && {'background-color':'green'}" ng-bind="character.LightArmor" />
+                <td ng-style="character.MediumArmor == 50 && {'background-color':'green'}" ng-bind="character.MediumArmor" />
+                <td ng-style="character.HeavyArmor == 50 && {'background-color':'green'}" ng-bind="character.HeavyArmor" />
             <tr>
         </table>
     </div>

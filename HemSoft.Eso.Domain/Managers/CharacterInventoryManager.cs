@@ -35,7 +35,15 @@
                 context.Configuration.LazyLoadingEnabled = false;
                 context.Configuration.ProxyCreationEnabled = false;
 
-                // Get last saved quest for this character:
+                var characterId = inventories[0].CharacterId;
+
+                // We need to clear the inventory before we proceed:
+                foreach (var source in context.CharacterInventories.Where(x => x.CharacterId == characterId))
+                {
+                    context.CharacterInventories.Remove(source);
+                }
+                context.SaveChanges();
+
                 foreach (var inv in inventories)
                 {
                     var dbInventory = context.CharacterInventories

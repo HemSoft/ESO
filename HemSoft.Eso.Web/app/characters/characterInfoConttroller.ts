@@ -13,8 +13,8 @@
         dataAccessService: App.Common.DataAccessService;
         selectedCharacter: App.Domain.ICharacter;
 
-        static $inject = ["dataAccessService"];
-        constructor(private dataService: App.Common.DataAccessService) {
+        static $inject = ["dataAccessService", "$location"];
+        constructor(private dataService: App.Common.DataAccessService, private $location: ng.ILocationService) {
             this.title = "Upcoming";
             this.dataAccessService = dataService;
             this.getCharacters();

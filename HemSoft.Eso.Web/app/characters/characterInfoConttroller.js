@@ -3,8 +3,9 @@ var App;
     var CharacterInfoController;
     (function (CharacterInfoController_1) {
         var CharacterInfoController = (function () {
-            function CharacterInfoController(dataService) {
+            function CharacterInfoController(dataService, $location) {
                 this.dataService = dataService;
+                this.$location = $location;
                 this.title = "Upcoming";
                 this.dataAccessService = dataService;
                 this.getCharacters();
@@ -20,7 +21,7 @@ var App;
             CharacterInfoController.prototype.characterSelected = function (item) {
                 this.selectedCharacter = item;
             };
-            CharacterInfoController.$inject = ["dataAccessService"];
+            CharacterInfoController.$inject = ["dataAccessService", "$location"];
             return CharacterInfoController;
         })();
         angular.module("app").controller("characterInfoController", CharacterInfoController);

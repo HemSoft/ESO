@@ -14,9 +14,9 @@
                     <td>Alliance Points</td>
                     <th>Hours Played</th>
                 </tr>
-                <tr ng-repeat="character in vmcc.characters" ng-click="vmcc.selectCharacter(character)">
-                    <td ng-bind="character.Id" />
-                    <td ng-bind="character.Name" />
+                <tr ng-repeat="character in vmcc.characters">
+                    <td ng-bind="character.Id" ng-href="#/Home/CharacterInfo" />
+                    <td ng-bind="character.Name" ng-click="vmcc.selectCharacter(character)" />
                     <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
                     <td>
                         <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{character.EffectiveLevel}}" aria-valuemin="0" aria-valuemax="66" ng-attr-style="width: {{(character.EffectiveLevel / 66) * 100}}%;">

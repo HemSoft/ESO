@@ -13,31 +13,56 @@
                 <th>Provisioning</th>
                 <th>Woodworking</th>
             </tr>
-            <tr ng-repeat="ws in vmdwc.writs" class="{{ ws.AllWritsCompletedClass }}">
+            <tr ng-repeat="ws in vmdwc.writs">
                 <td ng-bind="ws.Character.Name" />
-                <td ng-show="{{ ws.AlchemyCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+
+                <td ng-show="{{ ws.AlchemyCompleted }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
                 <td ng-show="{{ ws.AlchemyCompleted === null }}"></td>
-                <td ng-show="{{ ws.AlchemyCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ ws.AlchemyCompleted === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
 
-                <td ng-show="{{ ws.BlacksmithingCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ ws.BlacksmithingCompleted }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
                 <td ng-show="{{ ws.BlacksmithingCompleted === null }}"></td>
-                <td ng-show="{{ ws.BlacksmithingCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ ws.BlacksmithingCompleted === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
 
-                <td ng-show="{{ ws.ClothingCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ ws.ClothingCompleted }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
                 <td ng-show="{{ ws.ClothingCompleted === null }}"></td>
-                <td ng-show="{{ ws.ClothingCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ ws.ClothingCompleted === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
 
-                <td ng-show="{{ ws.EnchantingCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ ws.EnchantingCompleted }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
                 <td ng-show="{{ ws.EnchantingCompleted === null }}"></td>
-                <td ng-show="{{ ws.EnchantingCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ ws.EnchantingCompleted === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
 
-                <td ng-show="{{ ws.ProvisioningCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ ws.ProvisioningCompleted }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
                 <td ng-show="{{ ws.ProvisioningCompleted === null }}"></td>
-                <td ng-show="{{ ws.ProvisioningCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ ws.ProvisioningCompleted === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
 
-                <td ng-show="{{ ws.WoodworkingCompleted }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
+                <td ng-show="{{ ws.WoodworkingCompleted }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
                 <td ng-show="{{ ws.WoodworkingCompleted === null }}"></td>
-                <td ng-show="{{ ws.WoodworkingCompleted === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ ws.WoodworkingCompleted === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
             <tr>
         </table>
     </div>

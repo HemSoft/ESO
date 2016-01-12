@@ -110,7 +110,12 @@
             return status;
         }
 
-
+        public List<DailyPledge> GetPledgeStatus()
+        {
+            var dailyPledgeStatus = CharacterQuestManager.GetPledgeStatus();
+            return dailyPledgeStatus;
+        }
+        
         public List<DailyWrit> GetWritStatus()
         {
             var dailyWritStatus = CharacterQuestManager.GetWritStatus();

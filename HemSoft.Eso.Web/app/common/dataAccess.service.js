@@ -35,6 +35,9 @@ var App;
             DataAccessService.prototype.getCharactersResearching = function () {
                 return this.$resource(this.serverPath + "/api/Characters/GetCharacterResearch");
             };
+            DataAccessService.prototype.getPledgeStatus = function () {
+                return this.$resource(this.serverPath + "/api/Characters/GetPledgeStatus");
+            };
             DataAccessService.prototype.getWritStatus = function () {
                 return this.$resource(this.serverPath + "/api/Characters/GetWritStatus");
             };

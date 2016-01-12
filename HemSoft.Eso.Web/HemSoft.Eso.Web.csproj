@@ -182,12 +182,14 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\characters\characterInfo.html" />
     <Content Include="app\characters\characterSkills.html" />
     <Content Include="app\characters\characterQuests.html" />
     <Content Include="app\characters\characterResearch.html" />
     <Content Include="app\characters\charactersNeedingAttention.html" />
     <Content Include="app\characters\characterListView.html" />
     <Content Include="app\characters\characterActivityListView.html" />
+    <Content Include="app\dailies\dailiesPledges.html" />
     <Content Include="app\dailies\dailiesWrothgar.html" />
     <Content Include="app\dailies\dailiesWrits.html" />
     <Content Include="Scripts\angular-route.js" />
@@ -197,6 +199,7 @@
     <TypeScriptCompile Include="app\accounts\accountController.ts" />
     <TypeScriptCompile Include="app\characters\characterActivity.ts" />
     <TypeScriptCompile Include="app\characters\characterActivityController.ts" />
+    <TypeScriptCompile Include="app\characters\characterInfoConttroller.ts" />
     <TypeScriptCompile Include="app\characters\characterSkillsController.ts" />
     <TypeScriptCompile Include="app\characters\characterQuestsController.ts" />
     <TypeScriptCompile Include="app\characters\characterResearchController.ts" />
@@ -278,6 +281,7 @@
     <Content Include="Views\Home\Skills.cshtml" />
     <Content Include="Views\Home\Quests.cshtml" />
     <Content Include="Views\Home\Dailies.cshtml" />
+    <TypeScriptCompile Include="app\dailies\dailiesPledgesController.ts" />
     <TypeScriptCompile Include="app\dailies\dailiesWrothgarController.ts" />
     <TypeScriptCompile Include="app\dailies\dailiesWritsController.ts" />
     <TypeScriptCompile Include="typings\angularjs\angular-resource.d.ts" />

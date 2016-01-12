@@ -57,6 +57,10 @@
             return this.$resource(this.serverPath + "/api/Characters/GetCharacterResearch");
         }
 
+        getPledgeStatus(): ng.resource.IResourceClass<ICharacterResource> {
+            return this.$resource(this.serverPath + "/api/Characters/GetPledgeStatus");
+        }
+
         getWritStatus(): ng.resource.IResourceClass<ICharacterResource> {
             return this.$resource(this.serverPath + "/api/Characters/GetWritStatus");
         }

@@ -16,30 +16,65 @@
             <tr ng-repeat="s in vmdwc.wrothgarStatus" class="{{ ws.AllQuestsCompletedClass }}">
                 <td ng-bind="s.Character.Name" />
 
-                <td ng-show="{{ s.HeresyOfIgnorance }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
-                <td ng-show="{{ s.HeresyOfIgnorance === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
-                <td ng-show="{{ s.HeresyOfIgnorance === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ s.HeresyOfIgnorance }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
+                <td ng-show="{{ s.HeresyOfIgnorance === null }}" class="text-center">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
+                <td ng-show="{{ s.HeresyOfIgnorance === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
 
-                <td ng-show="{{ s.MadUrkazbur }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
-                <td ng-show="{{ s.MadUrkazbur === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
-                <td ng-show="{{ s.MadUrkazbur === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ s.MadUrkazbur }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
+                <td ng-show="{{ s.MadUrkazbur === null }}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
+                <td ng-show="{{ s.MadUrkazbur === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
 
-                <td ng-show="{{ s.MeatForTheMasses }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
-                <td ng-show="{{ s.MeatForTheMasses === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
-                <td ng-show="{{ s.MeatForTheMasses === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ s.MeatForTheMasses }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
+                <td ng-show="{{ s.MeatForTheMasses === null }}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
+                <td ng-show="{{ s.MeatForTheMasses === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
 
-                <td ng-show="{{ s.NaturesBounty }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
-                <td ng-show="{{ s.NaturesBounty === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
-                <td ng-show="{{ s.NaturesBounty === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ s.NaturesBounty }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
+                <td ng-show="{{ s.NaturesBounty === null }}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
+                <td ng-show="{{ s.NaturesBounty === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
 
-                <td ng-show="{{ s.ReekingOfFoulPlay }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
-                <td ng-show="{{ s.ReekingOfFoulPlay === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
-                <td ng-show="{{ s.ReekingOfFoulPlay === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
+                <td ng-show="{{ s.ReekingOfFoulPlay }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
+                <td ng-show="{{ s.ReekingOfFoulPlay === null }}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
+                <td ng-show="{{ s.ReekingOfFoulPlay === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
 
-                <td ng-show="{{ s.SnowAndSteam }}" class="text-center"><div class="glyphicon glyphicon-ok"></div></td>
-                <td ng-show="{{ s.SnowAndSteam === null }}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
-                <td ng-show="{{ s.SnowAndSteam === false}}" class="text-center"><div class="glyphicon glyphicon-remove"></div></td>
-
+                <td ng-show="{{ s.SnowAndSteam }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
+                <td ng-show="{{ s.SnowAndSteam === null }}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
+                <td ng-show="{{ s.SnowAndSteam === false}}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
             <tr>
         </table>
     </div>

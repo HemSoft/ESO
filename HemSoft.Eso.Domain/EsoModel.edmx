@@ -46,6 +46,8 @@
           <Property Name="EnlightenedPool" Type="int" />
           <Property Name="HoursPlayed" Type="int" />
           <Property Name="LastLogin" Type="datetime" />
+          <Property Name="FullImage" Type="varchar(max)" />
+          <Property Name="FaceImage" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -407,6 +409,8 @@
           <Property Name="BankedTelvarStones" Type="Int32" />
           <Property Name="AlliancePoints" Type="Int32" />
           <NavigationProperty Name="CharacterInventories" Relationship="EsoModel.FK_CharacterInventory_Character" FromRole="Character" ToRole="CharacterInventory" />
+          <Property Name="FullImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FaceImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -882,6 +886,8 @@
           <EntitySetMapping Name="Characters">
             <EntityTypeMapping TypeName="EsoModel.Character">
               <MappingFragment StoreEntitySet="Character">
+                <ScalarProperty Name="FaceImage" ColumnName="FaceImage" />
+                <ScalarProperty Name="FullImage" ColumnName="FullImage" />
                 <ScalarProperty Name="AlliancePoints" ColumnName="AlliancePoints" />
                 <ScalarProperty Name="BankedTelvarStones" ColumnName="BankedTelvarStones" />
                 <ScalarProperty Name="HoursPlayed" ColumnName="HoursPlayed" />

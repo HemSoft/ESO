@@ -1,0 +1,33 @@
+﻿<div class="row" ng-controller="characterInfoController as vmcic">
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">
+                Character Quests
+                <span class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        {{ vmcic.selectedCharacter.Name || 'Select Character' }}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li ng-repeat="c in vmcic.characters">
+                            <a ng-click="vmcic.characterSelected(c);">{{ c.Name }}</a>
+                        </li>
+                    </ul>
+                </span>
+            </h2>
+        </div>
+
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                </tr>
+                <tr>
+                    <td />
+                    <td />
+                <tr>
+            </table>
+        </div>
+    </div>
+</div>

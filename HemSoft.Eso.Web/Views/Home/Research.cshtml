@@ -2,24 +2,5 @@
     ViewBag.Title = "Research";
 }
 
-<div class="row">
-    <div class="col-md-12 panel">
-        <div class="panel-heading">
-            <h2 class="text-center">Overdue</h2>
-        </div>
-        <div class="panel-body" ng-controller="charactersNeedingAttentionController as vmcna">
-            <div ng-include="'/app/characters/charactersNeedingAttention.html'"></div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12 panel">
-        <div class="panel-heading">
-            <h2 class="text-center">Upcoming</h2>
-        </div>
-        <div class="panel-body" ng-controller="characterResearchController as vmcrc">
-            <div ng-include="'/app/characters/characterResearch.html'"></div>
-        </div>
-    </div>
-</div>
+<div ng-include="'/app/characters/charactersNeedingAttention.html'"></div>
+<div ng-include="'/app/characters/characterResearch.html'"></div>

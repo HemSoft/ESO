@@ -19,16 +19,6 @@
                 templateUrl: "/app/accounts/accountListView.html",
                 controller: "accountController as vmac"
             })
-            .when("/Home/FamilyList",
-            {
-                templateUrl: "/app/family/familyListView.html",
-                controller: "FamilyListController as vmflc"
-            })
-            .when("/Home/FamilyDetail/:familyId",
-            {
-                templateUrl: "/app/family/familyDetailView.html",
-                controller: "FamilyDetailController as vmfdc"
-            })
             .otherwise("/Home/Index");
     }
 

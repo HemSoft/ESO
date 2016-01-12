@@ -79,6 +79,56 @@
             }
         }
 
+        public static List<DailyPledge> GetPledgeStatus()
+        {
+            using (var context = new EsoEntities())
+            {
+                var dailyPledges = new List<DailyPledge>();
+
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+
+                // First step is to identify any characters that have skill 50 or above in order to do pledges:
+                var characters = context.Characters.Where(x => x.EffectiveLevel >= 50).ToList();
+
+                foreach (var c in characters)
+                {
+                    var dailyPledge = new DailyPledge { Character = c };
+
+                    // Check to see if this character has completed any pledges today:
+                    var quests = context.CharacterQuests.Where(x => x.CharacterId == c.Id).ToList();
+
+                    foreach (var q in quests)
+                    {
+                        // Writs reset at midnight CST.
+                        if (q.Completed.AddHours(-6).Date == DateTime.UtcNow.AddHours(-6).Date)
+                        {
+                            if (q.Name.ToLower().Contains("pledge"))
+                            {
+                                if (q.Name.ToLower().Contains("veteran"))
+                                {
+                                    dailyPledge.VeteranPledgeCompleted = true;
+                                }
+                                else
+                                {
+                                    dailyPledge.NormalPledgeCompleted = true;
+                                }
+                            }
+                        }
+                    }
+
+                    if (dailyPledge.NormalPledgeCompleted && dailyPledge.VeteranPledgeCompleted)
+                    {
+                        dailyPledge.AllPledgesCompleted = true;
+                    }
+
+                    dailyPledges.Add(dailyPledge);
+                }
+
+                return dailyPledges;
+            }
+        }
+
         public static List<DailyWrit> GetWritStatus()
         {
             using (var context = new EsoEntities())
@@ -87,8 +137,6 @@
 
                 context.Configuration.LazyLoadingEnabled = false;
                 context.Configuration.ProxyCreationEnabled = false;
-
-
 
                 // First step is to identify any characters that have skill 50 in one of the writ skill lines:
                 var characters =
@@ -105,7 +153,8 @@
                             sl.Name == "Enchanting" ||
                             sl.Name == "Provisioning" ||
                             sl.Name == "Woodworking"
-                        )
+                        ) &&
+                        c.EffectiveLevel >= 50
                     select new
                     {
                         Character = c
@@ -175,6 +224,10 @@
                 dailyWrits.Add(dailyWrit);
                 return dailyWrits;
             }
+        }
+
+        private static void UpdateMissedPledges(DailyPledge dailyPledge)
+        {
         }
 
         private static void UpdateMissedWrits(DailyWrit dailyWrit)

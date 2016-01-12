@@ -84,6 +84,7 @@
     <Compile Include="ClassLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Domain\DailyPledge.cs" />
     <Compile Include="Domain\OrsiniumDaily.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="EsoModel.Context.cs">

@@ -9,6 +9,11 @@
             return View();
         }
 
+        public ActionResult CharacterDetail()
+        {
+            return View();
+        }
+
         public ActionResult Quests()
         {
             return View();

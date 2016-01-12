@@ -30,12 +30,12 @@
                     </div>
                 </td>
                 <td>
-                    <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{characterActivity.UsedBagSlots}}" aria-valuemin="0" aria-valuemax="{{characterActivity.MaxBagSize}}" ng-attr-style="width: {{(characterActivity.UsedBagSlots / characterActivity.MaxBagSize) * 100}}%;">
+                    <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{characterActivity.UsedBagSlots}}" aria-valuemin="0" aria-valuemax="200" ng-attr-style="width: {{(characterActivity.UsedBagSlots / characterActivity.MaxBagSize) * 100}}%;">
                         {{ vmcac.getCharacterActivityBagUsageString(characterActivity) }}
                     </div>
                 </td>
                 <td>
-                    <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{characterActivity.UsedBankSlots}}" aria-valuemin="0" aria-valuemax="{{characterActivity.MaxBankSize}}" ng-attr-style="width: {{(characterActivity.UsedBagSlots / characterActivity.MaxBankSize) * 100}}%;">
+                    <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{characterActivity.UsedBankSlots}}" aria-valuemin="0" aria-valuemax="230" ng-attr-style="width: {{(characterActivity.UsedBankSlots / characterActivity.MaxBankSize) * 100}}%;">
                         {{ vmcac.getCharacterActivityBankUsageString(characterActivity) }}
                     </div>
                 </td>

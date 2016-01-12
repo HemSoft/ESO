@@ -14,8 +14,10 @@
                     <td>Alliance Points</td>
                     <th>Hours Played</th>
                 </tr>
-                <tr ng-repeat="character in vmcc.characters">
-                    <td ng-bind="character.Id" ng-href="#/Home/CharacterInfo" />
+                <tr ng-repeat="character in vmcc.characters" style="cursor: pointer;">
+                    <td>
+                        <a ng-href="/Home/CharacterDetail">{{ character.Id }}</a>
+                    </td>
                     <td ng-bind="character.Name" ng-click="vmcc.selectCharacter(character)" />
                     <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
                     <td>

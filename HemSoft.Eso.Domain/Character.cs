@@ -40,6 +40,7 @@ namespace HemSoft.Eso.Domain
         public Nullable<int> AlliancePoints { get; set; }
         public string FullImage { get; set; }
         public string FaceImage { get; set; }
+        public string BuildImage { get; set; }
     
         public virtual Account Account { get; set; }
         public virtual AllianceLookup AllianceLookup { get; set; }

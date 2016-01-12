@@ -48,6 +48,7 @@
           <Property Name="LastLogin" Type="datetime" />
           <Property Name="FullImage" Type="varchar(max)" />
           <Property Name="FaceImage" Type="varchar(max)" />
+          <Property Name="BuildImage" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -411,6 +412,7 @@
           <NavigationProperty Name="CharacterInventories" Relationship="EsoModel.FK_CharacterInventory_Character" FromRole="Character" ToRole="CharacterInventory" />
           <Property Name="FullImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="FaceImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BuildImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -886,6 +888,7 @@
           <EntitySetMapping Name="Characters">
             <EntityTypeMapping TypeName="EsoModel.Character">
               <MappingFragment StoreEntitySet="Character">
+                <ScalarProperty Name="BuildImage" ColumnName="BuildImage" />
                 <ScalarProperty Name="FaceImage" ColumnName="FaceImage" />
                 <ScalarProperty Name="FullImage" ColumnName="FullImage" />
                 <ScalarProperty Name="AlliancePoints" ColumnName="AlliancePoints" />

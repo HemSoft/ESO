@@ -2,8 +2,8 @@
     <div class="col-md-12 panel">
         <div class="panel-heading">
             <h2 class="text-center">
-                Character Quests
-                <span class="dropdown">
+                Character Info {{ vmcic.selectedCharacter.Name }}
+                <span class="dropdown" style="cursor: pointer;">
                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         {{ vmcic.selectedCharacter.Name || 'Select Character' }}
                         <span class="caret"></span>
@@ -18,14 +18,18 @@
         </div>
 
         <div class="panel-body">
-            <table class="table table-bordered table-striped table-hover">
+            <table class="table">
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                </tr>
+                    <td>
+                        Full Image:
+                    </td>
+                    <td></td>
                 <tr>
-                    <td />
-                    <td />
+                <tr>
+                    <td>
+                        <img ng-src="{{ vmcic.selectedCharacter.FullImage }}"/>
+                    </td>
+                    <td></td>
                 <tr>
             </table>
         </div>

@@ -114,7 +114,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CharacterId" Type="int" Nullable="false" />
           <Property Name="ArmorType" Type="int" />
-          <Property Name="EqiuipType" Type="int" />
+          <Property Name="EquipType" Type="int" />
           <Property Name="Icon" Type="varchar(max)" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Info" Type="varchar(max)" Nullable="false" />
@@ -842,6 +842,7 @@
           <Property Name="EqiuipType" Type="Int32" />
           <Property Name="Icon" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ArmorType" Type="Int32" />
+          <Property Name="EquipType" Type="Int32" />
         </EntityType>
         <Association Name="FK_CharacterInventory_Character">
           <End Type="EsoModel.Character" Role="Character" Multiplicity="1" />
@@ -1167,9 +1168,9 @@
           <EntitySetMapping Name="CharacterInventories">
             <EntityTypeMapping TypeName="EsoModel.CharacterInventory">
               <MappingFragment StoreEntitySet="CharacterInventory">
+                <ScalarProperty Name="EquipType" ColumnName="EquipType" />
                 <ScalarProperty Name="ArmorType" ColumnName="ArmorType" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="EqiuipType" ColumnName="EqiuipType" />
                 <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
                 <ScalarProperty Name="MeetsUsageRequirement" ColumnName="MeetsUsageRequirement" />
                 <ScalarProperty Name="Trait" ColumnName="Trait" />

@@ -39,6 +39,7 @@ namespace HemSoft.Eso.Domain
         public Nullable<int> EqiuipType { get; set; }
         public string Icon { get; set; }
         public Nullable<int> ArmorType { get; set; }
+        public Nullable<int> EquipType { get; set; }
     
         public virtual Character Character { get; set; }
     }

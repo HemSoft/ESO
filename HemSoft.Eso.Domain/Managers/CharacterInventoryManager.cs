@@ -46,20 +46,9 @@
 
                 foreach (var inv in inventories)
                 {
-                    var dbInventory = context.CharacterInventories
-                        .FirstOrDefault(x => x.InstanceId == inv.InstanceId && x.CharacterId == inv.CharacterId);
-                    if (dbInventory != null)
-                    {
-                        inv.Id = dbInventory.Id;
-                        context.Entry(dbInventory).CurrentValues.SetValues(inv);
-                        context.SaveChanges();
-                    }
-                    else
-                    {
-                        // None in the database, go ahead and add:
-                        context.CharacterInventories.Add(inv);
-                        context.SaveChanges();
-                    }
+                    // TODO: Normalize inv.Name
+                    context.CharacterInventories.Add(inv);
+                    context.SaveChanges();
                 }
             }
         }

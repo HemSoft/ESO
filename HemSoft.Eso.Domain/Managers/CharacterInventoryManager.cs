@@ -1,4 +1,8 @@
-﻿namespace HemSoft.Eso.Domain.Managers
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Threading;
+
+namespace HemSoft.Eso.Domain.Managers
 {
     using System;
     using System.Collections.Generic;
@@ -47,8 +51,20 @@
                 foreach (var inv in inventories)
                 {
                     // TODO: Normalize inv.Name
-                    context.CharacterInventories.Add(inv);
-                    context.SaveChanges();
+                    if (inv.InstanceId > 0)
+                    {
+                        var cultureInfo = Thread.CurrentThread.CurrentCulture;
+                        var textInfo = cultureInfo.TextInfo;
+                        var inventoryName = textInfo.ToTitleCase(inv.Name);
+
+                        inventoryName = inventoryName.Replace("^n", string.Empty);
+                        inventoryName = inventoryName.Replace("^p", string.Empty);
+
+                        inv.Name = inventoryName;
+
+                        context.CharacterInventories.Add(inv);
+                        context.SaveChanges();
+                    }
                 }
             }
         }

@@ -166,6 +166,15 @@
           <Property Name="LastRankXP" Type="int" Nullable="false" />
           <Property Name="NextRankXP" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CharacterTitle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CharacterId" Type="int" Nullable="false" />
+          <Property Name="TitleId" Type="int" Nullable="false" />
+          <Property Name="Achieved" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="ClassLookup">
           <Key>
             <PropertyRef Name="Id" />
@@ -188,6 +197,14 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="TitleLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
         </EntityType>
         <Association Name="FK_Character_Account">
@@ -298,6 +315,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CharacterTitle_Character">
+          <End Role="Character" Type="Self.Character" Multiplicity="1" />
+          <End Role="CharacterTitle" Type="Self.CharacterTitle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Character">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterTitle">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CharacterTitle_TitleLookup">
+          <End Role="TitleLookup" Type="Self.TitleLookup" Multiplicity="1" />
+          <End Role="CharacterTitle" Type="Self.CharacterTitle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TitleLookup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterTitle">
+              <PropertyRef Name="TitleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="CharacterResearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CharactersNeedingAttention" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CharactersNeedingAttentionWithinHours" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -315,9 +356,11 @@
           <EntitySet Name="CharacterInventory" EntityType="Self.CharacterInventory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterQuest" EntityType="Self.CharacterQuest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterSkill" EntityType="Self.CharacterSkill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CharacterTitle" EntityType="Self.CharacterTitle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassLookup" EntityType="Self.ClassLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RaceLookup" EntityType="Self.RaceLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SkillLookup" EntityType="Self.SkillLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TitleLookup" EntityType="Self.TitleLookup" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Character_Account" Association="Self.FK_Character_Account">
             <End Role="Account" EntitySet="Account" />
             <End Role="Character" EntitySet="Character" />
@@ -353,6 +396,14 @@
           <AssociationSet Name="FK_CharacterSkill_SkillLookup" Association="Self.FK_CharacterSkill_SkillLookup">
             <End Role="SkillLookup" EntitySet="SkillLookup" />
             <End Role="CharacterSkill" EntitySet="CharacterSkill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CharacterTitle_Character" Association="Self.FK_CharacterTitle_Character">
+            <End Role="Character" EntitySet="Character" />
+            <End Role="CharacterTitle" EntitySet="CharacterTitle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CharacterTitle_TitleLookup" Association="Self.FK_CharacterTitle_TitleLookup">
+            <End Role="TitleLookup" EntitySet="TitleLookup" />
+            <End Role="CharacterTitle" EntitySet="CharacterTitle" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -413,6 +464,7 @@
           <Property Name="FullImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="FaceImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="BuildImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CharacterTitles" Relationship="EsoModel.FK_CharacterTitle_Character" FromRole="Character" ToRole="CharacterTitle" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -621,6 +673,16 @@
           <AssociationSet Name="FK_CharacterInventory_Character" Association="EsoModel.FK_CharacterInventory_Character">
             <End Role="Character" EntitySet="Characters" />
             <End Role="CharacterInventory" EntitySet="CharacterInventories" />
+          </AssociationSet>
+          <EntitySet Name="CharacterTitles" EntityType="EsoModel.CharacterTitle" />
+          <EntitySet Name="TitleLookups" EntityType="EsoModel.TitleLookup" />
+          <AssociationSet Name="FK_CharacterTitle_Character" Association="EsoModel.FK_CharacterTitle_Character">
+            <End Role="Character" EntitySet="Characters" />
+            <End Role="CharacterTitle" EntitySet="CharacterTitles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CharacterTitle_TitleLookup" Association="EsoModel.FK_CharacterTitle_TitleLookup">
+            <End Role="TitleLookup" EntitySet="TitleLookups" />
+            <End Role="CharacterTitle" EntitySet="CharacterTitles" />
           </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CharactersNeedingAttention_Result">
@@ -853,6 +915,50 @@
             </Principal>
             <Dependent Role="CharacterInventory">
               <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CharacterTitle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CharacterId" Type="Int32" Nullable="false" />
+          <Property Name="TitleId" Type="Int32" Nullable="false" />
+          <Property Name="Achieved" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Character" Relationship="EsoModel.FK_CharacterTitle_Character" FromRole="CharacterTitle" ToRole="Character" />
+          <NavigationProperty Name="TitleLookup" Relationship="EsoModel.FK_CharacterTitle_TitleLookup" FromRole="CharacterTitle" ToRole="TitleLookup" />
+        </EntityType>
+        <EntityType Name="TitleLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CharacterTitles" Relationship="EsoModel.FK_CharacterTitle_TitleLookup" FromRole="TitleLookup" ToRole="CharacterTitle" />
+        </EntityType>
+        <Association Name="FK_CharacterTitle_Character">
+          <End Type="EsoModel.Character" Role="Character" Multiplicity="1" />
+          <End Type="EsoModel.CharacterTitle" Role="CharacterTitle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Character">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterTitle">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CharacterTitle_TitleLookup">
+          <End Type="EsoModel.TitleLookup" Role="TitleLookup" Multiplicity="1" />
+          <End Type="EsoModel.CharacterTitle" Role="CharacterTitle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TitleLookup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterTitle">
+              <PropertyRef Name="TitleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1192,6 +1298,25 @@
                 <ScalarProperty Name="Info" ColumnName="Info" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CharacterTitles">
+            <EntityTypeMapping TypeName="EsoModel.CharacterTitle">
+              <MappingFragment StoreEntitySet="CharacterTitle">
+                <ScalarProperty Name="Achieved" ColumnName="Achieved" />
+                <ScalarProperty Name="TitleId" ColumnName="TitleId" />
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TitleLookups">
+            <EntityTypeMapping TypeName="EsoModel.TitleLookup">
+              <MappingFragment StoreEntitySet="TitleLookup">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

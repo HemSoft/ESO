@@ -138,5 +138,66 @@ namespace HemSoft.Eso.Domain.Managers
             }
         }
 
+        public static void SaveSkills(List<CharacterSkill> skills, int characterId)
+        {
+            if (skills == null || !skills.Any())
+            {
+                return;
+            }
+
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+
+                foreach (var skill in skills)
+                {
+                    skill.CharacterId = characterId;
+
+                    var result = context.CharacterSkills.FirstOrDefault(x => x.SkillId == skill.SkillId && x.CharacterId == skill.CharacterId);
+                    if (result == null)
+                    {
+                        context.CharacterSkills.Add(skill);
+                    }
+                    else
+                    {
+                        skill.Id = result.Id;
+                        context.Entry(result).CurrentValues.SetValues(skill);
+                    }
+                    context.SaveChanges();
+                }
+            }
+        }
+        public static void SaveTitles(List<CharacterTitle> titles, int characterId)
+        {
+            if (titles == null || !titles.Any())
+            {
+                return;
+            }
+
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+
+                foreach (var title in titles)
+                {
+                    title.CharacterId = characterId;
+
+                    var result = context.CharacterTitles.FirstOrDefault(x => x.TitleId == title.TitleId && x.CharacterId == title.CharacterId);
+                    if (result == null)
+                    {
+                        context.CharacterTitles.Add(title);
+                    }
+                    else
+                    {
+                        title.Id = result.Id;
+                        context.Entry(result).CurrentValues.SetValues(title);
+                    }
+                    context.SaveChanges();
+                }
+            }
+        }
+
     }
 }

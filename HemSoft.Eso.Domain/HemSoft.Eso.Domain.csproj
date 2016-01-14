@@ -81,6 +81,9 @@
     <Compile Include="CharactersNeedingAttention_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CharacterTitle.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ClassLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
@@ -114,6 +117,7 @@
     <Compile Include="Managers\CharacterInventoryManager.cs" />
     <Compile Include="Managers\CharacterQuestManager.cs" />
     <Compile Include="Domain\DailyWrit.cs" />
+    <Compile Include="Managers\TitleManager.cs" />
     <Compile Include="Managers\SkillManager.cs" />
     <Compile Include="Managers\CharacterActivityManager.cs" />
     <Compile Include="Managers\CharacterManager.cs" />
@@ -126,6 +130,9 @@
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SkillLookup.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TitleLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

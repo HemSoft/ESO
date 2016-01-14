@@ -26,6 +26,10 @@
         <AssociationConnector Association="EsoModel.FK_CharacterQuest_Character" />
         <EntityTypeShape EntityType="EsoModel.CharacterInventory" Width="1.5" PointX="7.375" PointY="5.875" />
         <AssociationConnector Association="EsoModel.FK_CharacterInventory_Character" />
+        <EntityTypeShape EntityType="EsoModel.CharacterTitle" Width="1.5" PointX="10.25" PointY="3" />
+        <EntityTypeShape EntityType="EsoModel.TitleLookup" Width="1.5" PointX="8" PointY="13.25" />
+        <AssociationConnector Association="EsoModel.FK_CharacterTitle_Character" />
+        <AssociationConnector Association="EsoModel.FK_CharacterTitle_TitleLookup" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

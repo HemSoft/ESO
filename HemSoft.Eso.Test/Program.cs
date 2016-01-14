@@ -1,4 +1,6 @@
-﻿namespace HemSoft.Eso.CharacterMonitor
+﻿using System.Linq;
+
+namespace HemSoft.Eso.CharacterMonitor
 {
     using System;
     using System.Collections.Generic;
@@ -27,6 +29,7 @@
             var skillList = new List<CharacterSkill>();
             var questList = new List<CharacterQuest>();
             var inventoryList = new List<CharacterInventory>();
+            var titleList = new List<string>();
 
             var filePath = @"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua";
             //var filePath = @"..\..\..\AddOns\HSEventLog\SavedVariables\HSEventLog.lua";
@@ -427,11 +430,14 @@
                                 case "Alliance":
                                 case "HealthMax":
                                 case "Title":
+                                    titleList.Clear();
+                                    var titles = lua.GetTableDict(property.Value as LuaTable);
+                                    titleList.AddRange(titles.Select(t => t.Value.ToString()));
+                                    TitleManager.Save(titleList);
                                     break;
                                 default:
                                     break;
                             }
-                            //Console.WriteLine($"      {property.Key} = {property.Value}");
                         }
 
                         // Some post-mortem rules:

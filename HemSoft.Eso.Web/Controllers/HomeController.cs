@@ -14,6 +14,10 @@
             return View();
         }
 
+        public ActionResult Inventory()
+        {
+            return View();
+        }
         public ActionResult Quests()
         {
             return View();

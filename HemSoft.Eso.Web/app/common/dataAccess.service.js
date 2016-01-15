@@ -11,6 +11,9 @@ var App;
             DataAccessService.prototype.getAccountResource = function () {
                 return this.$resource(this.serverPath + "/api/Accounts/:Id");
             };
+            DataAccessService.prototype.getAllInventory = function () {
+                return this.$resource(this.serverPath + "/api/Characters/GetAllInventory");
+            };
             DataAccessService.prototype.getCharacterActivityByCharacterId = function (characterId) {
                 return this.$resource(this.serverPath + ("/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId=" + characterId));
             };

@@ -173,7 +173,7 @@ namespace HemSoft.Eso.CharacterMonitor
                                                     inventory.IsConsumable = (bool) ip.Value;
                                                     break;
                                                 case "equiptype":
-                                                    inventory.EqiuipType = int.Parse(ip.Value.ToString());
+                                                    inventory.EquipType = int.Parse(ip.Value.ToString());
                                                     break;
                                                 case "icon":
                                                     inventory.Icon = ip.Value.ToString();
@@ -436,8 +436,7 @@ namespace HemSoft.Eso.CharacterMonitor
                                     break;
                                 case "Title":
                                     titleList.Clear();
-                                    //var x = lua.GetTable("Title");
-                                    //Dictionary<object, object> titles = lua.GetTableDict(property.Key as LuaTable);
+                                    Dictionary<object, object> titles = lua.GetTableDict(property.Value as LuaTable);
                                     //titleList.AddRange(titles.Select(t => t.Value.ToString()));
                                     //TitleManager.Save(titleList);
                                     break;

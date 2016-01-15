@@ -183,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\characters\characterInfo.html" />
+    <Content Include="app\characters\characterInventory.html" />
     <Content Include="app\characters\characterSkills.html" />
     <Content Include="app\characters\characterQuests.html" />
     <Content Include="app\characters\characterResearch.html" />
@@ -196,10 +197,12 @@
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="tsd.json" />
     <Content Include="Views\Home\CharacterDetail.cshtml" />
+    <Content Include="Views\Home\Inventory.cshtml" />
     <TypeScriptCompile Include="app\accounts\accountController.ts" />
     <TypeScriptCompile Include="app\characters\characterActivity.ts" />
     <TypeScriptCompile Include="app\characters\characterActivityController.ts" />
     <TypeScriptCompile Include="app\characters\characterInfoConttroller.ts" />
+    <TypeScriptCompile Include="app\characters\characterInventoryController.ts" />
     <TypeScriptCompile Include="app\characters\characterSkillsController.ts" />
     <TypeScriptCompile Include="app\characters\characterQuestsController.ts" />
     <TypeScriptCompile Include="app\characters\characterResearchController.ts" />

@@ -25,6 +25,10 @@
             return this.$resource(this.serverPath + "/api/Accounts/:Id");
         }
 
+        getAllInventory(): ng.resource.IResourceClass<IAccountResource> {
+            return this.$resource(this.serverPath + "/api/Characters/GetAllInventory");
+        }
+
         getCharacterActivityByCharacterId(characterId: number): ng.resource.IResourceClass<ICharacterResource> {
             return this.$resource(this.serverPath + `/api/CharacterActivities/GetCharacterActivitiesByCharacterId?characterId=${characterId}`);
         }

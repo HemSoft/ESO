@@ -57,6 +57,9 @@
     <Compile Include="AllianceLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ArmorTypeLookup.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Character.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
@@ -90,6 +93,9 @@
     <Compile Include="Domain\DailyPledge.cs" />
     <Compile Include="Domain\OrsiniumDaily.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="EquipTypeLookup.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EsoModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -108,10 +114,19 @@
     <Compile Include="GetAccounts_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="GetAllInventory_Result.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="GetCharacterSkills_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="GetLastCharacterActivity_Result.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ItemTraitTypeLookup.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ItemTypeLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Managers\CharacterInventoryManager.cs" />

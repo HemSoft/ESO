@@ -15,7 +15,7 @@
     [EnableCors("*", "*", "*")]
     public class CharactersController : ApiController
     {
-        private EsoEntities db = new EsoEntities();
+        private readonly EsoEntities db = new EsoEntities();
 
         private bool CharacterExists(int id)
         {
@@ -52,6 +52,12 @@
         {
             db.Configuration.ProxyCreationEnabled = false;
             return CharacterManager.GetAllWithQuests();
+        }
+
+        public List<GetAllInventory_Result> GetAllInventory()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return CharacterInventoryManager.GetAllInventory();
         }
 
         public IQueryable<Character> GetCharacters()

@@ -17,13 +17,13 @@ namespace HemSoft.Eso.Domain.Managers
             return Enum.GetName(typeof(TraitType), traitTypeId);
         }
 
-        public static List<CharacterInventory> GetAll()
+        public static List<GetAllInventory_Result> GetAllInventory()
         {
             using (var context = new EsoEntities())
             {
                 context.Configuration.LazyLoadingEnabled = false;
                 context.Configuration.ProxyCreationEnabled = false;
-                return context.CharacterInventories.Include("Character").ToList();
+                return context.GetAllInventory().ToList();
             }
         }
 
@@ -57,10 +57,10 @@ namespace HemSoft.Eso.Domain.Managers
                         var textInfo = cultureInfo.TextInfo;
                         var inventoryName = textInfo.ToTitleCase(inv.Name);
 
-                        inventoryName = inventoryName.Replace("^n", string.Empty);
-                        inventoryName = inventoryName.Replace("^p", string.Empty);
                         inventoryName = inventoryName.Replace("^N", string.Empty);
                         inventoryName = inventoryName.Replace("^P", string.Empty);
+                        inventoryName = inventoryName.Replace("^NS", string.Empty);
+                        inventoryName = inventoryName.Replace("^NP", string.Empty);
 
                         inv.Name = inventoryName;
 

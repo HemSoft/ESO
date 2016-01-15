@@ -36,11 +36,11 @@ namespace HemSoft.Eso.Domain
         public int Trait { get; set; }
         public Nullable<bool> MeetsUsageRequirement { get; set; }
         public Nullable<int> SellPrice { get; set; }
-        public Nullable<int> EqiuipType { get; set; }
         public string Icon { get; set; }
         public Nullable<int> ArmorType { get; set; }
         public Nullable<int> EquipType { get; set; }
     
         public virtual Character Character { get; set; }
+        public virtual ArmorTypeLookup ArmorTypeLookup { get; set; }
     }
 }

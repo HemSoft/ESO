@@ -27,6 +27,13 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="ArmorTypeLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Character">
           <Key>
             <PropertyRef Name="Id" />
@@ -183,6 +190,30 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="EquipTypeLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ItemTraitTypeLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ItemTypeLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="RaceLookup">
           <Key>
             <PropertyRef Name="Id" />
@@ -267,6 +298,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CharacterInventory_ArmorTypeLookup">
+          <End Role="ArmorTypeLookup" Type="Self.ArmorTypeLookup" Multiplicity="0..1" />
+          <End Role="CharacterInventory" Type="Self.CharacterInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArmorTypeLookup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterInventory">
+              <PropertyRef Name="ArmorType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CharacterInventory_Character">
           <End Role="Character" Type="Self.Character" Multiplicity="1" />
           <End Role="CharacterInventory" Type="Self.CharacterInventory" Multiplicity="*" />
@@ -345,12 +388,14 @@
           <Parameter Name="hours" Type="int" Mode="In" />
         </Function>
         <Function Name="GetAccounts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllInventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetCharacterSkills" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetLastCharacterActivity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="NextUpInResearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="EsoModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AllianceLookup" EntityType="Self.AllianceLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArmorTypeLookup" EntityType="Self.ArmorTypeLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Character" EntityType="Self.Character" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterActivity" EntityType="Self.CharacterActivity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterInventory" EntityType="Self.CharacterInventory" Schema="dbo" store:Type="Tables" />
@@ -358,9 +403,17 @@
           <EntitySet Name="CharacterSkill" EntityType="Self.CharacterSkill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterTitle" EntityType="Self.CharacterTitle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassLookup" EntityType="Self.ClassLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EquipTypeLookup" EntityType="Self.EquipTypeLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemTraitTypeLookup" EntityType="Self.ItemTraitTypeLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RaceLookup" EntityType="Self.RaceLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SkillLookup" EntityType="Self.SkillLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TitleLookup" EntityType="Self.TitleLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemTypeLookup" EntityType="Self.ItemTypeLookup" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ItemTypeLookup].[Id] AS [Id], 
+    [ItemTypeLookup].[Name] AS [Name]
+    FROM [dbo].[ItemTypeLookup] AS [ItemTypeLookup]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Character_Account" Association="Self.FK_Character_Account">
             <End Role="Account" EntitySet="Account" />
             <End Role="Character" EntitySet="Character" />
@@ -380,6 +433,10 @@
           <AssociationSet Name="FK_CharacterActivity_Character" Association="Self.FK_CharacterActivity_Character">
             <End Role="Character" EntitySet="Character" />
             <End Role="CharacterActivity" EntitySet="CharacterActivity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CharacterInventory_ArmorTypeLookup" Association="Self.FK_CharacterInventory_ArmorTypeLookup">
+            <End Role="ArmorTypeLookup" EntitySet="ArmorTypeLookup" />
+            <End Role="CharacterInventory" EntitySet="CharacterInventory" />
           </AssociationSet>
           <AssociationSet Name="FK_CharacterInventory_Character" Association="Self.FK_CharacterInventory_Character">
             <End Role="Character" EntitySet="Character" />
@@ -684,6 +741,15 @@
             <End Role="TitleLookup" EntitySet="TitleLookups" />
             <End Role="CharacterTitle" EntitySet="CharacterTitles" />
           </AssociationSet>
+          <EntitySet Name="ArmorTypeLookups" EntityType="EsoModel.ArmorTypeLookup" />
+          <EntitySet Name="EquipTypeLookups" EntityType="EsoModel.EquipTypeLookup" />
+          <EntitySet Name="ItemTraitTypeLookups" EntityType="EsoModel.ItemTraitTypeLookup" />
+          <EntitySet Name="ItemTypeLookups" EntityType="EsoModel.ItemTypeLookup" />
+          <AssociationSet Name="FK_CharacterInventory_ArmorTypeLookup" Association="EsoModel.FK_CharacterInventory_ArmorTypeLookup">
+            <End Role="ArmorTypeLookup" EntitySet="ArmorTypeLookups" />
+            <End Role="CharacterInventory" EntitySet="CharacterInventories" />
+          </AssociationSet>
+          <FunctionImport Name="GetAllInventory" ReturnType="Collection(EsoModel.GetAllInventory_Result)" />
         </EntityContainer>
         <ComplexType Name="CharactersNeedingAttention_Result">
           <Property Type="Int32" Name="CharacterId" Nullable="false" />
@@ -904,6 +970,7 @@
           <Property Name="Icon" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ArmorType" Type="Int32" />
           <Property Name="EquipType" Type="Int32" />
+          <NavigationProperty Name="ArmorTypeLookup" Relationship="EsoModel.FK_CharacterInventory_ArmorTypeLookup" FromRole="CharacterInventory" ToRole="ArmorTypeLookup" />
         </EntityType>
         <Association Name="FK_CharacterInventory_Character">
           <End Type="EsoModel.Character" Role="Character" Multiplicity="1" />
@@ -961,6 +1028,61 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ArmorTypeLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CharacterInventories" Relationship="EsoModel.FK_CharacterInventory_ArmorTypeLookup" FromRole="ArmorTypeLookup" ToRole="CharacterInventory" />
+        </EntityType>
+        <EntityType Name="EquipTypeLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ItemTraitTypeLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ItemTypeLookup">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_CharacterInventory_ArmorTypeLookup">
+          <End Type="EsoModel.ArmorTypeLookup" Role="ArmorTypeLookup" Multiplicity="0..1" />
+          <End Type="EsoModel.CharacterInventory" Role="CharacterInventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArmorTypeLookup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterInventory">
+              <PropertyRef Name="ArmorType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="GetAllInventory_Result">
+          <Property Type="String" Name="CharacterName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="ItemType" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="IsEquipable" Nullable="false" />
+          <Property Type="String" Name="ArmorType" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TraitName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="StackSize" Nullable="false" />
+          <Property Type="Int32" Name="TotalCount" Nullable="false" />
+          <Property Type="Int32" Name="RequiredLevel" Nullable="false" />
+          <Property Type="Int32" Name="RequiredVeteranRank" Nullable="false" />
+          <Property Type="String" Name="Location" Nullable="true" MaxLength="9" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1320,6 +1442,55 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ArmorTypeLookups">
+            <EntityTypeMapping TypeName="EsoModel.ArmorTypeLookup">
+              <MappingFragment StoreEntitySet="ArmorTypeLookup">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EquipTypeLookups">
+            <EntityTypeMapping TypeName="EsoModel.EquipTypeLookup">
+              <MappingFragment StoreEntitySet="EquipTypeLookup">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemTraitTypeLookups">
+            <EntityTypeMapping TypeName="EsoModel.ItemTraitTypeLookup">
+              <MappingFragment StoreEntitySet="ItemTraitTypeLookup">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemTypeLookups">
+            <EntityTypeMapping TypeName="EsoModel.ItemTypeLookup">
+              <MappingFragment StoreEntitySet="ItemTypeLookup">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetAllInventory" FunctionName="EsoModel.Store.GetAllInventory">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EsoModel.GetAllInventory_Result">
+                <ScalarProperty Name="CharacterName" ColumnName="CharacterName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ItemType" ColumnName="ItemType" />
+                <ScalarProperty Name="IsEquipable" ColumnName="IsEquipable" />
+                <ScalarProperty Name="ArmorType" ColumnName="ArmorType" />
+                <ScalarProperty Name="TraitName" ColumnName="TraitName" />
+                <ScalarProperty Name="StackSize" ColumnName="StackSize" />
+                <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+                <ScalarProperty Name="RequiredLevel" ColumnName="RequiredLevel" />
+                <ScalarProperty Name="RequiredVeteranRank" ColumnName="RequiredVeteranRank" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

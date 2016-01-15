@@ -30,6 +30,11 @@
         <EntityTypeShape EntityType="EsoModel.TitleLookup" Width="1.5" PointX="8" PointY="13.25" />
         <AssociationConnector Association="EsoModel.FK_CharacterTitle_Character" />
         <AssociationConnector Association="EsoModel.FK_CharacterTitle_TitleLookup" />
+        <EntityTypeShape EntityType="EsoModel.ArmorTypeLookup" Width="1.5" PointX="9.375" PointY="6.875" />
+        <EntityTypeShape EntityType="EsoModel.EquipTypeLookup" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="EsoModel.ItemTraitTypeLookup" Width="1.5" PointX="9.375" PointY="9.75" />
+        <EntityTypeShape EntityType="EsoModel.ItemTypeLookup" Width="1.5" PointX="11.375" PointY="0.75" />
+        <AssociationConnector Association="EsoModel.FK_CharacterInventory_ArmorTypeLookup" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -61,4 +61,3 @@ var App;
         Domain.CharacterActivity = CharacterActivity;
     })(Domain = App.Domain || (App.Domain = {}));
 })(App || (App = {}));
-//# sourceMappingURL=characterActivity.js.map

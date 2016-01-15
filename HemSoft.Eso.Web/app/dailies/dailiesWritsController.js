@@ -22,4 +22,3 @@ var App;
         angular.module("app").controller("dailiesWritsController", DailiesWritsController);
     })(DailiesWrits = App.DailiesWrits || (App.DailiesWrits = {}));
 })(App || (App = {}));
-//# sourceMappingURL=dailiesWritsController.js.map

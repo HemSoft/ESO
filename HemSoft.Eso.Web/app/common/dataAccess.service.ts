@@ -61,6 +61,10 @@
             return this.$resource(this.serverPath + "/api/Characters/GetCharacterResearch");
         }
 
+        getLastCharacterActivity(characterId: number): any {
+            return this.$resource(this.serverPath + "/api/CharacterActivities/GetLastCharacterActivity?characterId=" + characterId);
+        }
+
         getPledgeStatus(): ng.resource.IResourceClass<ICharacterResource> {
             return this.$resource(this.serverPath + "/api/Characters/GetPledgeStatus");
         }

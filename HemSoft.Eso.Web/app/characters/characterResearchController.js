@@ -22,4 +22,3 @@ var App;
         angular.module("app").controller("characterResearchController", CharacterResearchController);
     })(CharacterResearchController = App.CharacterResearchController || (App.CharacterResearchController = {}));
 })(App || (App = {}));
-//# sourceMappingURL=characterResearchController.js.map

@@ -38,6 +38,9 @@ var App;
             DataAccessService.prototype.getCharactersResearching = function () {
                 return this.$resource(this.serverPath + "/api/Characters/GetCharacterResearch");
             };
+            DataAccessService.prototype.getLastCharacterActivity = function (characterId) {
+                return this.$resource(this.serverPath + "/api/CharacterActivities/GetLastCharacterActivity?characterId=" + characterId);
+            };
             DataAccessService.prototype.getPledgeStatus = function () {
                 return this.$resource(this.serverPath + "/api/Characters/GetPledgeStatus");
             };
@@ -55,4 +58,3 @@ var App;
             .service("dataAccessService", DataAccessService);
     })(Common = App.Common || (App.Common = {}));
 })(App || (App = {}));
-//# sourceMappingURL=dataAccess.service.js.map

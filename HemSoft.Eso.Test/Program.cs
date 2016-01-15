@@ -425,15 +425,21 @@ namespace HemSoft.Eso.CharacterMonitor
                                     characterActivity.Zone = property.Value.ToString();
                                     break;
                                 case "version":
+                                    break;
                                 case "left":
+                                    break;
                                 case "top":
+                                    break;
                                 case "Alliance":
+                                    break;
                                 case "HealthMax":
+                                    break;
                                 case "Title":
                                     titleList.Clear();
-                                    var titles = lua.GetTableDict(property.Value as LuaTable);
-                                    titleList.AddRange(titles.Select(t => t.Value.ToString()));
-                                    TitleManager.Save(titleList);
+                                    //var x = lua.GetTable("Title");
+                                    //Dictionary<object, object> titles = lua.GetTableDict(property.Key as LuaTable);
+                                    //titleList.AddRange(titles.Select(t => t.Value.ToString()));
+                                    //TitleManager.Save(titleList);
                                     break;
                                 default:
                                     break;
@@ -546,19 +552,19 @@ namespace HemSoft.Eso.CharacterMonitor
 
                         if (!character.LastLogin.HasValue)
                         {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
                         else if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                         {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
                         else if (lastCharacterActivity.LastLogin.HasValue)
                         {
                             if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                             {
-                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList);
+                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList);
                                 Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                             }
                         }
@@ -568,7 +574,8 @@ namespace HemSoft.Eso.CharacterMonitor
         }
 
         private static void UpdateCharacterActvity(Account account, Character character, CharacterActivity characterActivity,
-            List<CharacterSkill> skillList, List<CharacterQuest> quests, List<CharacterInventory> inventoryList)
+            List<CharacterSkill> skillList, List<CharacterQuest> quests, List<CharacterInventory> inventoryList,
+            List<string> titleList)
         {
             character.AchievementPoints = characterActivity.AchievementPoints;
             character.AlliancePoints = characterActivity.AlliancePoints;
@@ -595,6 +602,7 @@ namespace HemSoft.Eso.CharacterMonitor
 
             AccountManager.Save(account);
             CharacterManager.SaveSkills(skillList, character.Id);
+            CharacterManager.SaveTitles(titleList, character.Id);
             CharacterInventoryManager.Save(inventoryList);
             CharacterQuestManager.Save(quests);
             CharacterManager.Save(character);

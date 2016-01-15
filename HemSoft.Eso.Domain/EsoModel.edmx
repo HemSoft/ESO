@@ -901,7 +901,6 @@
           <NavigationProperty Name="Character" Relationship="EsoModel.FK_CharacterInventory_Character" FromRole="CharacterInventory" ToRole="Character" />
           <Property Name="MeetsUsageRequirement" Type="Boolean" />
           <Property Name="SellPrice" Type="Int32" />
-          <Property Name="EqiuipType" Type="Int32" />
           <Property Name="Icon" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ArmorType" Type="Int32" />
           <Property Name="EquipType" Type="Int32" />

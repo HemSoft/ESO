@@ -59,6 +59,8 @@ namespace HemSoft.Eso.Domain.Managers
 
                         inventoryName = inventoryName.Replace("^n", string.Empty);
                         inventoryName = inventoryName.Replace("^p", string.Empty);
+                        inventoryName = inventoryName.Replace("^N", string.Empty);
+                        inventoryName = inventoryName.Replace("^P", string.Empty);
 
                         inv.Name = inventoryName;
 

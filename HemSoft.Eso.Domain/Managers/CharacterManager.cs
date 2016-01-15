@@ -138,37 +138,7 @@ namespace HemSoft.Eso.Domain.Managers
             }
         }
 
-        public static void SaveSkills(List<CharacterSkill> skills, int characterId)
-        {
-            if (skills == null || !skills.Any())
-            {
-                return;
-            }
-
-            using (var context = new EsoEntities())
-            {
-                context.Configuration.LazyLoadingEnabled = false;
-                context.Configuration.ProxyCreationEnabled = false;
-
-                foreach (var skill in skills)
-                {
-                    skill.CharacterId = characterId;
-
-                    var result = context.CharacterSkills.FirstOrDefault(x => x.SkillId == skill.SkillId && x.CharacterId == skill.CharacterId);
-                    if (result == null)
-                    {
-                        context.CharacterSkills.Add(skill);
-                    }
-                    else
-                    {
-                        skill.Id = result.Id;
-                        context.Entry(result).CurrentValues.SetValues(skill);
-                    }
-                    context.SaveChanges();
-                }
-            }
-        }
-        public static void SaveTitles(List<CharacterTitle> titles, int characterId)
+        public static void SaveTitles(List<string> titles, int characterId)
         {
             if (titles == null || !titles.Any())
             {
@@ -182,16 +152,17 @@ namespace HemSoft.Eso.Domain.Managers
 
                 foreach (var title in titles)
                 {
-                    title.CharacterId = characterId;
+                    var t = new CharacterTitle();
+                    t.CharacterId = characterId;
 
-                    var result = context.CharacterTitles.FirstOrDefault(x => x.TitleId == title.TitleId && x.CharacterId == title.CharacterId);
+                    var result = context.CharacterTitles.FirstOrDefault(x => x.TitleId == t.TitleId && x.CharacterId == t.CharacterId);
                     if (result == null)
                     {
-                        context.CharacterTitles.Add(title);
+                        context.CharacterTitles.Add(t);
                     }
                     else
                     {
-                        title.Id = result.Id;
+                        t.Id = result.Id;
                         context.Entry(result).CurrentValues.SetValues(title);
                     }
                     context.SaveChanges();

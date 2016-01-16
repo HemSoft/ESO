@@ -26,3 +26,4 @@ var App;
         Domain.Character = Character;
     })(Domain = App.Domain || (App.Domain = {}));
 })(App || (App = {}));
+//# sourceMappingURL=character.js.map

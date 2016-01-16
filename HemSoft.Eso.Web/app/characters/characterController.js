@@ -39,3 +39,4 @@ var App;
         angular.module("app").controller("characterController", CharacterController);
     })(CharacterController = App.CharacterController || (App.CharacterController = {}));
 })(App || (App = {}));
+//# sourceMappingURL=characterController.js.map

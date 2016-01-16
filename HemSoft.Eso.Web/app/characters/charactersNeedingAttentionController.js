@@ -22,3 +22,4 @@ var App;
         angular.module("app").controller("charactersNeedingAttentionController", CharactersNeedingAttentionController);
     })(CharactersNeedingAttentionController = App.CharactersNeedingAttentionController || (App.CharactersNeedingAttentionController = {}));
 })(App || (App = {}));
+//# sourceMappingURL=charactersNeedingAttentionController.js.map

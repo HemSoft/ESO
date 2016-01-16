@@ -24,3 +24,4 @@ var App;
         angular.module("app").controller("characterInventoryController", CharacterInventoryController);
     })(CharacterInventoryController = App.CharacterInventoryController || (App.CharacterInventoryController = {}));
 })(App || (App = {}));
+//# sourceMappingURL=characterInventoryController.js.map

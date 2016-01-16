@@ -36,3 +36,4 @@ var App;
         angular.module("app").controller("characterInfoController", CharacterInfoController);
     })(CharacterInfoController = App.CharacterInfoController || (App.CharacterInfoController = {}));
 })(App || (App = {}));
+//# sourceMappingURL=characterInfoConttroller.js.map

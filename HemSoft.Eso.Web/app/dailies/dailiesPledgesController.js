@@ -22,3 +22,4 @@ var App;
         angular.module("app").controller("dailiesPledgesController", DailiesPledgesController);
     })(DailiesPledges = App.DailiesPledges || (App.DailiesPledges = {}));
 })(App || (App = {}));
+//# sourceMappingURL=dailiesPledgesController.js.map

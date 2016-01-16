@@ -22,3 +22,4 @@ var App;
         angular.module("app").controller("dailiesWrothgarController", DailiesWrothgarController);
     })(DailiesWrothgar = App.DailiesWrothgar || (App.DailiesWrothgar = {}));
 })(App || (App = {}));
+//# sourceMappingURL=dailiesWrothgarController.js.map

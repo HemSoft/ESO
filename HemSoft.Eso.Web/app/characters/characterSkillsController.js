@@ -24,3 +24,4 @@ var App;
         angular.module("app").controller("characterSkillsController", CharacterSkillsController);
     })(CharacterSkillsController = App.CharacterSkillsController || (App.CharacterSkillsController = {}));
 })(App || (App = {}));
+//# sourceMappingURL=characterSkillsController.js.map

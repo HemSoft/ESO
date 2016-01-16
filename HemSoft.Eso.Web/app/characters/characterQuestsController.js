@@ -36,3 +36,4 @@ var App;
         angular.module("app").controller("characterQuestsController", CharacterQuestsController);
     })(CharacterQuestsController = App.CharacterQuestsController || (App.CharacterQuestsController = {}));
 })(App || (App = {}));
+//# sourceMappingURL=characterQuestsController.js.map

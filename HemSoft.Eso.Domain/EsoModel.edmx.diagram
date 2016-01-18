@@ -38,6 +38,8 @@
         <EntityTypeShape EntityType="EsoModel.AccountGuild" Width="1.5" PointX="3" PointY="10.625" />
         <AssociationConnector Association="EsoModel.FK_AccountGuild_Account" />
         <AssociationConnector Association="EsoModel.FK_AccountGuild_AccountGuild" />
+        <EntityTypeShape EntityType="EsoModel.CharacterStat" Width="1.5" PointX="5.25" PointY="13.25" />
+        <AssociationConnector Association="EsoModel.FK_CharacterStat_Character" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

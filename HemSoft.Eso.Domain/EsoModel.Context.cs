@@ -44,6 +44,7 @@ namespace HemSoft.Eso.Domain
         public virtual DbSet<ItemTraitTypeLookup> ItemTraitTypeLookups { get; set; }
         public virtual DbSet<ItemTypeLookup> ItemTypeLookups { get; set; }
         public virtual DbSet<AccountGuild> AccountGuilds { get; set; }
+        public virtual DbSet<CharacterStat> CharacterStats { get; set; }
     
         public virtual ObjectResult<CharactersNeedingAttention_Result> CharactersNeedingAttention()
         {

@@ -5,25 +5,28 @@ namespace HemSoft.Eso.CharacterMonitor
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Timers;
     using Domain;
     using Domain.Managers;
     using NLua;
     using Lua = NLua.Lua;
 
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             Timer_Elapsed(null, null);
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 1 * 60 * 1000;
-            timer.Enabled = true;
+            var timer = new Timer
+            {
+                Interval = 1*60*1000,
+                Enabled = true
+            };
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
             Console.ReadLine();
         }
 
-        private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             var lua = new Lua();
             var skillList = new List<CharacterSkill>();
@@ -31,19 +34,16 @@ namespace HemSoft.Eso.CharacterMonitor
             var guildList = new List<AccountGuild>();
             var inventoryList = new List<CharacterInventory>();
             var titleList = new List<string>();
+            var characterStat = new CharacterStat();
 
-            var filePath = @"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua";
-            //var filePath = @"..\..\..\AddOns\HSEventLog\SavedVariables\HSEventLog.lua";
+            const string filePath = @"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua";
             if (!File.Exists(filePath))
             {
                 return;
             }
-        lua.DoFile(filePath);
+            lua.DoFile(filePath);
             var luaTable = lua["HSEventLogSavedVariables"] as LuaTable;
             var dict = lua.GetTableDict(luaTable);
-
-            string currentAccount;
-            string currentCharacter;
 
             foreach (var tables in dict)
             {
@@ -51,7 +51,7 @@ namespace HemSoft.Eso.CharacterMonitor
                 var accounts = lua.GetTableDict(tables.Value as LuaTable);
                 foreach (var acc in accounts)
                 {
-                    currentAccount = acc.Key.ToString().Substring(1);
+                    var currentAccount = acc.Key.ToString().Substring(1);
 
                     var account = AccountManager.GetByName(currentAccount);
                     if (string.IsNullOrEmpty(account.Name))
@@ -63,7 +63,7 @@ namespace HemSoft.Eso.CharacterMonitor
                     var characters = lua.GetTableDict(acc.Value as LuaTable);
                     foreach (var c in characters)
                     {
-                        currentCharacter = c.Key.ToString();
+                        var currentCharacter = c.Key.ToString();
 
                         var character = CharacterManager.GetByName(account.Id, currentCharacter);
                         if (string.IsNullOrWhiteSpace(character.Name))
@@ -77,13 +77,15 @@ namespace HemSoft.Eso.CharacterMonitor
                         var characterActivity = new CharacterActivity {CharacterId = character.Id};
 
                         var properties = lua.GetTableDict(c.Value as LuaTable);
-                        var esoProperty = new EsoProperty();
+                        var esoProperty = new LastUpdate();
                         foreach (var property in properties)
                         {
                             switch (property.Key.ToString())
                             {
                                 case "AchievementPoints":
                                     characterActivity.AchievementPoints = int.Parse(property.Value.ToString());
+                                    break;
+                                case "Alliance":
                                     break;
                                 case "AlliancePoints":
                                     characterActivity.AlliancePoints = int.Parse(property.Value.ToString());
@@ -159,14 +161,18 @@ namespace HemSoft.Eso.CharacterMonitor
 
                                     foreach (var gd in guildDictList)
                                     {
-                                        var accountGuild = new AccountGuild();
-                                        accountGuild.AccountId = account.Id;
-
+                                        var accountGuild = new AccountGuild { AccountId = account.Id };
                                         var guildInfo = lua.GetTableDict(gd.Value as LuaTable);
                                         foreach (var g in guildInfo)
                                         {
                                             switch (g.Key.ToString().ToLower())
                                             {
+                                                case "allianceid":
+                                                    accountGuild.AllianceId = int.Parse(g.Value.ToString());
+                                                    break;
+                                                case "alliancename":
+                                                    accountGuild.AllianceName = g.Value.ToString();
+                                                    break;
                                                 case "description":
                                                     accountGuild.Description = g.Value.ToString().Replace("\n", string.Empty);
                                                     break;
@@ -202,9 +208,8 @@ namespace HemSoft.Eso.CharacterMonitor
                                     var inventoryDictList = lua.GetTableDict(property.Value as LuaTable);
                                     foreach (var i in inventoryDictList)
                                     {
-                                        Dictionary<object, object> inventoryProperties = lua.GetTableDict(i.Value as LuaTable);
-                                        var inventory = new CharacterInventory();
-                                        inventory.CharacterId = character.Id;
+                                        var inventoryProperties = lua.GetTableDict(i.Value as LuaTable);
+                                        var inventory = new CharacterInventory { CharacterId = character.Id };
                                         foreach (var ip in inventoryProperties)
                                         {
                                             switch (ip.Key.ToString().ToLower())
@@ -278,8 +283,6 @@ namespace HemSoft.Eso.CharacterMonitor
                                                 case "type":
                                                     inventory.ItemType = int.Parse(ip.Value.ToString());
                                                     break;
-                                                default:
-                                                    break;
                                             }
                                         }
                                         inventoryList.Add(inventory);
@@ -315,14 +318,143 @@ namespace HemSoft.Eso.CharacterMonitor
                                 case "NumberOfFriends":
                                     characterActivity.NumberOfFriends = int.Parse(property.Value.ToString());
                                     break;
+                                case "PlayerStats":
+                                    characterStat = new CharacterStat();
+                                    var characterStatDict = lua.GetTableDict(property.Value as LuaTable);
+                                    foreach (var cs in characterStatDict)
+                                    {
+                                        switch (cs.Key.ToString())
+                                        {
+                                            case "ArmorRating":
+                                                characterStat.ArmorRating = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "AttackPower":
+                                                characterStat.AttackPower = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "Block":
+                                                characterStat.Block = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "CriticalResistance":
+                                                characterStat.CriticalResistance = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "CriticalStrike":
+                                                characterStat.CriticalStrike = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistCold":
+                                                characterStat.DamageResistCold = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistDisease":
+                                                characterStat.DamageResistDisease = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistDrown":
+                                                characterStat.DamageResistDrown = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistEarth":
+                                                characterStat.DamageResistEarth = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistFire":
+                                                characterStat.DamageResistFire = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistGeneric":
+                                                characterStat.DamageResistGeneric = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistMagic":
+                                                characterStat.DamageResistMagic = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistOblivion":
+                                                characterStat.DamageResistOblivion = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistPhysical":
+                                                characterStat.DamageResistPhysical = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistPoison":
+                                                characterStat.DamageResistPoison = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistShock":
+                                                characterStat.DamageResistShock = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "DamageResistStart":
+                                                characterStat.DamageResistStart = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "Dodge":
+                                                characterStat.Dodge = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "HealingTaken":
+                                                characterStat.HealingTaken = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "HealthMax":
+                                                characterStat.HealthMax = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "HealthRegenCombat":
+                                                characterStat.HealthRegenCombat = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "HealthRegenIdle":
+                                                characterStat.HealthRegenIdle = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "MagickaMax":
+                                                characterStat.MagickaMax = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "MagickaRegenCombat":
+                                                characterStat.MagickaRegenCombat = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "MagickaRegenIdle":
+                                                characterStat.MagickaRegenIdle = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "Miss":
+                                                characterStat.Miss = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "Mitigation":
+                                                characterStat.MitigationX = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "Parry":
+                                                characterStat.Parry = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "PhysicalPenetration":
+                                                characterStat.PhysicalPenetration = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "PhysicalResist":
+                                                characterStat.PhysicalResist = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "Power":
+                                                characterStat.Power = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "SpellCritical":
+                                                characterStat.SpellCritical = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "SpellMitigation":
+                                                characterStat.SpellMitigation = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "SpellPenetration":
+                                                characterStat.SpellPenetration = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "SpellPower":
+                                                characterStat.SpellPower = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "SpellResist":
+                                                characterStat.SpellResist = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "StaminaMax":
+                                                characterStat.StaminaMax = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "StaminaRegenCombat":
+                                                characterStat.StaminaRegenCombat = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "StaminaRegenIdle":
+                                                characterStat.StaminaRegenIdle = int.Parse(cs.Value.ToString());
+                                                break;
+                                            case "WeaponPower":
+                                                characterStat.WeaponPower = int.Parse(cs.Value.ToString());
+                                                break;
+                                        }
+                                    }
+                                    break;
                                 case "Quest":
                                     questList.Clear();
-                                    Dictionary<object, object> quests = lua.GetTableDict(property.Value as LuaTable);
+                                    var quests = lua.GetTableDict(property.Value as LuaTable);
                                     foreach (var q in quests)
                                     {
-                                        Dictionary<object, object> quest = lua.GetTableDict(q.Value as LuaTable);
-                                        var characterQuest = new CharacterQuest();
-                                        characterQuest.CharacterId = character.Id;
+                                        var quest = lua.GetTableDict(q.Value as LuaTable);
+                                        var characterQuest = new CharacterQuest { CharacterId = character.Id };
                                         foreach (var qp in quest)
                                         {
                                             switch (qp.Key.ToString().ToLower())
@@ -365,8 +497,6 @@ namespace HemSoft.Eso.CharacterMonitor
                                                 case "zone":
                                                     characterQuest.Zone = qp.Value.ToString();
                                                     break;
-                                                default:
-                                                    break;
                                             }
                                         }
                                         questList.Add(characterQuest);
@@ -381,10 +511,10 @@ namespace HemSoft.Eso.CharacterMonitor
                                     break;
                                 case "Skill":
                                     skillList.Clear();
-                                    Dictionary<object, object> skills = lua.GetTableDict(property.Value as LuaTable);
+                                    var skills = lua.GetTableDict(property.Value as LuaTable);
                                     foreach (var s in skills)
                                     {
-                                        Dictionary<object, object> skill = lua.GetTableDict(s.Value as LuaTable);
+                                        var skill = lua.GetTableDict(s.Value as LuaTable);
                                         var skillClass = new CharacterSkill();
                                         foreach (var sk in skill)
                                         {
@@ -394,8 +524,10 @@ namespace HemSoft.Eso.CharacterMonitor
                                                     skillClass.SkillId = SkillManager.GetSkillId(sk.Value.ToString());
                                                     if (skillClass.SkillId == 0)
                                                     {
-                                                        var newSkillLookup = new SkillLookup();
-                                                        newSkillLookup.Name = sk.Value.ToString();
+                                                        var newSkillLookup = new SkillLookup
+                                                        {
+                                                            Name = sk.Value.ToString()
+                                                        };
                                                         skillClass.SkillId = SkillManager.Save(newSkillLookup);
                                                     }
                                                     break;
@@ -410,8 +542,6 @@ namespace HemSoft.Eso.CharacterMonitor
                                                     break;
                                                 case "nextrankxp":
                                                     skillClass.NextRankXP = int.Parse(sk.Value.ToString());
-                                                    break;
-                                                default:
                                                     break;
                                             }
                                         }
@@ -472,8 +602,6 @@ namespace HemSoft.Eso.CharacterMonitor
                                     break;
                                 case "top":
                                     break;
-                                case "Alliance":
-                                    break;
                                 case "HealthMax":
                                     break;
                                 case "Title":
@@ -483,8 +611,6 @@ namespace HemSoft.Eso.CharacterMonitor
                                     titleList.Clear();
                                     var titles = lua.GetTableDict(property.Value as LuaTable);
                                     titleList.AddRange(titles.Select(t => t.Value.ToString()));
-                                    break;
-                                default:
                                     break;
                             }
                         }
@@ -599,19 +725,19 @@ namespace HemSoft.Eso.CharacterMonitor
 
                         if (!character.LastLogin.HasValue)
                         {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
                         else if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                         {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
                         else if (lastCharacterActivity.LastLogin.HasValue)
                         {
                             if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                             {
-                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList);
+                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat);
                                 Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                             }
                         }
@@ -622,13 +748,13 @@ namespace HemSoft.Eso.CharacterMonitor
 
         private static void UpdateCharacterActvity(Account account, Character character, CharacterActivity characterActivity,
             List<CharacterSkill> skillList, List<CharacterQuest> quests, List<CharacterInventory> inventoryList,
-            List<string> titleList, List<AccountGuild> guildList)
+            List<string> titleList, List<AccountGuild> guildList, CharacterStat characterStat)
         {
             character.AchievementPoints = characterActivity.AchievementPoints;
             character.AlliancePoints = characterActivity.AlliancePoints;
             character.BankedTelvarStones = characterActivity.BankedTelvarStones;
             account.BankedTelvarStones = character.BankedTelvarStones;
-            character.LastLogin = characterActivity.LastLogin.Value;
+            if (characterActivity.LastLogin != null) character.LastLogin = characterActivity.LastLogin.Value;
             if (character.EnlightenedPool == null || characterActivity.EnlightenedPool > 0)
             {
                 if (character.EffectiveLevel > 50)
@@ -654,28 +780,15 @@ namespace HemSoft.Eso.CharacterMonitor
             CharacterQuestManager.Save(quests);
             CharacterManager.Save(character);
             CharacterActivityManager.Save(characterActivity);
+            CharacterStatManager.Save(characterStat);
             AccountManager.SaveGuildInfo(guildList);
             AccountManager.Save(account);
         }
     }
 
-    public class EsoProperty
+    public class LastUpdate
     {
-        public int AlliancePoints { get; set; }
-        public int BankedCash { get; set; }
-        public int BankedTelvarStones { get; set; }
-        public int Cash { get; set; }
-        public int ChampionPointsEarned { get; set; }
         public string Date { get; set; }
-        public int GuildCount { get; set; }
-        public int MailCount { get; set; }
-        public int MailMax { get; set; }
-        public int MaxBagSize { get; set; }
-        public int MaxBankSize { get; set; }
-        public int NumberOfFriends { get; set; }
-        public int SecondsPlayed { get; set; }
         public string Time { get; set; }
-        public int UsedBagSlots { get; set; }
-        public int UsedBankSlots { get; set; }
     }
 }

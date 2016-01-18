@@ -23,6 +23,8 @@ namespace HemSoft.Eso.Domain
         public int MembersOnline { get; set; }
         public string MotDescription { get; set; }
         public int AccountId { get; set; }
+        public Nullable<int> AllianceId { get; set; }
+        public string AllianceName { get; set; }
     
         public virtual Account Account { get; set; }
         public virtual AccountGuild AccountGuild1 { get; set; }

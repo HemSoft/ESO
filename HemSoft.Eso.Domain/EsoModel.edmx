@@ -26,6 +26,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
+          <Property Name="AllianceId" Type="int" />
+          <Property Name="AllianceName" Type="varchar" MaxLength="100" />
           <Property Name="Founded" Type="date" />
           <Property Name="LeaderName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Members" Type="int" Nullable="false" />
@@ -187,6 +189,53 @@
           <Property Name="XP" Type="int" Nullable="false" />
           <Property Name="LastRankXP" Type="int" Nullable="false" />
           <Property Name="NextRankXP" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CharacterStat">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CharacterId" Type="int" Nullable="false" />
+          <Property Name="ArmorRating" Type="int" Nullable="false" />
+          <Property Name="AttackPower" Type="int" Nullable="false" />
+          <Property Name="Block" Type="int" Nullable="false" />
+          <Property Name="CriticalResistance" Type="int" Nullable="false" />
+          <Property Name="CriticalStrike" Type="int" Nullable="false" />
+          <Property Name="DamageResistCold" Type="int" Nullable="false" />
+          <Property Name="DamageResistDisease" Type="int" Nullable="false" />
+          <Property Name="DamageResistDrown" Type="int" Nullable="false" />
+          <Property Name="DamageResistEarth" Type="int" Nullable="false" />
+          <Property Name="DamageResistFire" Type="int" Nullable="false" />
+          <Property Name="DamageResistGeneric" Type="int" Nullable="false" />
+          <Property Name="DamageResistMagic" Type="int" Nullable="false" />
+          <Property Name="DamageResistOblivion" Type="int" Nullable="false" />
+          <Property Name="DamageResistPhysical" Type="int" Nullable="false" />
+          <Property Name="DamageResistPoison" Type="int" Nullable="false" />
+          <Property Name="DamageResistShock" Type="int" Nullable="false" />
+          <Property Name="DamageResistStart" Type="int" Nullable="false" />
+          <Property Name="Dodge" Type="int" Nullable="false" />
+          <Property Name="HealingTaken" Type="int" Nullable="false" />
+          <Property Name="HealthMax" Type="int" Nullable="false" />
+          <Property Name="HealthRegenCombat" Type="int" Nullable="false" />
+          <Property Name="HealthRegenIdle" Type="int" Nullable="false" />
+          <Property Name="MagickaMax" Type="int" Nullable="false" />
+          <Property Name="MagickaRegenCombat" Type="int" Nullable="false" />
+          <Property Name="MagickaRegenIdle" Type="int" Nullable="false" />
+          <Property Name="Miss" Type="int" Nullable="false" />
+          <Property Name="Mitigation" Type="int" Nullable="false" />
+          <Property Name="Parry" Type="int" Nullable="false" />
+          <Property Name="PhysicalPenetration" Type="int" Nullable="false" />
+          <Property Name="PhysicalResist" Type="int" Nullable="false" />
+          <Property Name="Power" Type="int" Nullable="false" />
+          <Property Name="SpellCritical" Type="int" Nullable="false" />
+          <Property Name="SpellMitigation" Type="int" Nullable="false" />
+          <Property Name="SpellPenetration" Type="int" Nullable="false" />
+          <Property Name="SpellPower" Type="int" Nullable="false" />
+          <Property Name="SpellResist" Type="int" Nullable="false" />
+          <Property Name="StaminaMax" Type="int" Nullable="false" />
+          <Property Name="StaminaRegenCombat" Type="int" Nullable="false" />
+          <Property Name="StaminaRegenIdle" Type="int" Nullable="false" />
+          <Property Name="WeaponPower" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CharacterTitle">
           <Key>
@@ -397,6 +446,18 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CharacterStat_Character">
+          <End Role="Character" Type="Self.Character" Multiplicity="1" />
+          <End Role="CharacterStat" Type="Self.CharacterStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Character">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterStat">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CharacterTitle_Character">
           <End Role="Character" Type="Self.Character" Multiplicity="1" />
           <End Role="CharacterTitle" Type="Self.CharacterTitle" Multiplicity="*" />
@@ -443,6 +504,7 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <EntitySet Name="CharacterInventory" EntityType="Self.CharacterInventory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterQuest" EntityType="Self.CharacterQuest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterSkill" EntityType="Self.CharacterSkill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CharacterStat" EntityType="Self.CharacterStat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CharacterTitle" EntityType="Self.CharacterTitle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassLookup" EntityType="Self.ClassLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EquipTypeLookup" EntityType="Self.EquipTypeLookup" Schema="dbo" store:Type="Tables" />
@@ -503,6 +565,10 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <AssociationSet Name="FK_CharacterSkill_SkillLookup" Association="Self.FK_CharacterSkill_SkillLookup">
             <End Role="SkillLookup" EntitySet="SkillLookup" />
             <End Role="CharacterSkill" EntitySet="CharacterSkill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CharacterStat_Character" Association="Self.FK_CharacterStat_Character">
+            <End Role="Character" EntitySet="Character" />
+            <End Role="CharacterStat" EntitySet="CharacterStat" />
           </AssociationSet>
           <AssociationSet Name="FK_CharacterTitle_Character" Association="Self.FK_CharacterTitle_Character">
             <End Role="Character" EntitySet="Character" />
@@ -574,6 +640,7 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <Property Name="BuildImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CharacterTitles" Relationship="EsoModel.FK_CharacterTitle_Character" FromRole="Character" ToRole="CharacterTitle" />
           <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CharacterStats" Relationship="EsoModel.FK_CharacterStat_Character" FromRole="Character" ToRole="CharacterStat" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -802,7 +869,7 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
             <End Role="CharacterInventory" EntitySet="CharacterInventories" />
           </AssociationSet>
           <FunctionImport Name="GetAllInventory" ReturnType="Collection(EsoModel.GetAllInventory_Result)" >
-            <Parameter Name="InventoryName" Mode="In" Type="String" />
+          <Parameter Name="InventoryName" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="AccountGuilds" EntityType="EsoModel.AccountGuild" />
           <AssociationSet Name="FK_AccountGuild_Account" Association="EsoModel.FK_AccountGuild_Account">
@@ -812,6 +879,11 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <AssociationSet Name="FK_AccountGuild_AccountGuild" Association="EsoModel.FK_AccountGuild_AccountGuild">
             <End Role="AccountGuild" EntitySet="AccountGuilds" />
             <End Role="AccountGuild1" EntitySet="AccountGuilds" />
+          </AssociationSet>
+          <EntitySet Name="CharacterStats" EntityType="EsoModel.CharacterStat" />
+          <AssociationSet Name="FK_CharacterStat_Character" Association="EsoModel.FK_CharacterStat_Character">
+            <End Role="Character" EntitySet="Characters" />
+            <End Role="CharacterStat" EntitySet="CharacterStats" />
           </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CharactersNeedingAttention_Result">
@@ -1162,6 +1234,8 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <NavigationProperty Name="Account" Relationship="EsoModel.FK_AccountGuild_Account" FromRole="AccountGuild" ToRole="Account" />
           <NavigationProperty Name="AccountGuild1" Relationship="EsoModel.FK_AccountGuild_AccountGuild" FromRole="AccountGuild" ToRole="AccountGuild1" />
           <NavigationProperty Name="AccountGuild2" Relationship="EsoModel.FK_AccountGuild_AccountGuild" FromRole="AccountGuild1" ToRole="AccountGuild" />
+          <Property Name="AllianceId" Type="Int32" />
+          <Property Name="AllianceName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_AccountGuild_Account">
           <End Type="EsoModel.Account" Role="Account" Multiplicity="1" />
@@ -1184,6 +1258,66 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
             </Principal>
             <Dependent Role="AccountGuild1">
               <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CharacterStat">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CharacterId" Type="Int32" Nullable="false" />
+          <Property Name="AttackPower" Type="Int32" Nullable="false" />
+          <Property Name="Block" Type="Int32" Nullable="false" />
+          <Property Name="CriticalResistance" Type="Int32" Nullable="false" />
+          <Property Name="CriticalStrike" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistCold" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistDisease" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistDrown" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistEarth" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistFire" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistGeneric" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistMagic" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistOblivion" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistPhysical" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistPoison" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistShock" Type="Int32" Nullable="false" />
+          <Property Name="DamageResistStart" Type="Int32" Nullable="false" />
+          <Property Name="Dodge" Type="Int32" Nullable="false" />
+          <Property Name="HealingTaken" Type="Int32" Nullable="false" />
+          <Property Name="HealthMax" Type="Int32" Nullable="false" />
+          <Property Name="HealthRegenCombat" Type="Int32" Nullable="false" />
+          <Property Name="HealthRegenIdle" Type="Int32" Nullable="false" />
+          <Property Name="MagickaMax" Type="Int32" Nullable="false" />
+          <Property Name="MagickaRegenCombat" Type="Int32" Nullable="false" />
+          <Property Name="MagickaRegenIdle" Type="Int32" Nullable="false" />
+          <Property Name="Miss" Type="Int32" Nullable="false" />
+          <Property Name="MitigationX" Type="Int32" Nullable="false" />
+          <Property Name="Parry" Type="Int32" Nullable="false" />
+          <Property Name="PhysicalPenetration" Type="Int32" Nullable="false" />
+          <Property Name="PhysicalResist" Type="Int32" Nullable="false" />
+          <Property Name="Power" Type="Int32" Nullable="false" />
+          <Property Name="SpellCritical" Type="Int32" Nullable="false" />
+          <Property Name="SpellMitigation" Type="Int32" Nullable="false" />
+          <Property Name="SpellPenetration" Type="Int32" Nullable="false" />
+          <Property Name="SpellPower" Type="Int32" Nullable="false" />
+          <Property Name="SpellResist" Type="Int32" Nullable="false" />
+          <Property Name="StaminaMax" Type="Int32" Nullable="false" />
+          <Property Name="StaminaRegenCombat" Type="Int32" Nullable="false" />
+          <Property Name="StaminaRegenIdle" Type="Int32" Nullable="false" />
+          <Property Name="WeaponPower" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Character" Relationship="EsoModel.FK_CharacterStat_Character" FromRole="CharacterStat" ToRole="Character" />
+          <Property Name="ArmorRating" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CharacterStat_Character">
+          <End Type="EsoModel.Character" Role="Character" Multiplicity="1" />
+          <End Type="EsoModel.CharacterStat" Role="CharacterStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Character">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CharacterStat">
+              <PropertyRef Name="CharacterId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1599,6 +1733,8 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <EntitySetMapping Name="AccountGuilds">
             <EntityTypeMapping TypeName="EsoModel.AccountGuild">
               <MappingFragment StoreEntitySet="AccountGuild">
+                <ScalarProperty Name="AllianceName" ColumnName="AllianceName" />
+                <ScalarProperty Name="AllianceId" ColumnName="AllianceId" />
                 <ScalarProperty Name="AccountId" ColumnName="AccountId" />
                 <ScalarProperty Name="MotDescription" ColumnName="MotDescription" />
                 <ScalarProperty Name="MembersOnline" ColumnName="MembersOnline" />
@@ -1607,6 +1743,54 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
                 <ScalarProperty Name="Founded" ColumnName="Founded" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CharacterStats">
+            <EntityTypeMapping TypeName="EsoModel.CharacterStat">
+              <MappingFragment StoreEntitySet="CharacterStat">
+                <ScalarProperty Name="ArmorRating" ColumnName="ArmorRating" />
+                <ScalarProperty Name="WeaponPower" ColumnName="WeaponPower" />
+                <ScalarProperty Name="StaminaRegenIdle" ColumnName="StaminaRegenIdle" />
+                <ScalarProperty Name="StaminaRegenCombat" ColumnName="StaminaRegenCombat" />
+                <ScalarProperty Name="StaminaMax" ColumnName="StaminaMax" />
+                <ScalarProperty Name="SpellResist" ColumnName="SpellResist" />
+                <ScalarProperty Name="SpellPower" ColumnName="SpellPower" />
+                <ScalarProperty Name="SpellPenetration" ColumnName="SpellPenetration" />
+                <ScalarProperty Name="SpellMitigation" ColumnName="SpellMitigation" />
+                <ScalarProperty Name="SpellCritical" ColumnName="SpellCritical" />
+                <ScalarProperty Name="Power" ColumnName="Power" />
+                <ScalarProperty Name="PhysicalResist" ColumnName="PhysicalResist" />
+                <ScalarProperty Name="PhysicalPenetration" ColumnName="PhysicalPenetration" />
+                <ScalarProperty Name="Parry" ColumnName="Parry" />
+                <ScalarProperty Name="MitigationX" ColumnName="Mitigation" />
+                <ScalarProperty Name="Miss" ColumnName="Miss" />
+                <ScalarProperty Name="MagickaRegenIdle" ColumnName="MagickaRegenIdle" />
+                <ScalarProperty Name="MagickaRegenCombat" ColumnName="MagickaRegenCombat" />
+                <ScalarProperty Name="MagickaMax" ColumnName="MagickaMax" />
+                <ScalarProperty Name="HealthRegenIdle" ColumnName="HealthRegenIdle" />
+                <ScalarProperty Name="HealthRegenCombat" ColumnName="HealthRegenCombat" />
+                <ScalarProperty Name="HealthMax" ColumnName="HealthMax" />
+                <ScalarProperty Name="HealingTaken" ColumnName="HealingTaken" />
+                <ScalarProperty Name="Dodge" ColumnName="Dodge" />
+                <ScalarProperty Name="DamageResistStart" ColumnName="DamageResistStart" />
+                <ScalarProperty Name="DamageResistShock" ColumnName="DamageResistShock" />
+                <ScalarProperty Name="DamageResistPoison" ColumnName="DamageResistPoison" />
+                <ScalarProperty Name="DamageResistPhysical" ColumnName="DamageResistPhysical" />
+                <ScalarProperty Name="DamageResistOblivion" ColumnName="DamageResistOblivion" />
+                <ScalarProperty Name="DamageResistMagic" ColumnName="DamageResistMagic" />
+                <ScalarProperty Name="DamageResistGeneric" ColumnName="DamageResistGeneric" />
+                <ScalarProperty Name="DamageResistFire" ColumnName="DamageResistFire" />
+                <ScalarProperty Name="DamageResistEarth" ColumnName="DamageResistEarth" />
+                <ScalarProperty Name="DamageResistDrown" ColumnName="DamageResistDrown" />
+                <ScalarProperty Name="DamageResistDisease" ColumnName="DamageResistDisease" />
+                <ScalarProperty Name="DamageResistCold" ColumnName="DamageResistCold" />
+                <ScalarProperty Name="CriticalStrike" ColumnName="CriticalStrike" />
+                <ScalarProperty Name="CriticalResistance" ColumnName="CriticalResistance" />
+                <ScalarProperty Name="Block" ColumnName="Block" />
+                <ScalarProperty Name="AttackPower" ColumnName="AttackPower" />
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

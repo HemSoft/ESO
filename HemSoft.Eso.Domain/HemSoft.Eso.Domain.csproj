@@ -87,6 +87,9 @@
     <Compile Include="CharactersNeedingAttention_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CharacterStat.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="CharacterTitle.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
@@ -133,6 +136,7 @@
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Managers\CharacterInventoryManager.cs" />
+    <Compile Include="Managers\CharacterStatManager.cs" />
     <Compile Include="Managers\CharacterQuestManager.cs" />
     <Compile Include="Domain\DailyWrit.cs" />
     <Compile Include="Managers\TitleManager.cs" />

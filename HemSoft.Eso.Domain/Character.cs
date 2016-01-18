@@ -42,6 +42,7 @@ namespace HemSoft.Eso.Domain
         public string FullImage { get; set; }
         public string FaceImage { get; set; }
         public string BuildImage { get; set; }
+        public string Title { get; set; }
     
         public virtual Account Account { get; set; }
         public virtual AllianceLookup AllianceLookup { get; set; }

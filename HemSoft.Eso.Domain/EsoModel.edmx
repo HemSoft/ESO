@@ -19,6 +19,20 @@
           <Property Name="HoursPlayed" Type="int" />
           <Property Name="LastLogin" Type="datetime" />
         </EntityType>
+        <EntityType Name="AccountGuild">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="Founded" Type="date" />
+          <Property Name="LeaderName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Members" Type="int" Nullable="false" />
+          <Property Name="MembersOnline" Type="int" Nullable="false" />
+          <Property Name="MotDescription" Type="varchar(max)" />
+          <Property Name="AccountId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="AllianceLookup">
           <Key>
             <PropertyRef Name="Id" />
@@ -53,6 +67,7 @@
           <Property Name="EnlightenedPool" Type="int" />
           <Property Name="HoursPlayed" Type="int" />
           <Property Name="LastLogin" Type="datetime" />
+          <Property Name="Title" Type="varchar" MaxLength="100" />
           <Property Name="FullImage" Type="varchar(max)" />
           <Property Name="FaceImage" Type="varchar(max)" />
           <Property Name="BuildImage" Type="varchar(max)" />
@@ -238,6 +253,30 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
         </EntityType>
+        <Association Name="FK_AccountGuild_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="AccountGuild" Type="Self.AccountGuild" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AccountGuild">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountGuild_AccountGuild">
+          <End Role="AccountGuild" Type="Self.AccountGuild" Multiplicity="1" />
+          <End Role="AccountGuild1" Type="Self.AccountGuild" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AccountGuild">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AccountGuild1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Character_Account">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
@@ -388,12 +427,15 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <Parameter Name="hours" Type="int" Mode="In" />
         </Function>
         <Function Name="GetAccounts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="GetAllInventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllInventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="InventoryName" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="GetCharacterSkills" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetLastCharacterActivity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="NextUpInResearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="EsoModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccountGuild" EntityType="Self.AccountGuild" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AllianceLookup" EntityType="Self.AllianceLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ArmorTypeLookup" EntityType="Self.ArmorTypeLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Character" EntityType="Self.Character" Schema="dbo" store:Type="Tables" />
@@ -414,6 +456,14 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
     [ItemTypeLookup].[Name] AS [Name]
     FROM [dbo].[ItemTypeLookup] AS [ItemTypeLookup]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_AccountGuild_Account" Association="Self.FK_AccountGuild_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="AccountGuild" EntitySet="AccountGuild" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountGuild_AccountGuild" Association="Self.FK_AccountGuild_AccountGuild">
+            <End Role="AccountGuild" EntitySet="AccountGuild" />
+            <End Role="AccountGuild1" EntitySet="AccountGuild" />
+          </AssociationSet>
           <AssociationSet Name="FK_Character_Account" Association="Self.FK_Character_Account">
             <End Role="Account" EntitySet="Account" />
             <End Role="Character" EntitySet="Character" />
@@ -481,6 +531,7 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <Property Name="ChampionPointsEarned" Type="Int32" />
           <Property Name="HoursPlayed" Type="Int32" />
           <Property Name="BankedTelvarStones" Type="Int32" />
+          <NavigationProperty Name="AccountGuilds" Relationship="EsoModel.FK_AccountGuild_Account" FromRole="Account" ToRole="AccountGuild" />
         </EntityType>
         <EntityType Name="AllianceLookup">
           <Key>
@@ -522,6 +573,7 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <Property Name="FaceImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="BuildImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CharacterTitles" Relationship="EsoModel.FK_CharacterTitle_Character" FromRole="Character" ToRole="CharacterTitle" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -749,7 +801,18 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
             <End Role="ArmorTypeLookup" EntitySet="ArmorTypeLookups" />
             <End Role="CharacterInventory" EntitySet="CharacterInventories" />
           </AssociationSet>
-          <FunctionImport Name="GetAllInventory" ReturnType="Collection(EsoModel.GetAllInventory_Result)" />
+          <FunctionImport Name="GetAllInventory" ReturnType="Collection(EsoModel.GetAllInventory_Result)" >
+            <Parameter Name="InventoryName" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="AccountGuilds" EntityType="EsoModel.AccountGuild" />
+          <AssociationSet Name="FK_AccountGuild_Account" Association="EsoModel.FK_AccountGuild_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="AccountGuild" EntitySet="AccountGuilds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountGuild_AccountGuild" Association="EsoModel.FK_AccountGuild_AccountGuild">
+            <End Role="AccountGuild" EntitySet="AccountGuilds" />
+            <End Role="AccountGuild1" EntitySet="AccountGuilds" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CharactersNeedingAttention_Result">
           <Property Type="Int32" Name="CharacterId" Nullable="false" />
@@ -1083,6 +1146,47 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <Property Type="Int32" Name="RequiredVeteranRank" Nullable="false" />
           <Property Type="String" Name="Location" Nullable="true" MaxLength="9" />
         </ComplexType>
+        <EntityType Name="AccountGuild">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Founded" Type="DateTime" Precision="0" />
+          <Property Name="LeaderName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Members" Type="Int32" Nullable="false" />
+          <Property Name="MembersOnline" Type="Int32" Nullable="false" />
+          <Property Name="MotDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AccountId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="EsoModel.FK_AccountGuild_Account" FromRole="AccountGuild" ToRole="Account" />
+          <NavigationProperty Name="AccountGuild1" Relationship="EsoModel.FK_AccountGuild_AccountGuild" FromRole="AccountGuild" ToRole="AccountGuild1" />
+          <NavigationProperty Name="AccountGuild2" Relationship="EsoModel.FK_AccountGuild_AccountGuild" FromRole="AccountGuild1" ToRole="AccountGuild" />
+        </EntityType>
+        <Association Name="FK_AccountGuild_Account">
+          <End Type="EsoModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="EsoModel.AccountGuild" Role="AccountGuild" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AccountGuild">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountGuild_AccountGuild">
+          <End Type="EsoModel.AccountGuild" Role="AccountGuild" Multiplicity="1" />
+          <End Type="EsoModel.AccountGuild" Role="AccountGuild1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AccountGuild">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AccountGuild1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1116,6 +1220,7 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <EntitySetMapping Name="Characters">
             <EntityTypeMapping TypeName="EsoModel.Character">
               <MappingFragment StoreEntitySet="Character">
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="BuildImage" ColumnName="BuildImage" />
                 <ScalarProperty Name="FaceImage" ColumnName="FaceImage" />
                 <ScalarProperty Name="FullImage" ColumnName="FullImage" />
@@ -1491,6 +1596,21 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="AccountGuilds">
+            <EntityTypeMapping TypeName="EsoModel.AccountGuild">
+              <MappingFragment StoreEntitySet="AccountGuild">
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="MotDescription" ColumnName="MotDescription" />
+                <ScalarProperty Name="MembersOnline" ColumnName="MembersOnline" />
+                <ScalarProperty Name="Members" ColumnName="Members" />
+                <ScalarProperty Name="LeaderName" ColumnName="LeaderName" />
+                <ScalarProperty Name="Founded" ColumnName="Founded" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

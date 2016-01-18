@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace HemSoft.Eso.Domain.Managers
 {
@@ -152,20 +153,23 @@ namespace HemSoft.Eso.Domain.Managers
 
                 foreach (var title in titles)
                 {
-                    var t = new CharacterTitle();
-                    t.CharacterId = characterId;
+                    // First step, see if this title is in the title lookup:
+                    var match = context.TitleLookups.FirstOrDefault(x => x.Name == title) ??
+                                context.TitleLookups.Add(new TitleLookup { Name = title });
+                    context.SaveChanges();
 
-                    var result = context.CharacterTitles.FirstOrDefault(x => x.TitleId == t.TitleId && x.CharacterId == t.CharacterId);
+                    var result = context.CharacterTitles.FirstOrDefault(x => x.TitleId == match.Id && x.CharacterId == characterId);
                     if (result == null)
                     {
-                        context.CharacterTitles.Add(t);
+                        var newCharacterTitle = new CharacterTitle
+                        {
+                            Achieved = DateTime.UtcNow,
+                            TitleId = match.Id,
+                            CharacterId = characterId
+                        };
+                        context.CharacterTitles.Add(newCharacterTitle);
+                        context.SaveChanges();
                     }
-                    else
-                    {
-                        t.Id = result.Id;
-                        context.Entry(result).CurrentValues.SetValues(title);
-                    }
-                    context.SaveChanges();
                 }
             }
         }

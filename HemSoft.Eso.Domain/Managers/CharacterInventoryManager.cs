@@ -23,7 +23,7 @@ namespace HemSoft.Eso.Domain.Managers
             {
                 context.Configuration.LazyLoadingEnabled = false;
                 context.Configuration.ProxyCreationEnabled = false;
-                return context.GetAllInventory().ToList();
+                return context.GetAllInventory(string.Empty).ToList();
             }
         }
 

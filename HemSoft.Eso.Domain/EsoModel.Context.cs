@@ -43,6 +43,7 @@ namespace HemSoft.Eso.Domain
         public virtual DbSet<EquipTypeLookup> EquipTypeLookups { get; set; }
         public virtual DbSet<ItemTraitTypeLookup> ItemTraitTypeLookups { get; set; }
         public virtual DbSet<ItemTypeLookup> ItemTypeLookups { get; set; }
+        public virtual DbSet<AccountGuild> AccountGuilds { get; set; }
     
         public virtual ObjectResult<CharactersNeedingAttention_Result> CharactersNeedingAttention()
         {
@@ -83,9 +84,13 @@ namespace HemSoft.Eso.Domain
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCharacterSkills_Result>("GetCharacterSkills");
         }
     
-        public virtual ObjectResult<GetAllInventory_Result> GetAllInventory()
+        public virtual ObjectResult<GetAllInventory_Result> GetAllInventory(string inventoryName)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAllInventory_Result>("GetAllInventory");
+            var inventoryNameParameter = inventoryName != null ?
+                new ObjectParameter("InventoryName", inventoryName) :
+                new ObjectParameter("InventoryName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAllInventory_Result>("GetAllInventory", inventoryNameParameter);
         }
     }
 }

@@ -54,6 +54,9 @@
     <Compile Include="Account.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="AccountGuild.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="AllianceLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>

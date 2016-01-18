@@ -28,6 +28,7 @@ namespace HemSoft.Eso.CharacterMonitor
             var lua = new Lua();
             var skillList = new List<CharacterSkill>();
             var questList = new List<CharacterQuest>();
+            var guildList = new List<AccountGuild>();
             var inventoryList = new List<CharacterInventory>();
             var titleList = new List<string>();
 
@@ -37,7 +38,7 @@ namespace HemSoft.Eso.CharacterMonitor
             {
                 return;
             }
-            lua.DoFile(filePath);
+        lua.DoFile(filePath);
             var luaTable = lua["HSEventLogSavedVariables"] as LuaTable;
             var dict = lua.GetTableDict(luaTable);
 
@@ -152,11 +153,53 @@ namespace HemSoft.Eso.CharacterMonitor
                                 case "GuildCount":
                                     characterActivity.GuildCount = int.Parse(property.Value.ToString());
                                     break;
+                                case "GuildInfo":
+                                    guildList.Clear();
+                                    var guildDictList = lua.GetTableDict(property.Value as LuaTable);
+
+                                    foreach (var gd in guildDictList)
+                                    {
+                                        var accountGuild = new AccountGuild();
+                                        accountGuild.AccountId = account.Id;
+
+                                        var guildInfo = lua.GetTableDict(gd.Value as LuaTable);
+                                        foreach (var g in guildInfo)
+                                        {
+                                            switch (g.Key.ToString().ToLower())
+                                            {
+                                                case "description":
+                                                    accountGuild.Description = g.Value.ToString().Replace("\n", string.Empty);
+                                                    break;
+                                                case "founded":
+                                                    accountGuild.Founded = DateTime.Parse(g.Value.ToString());
+                                                    break;
+                                                case "leadername":
+                                                    accountGuild.LeaderName = g.Value.ToString();
+                                                    break;
+                                                case "motd":
+                                                    accountGuild.MotDescription = g.Value.ToString().Replace("\n", string.Empty);
+                                                    break;
+                                                case "name":
+                                                    accountGuild.Name = g.Value.ToString();
+                                                    break;
+                                                case "members":
+                                                    accountGuild.Members = int.Parse(g.Value.ToString());
+                                                    break;
+                                                case "membersonline":
+                                                    accountGuild.MembersOnline = int.Parse(g.Value.ToString());
+                                                    break;
+                                            }
+                                        }
+
+                                        guildList.Add(accountGuild);
+                                    }
+
+                                    break;
                                 case "Journal":
                                     break;
                                 case "Inventory":
                                     inventoryList.Clear();
-                                    Dictionary<object, object> inventoryDictList = lua.GetTableDict(property.Value as LuaTable);
+                                    var inventoryDictList = lua.GetTableDict(property.Value as LuaTable);
                                     foreach (var i in inventoryDictList)
                                     {
                                         Dictionary<object, object> inventoryProperties = lua.GetTableDict(i.Value as LuaTable);
@@ -272,7 +315,6 @@ namespace HemSoft.Eso.CharacterMonitor
                                 case "NumberOfFriends":
                                     characterActivity.NumberOfFriends = int.Parse(property.Value.ToString());
                                     break;
-
                                 case "Quest":
                                     questList.Clear();
                                     Dictionary<object, object> quests = lua.GetTableDict(property.Value as LuaTable);
@@ -435,10 +477,12 @@ namespace HemSoft.Eso.CharacterMonitor
                                 case "HealthMax":
                                     break;
                                 case "Title":
+                                    character.Title = property.Value.ToString();
+                                    break;
+                                case "Titles":
                                     titleList.Clear();
-                                    Dictionary<object, object> titles = lua.GetTableDict(property.Value as LuaTable);
-                                    //titleList.AddRange(titles.Select(t => t.Value.ToString()));
-                                    //TitleManager.Save(titleList);
+                                    var titles = lua.GetTableDict(property.Value as LuaTable);
+                                    titleList.AddRange(titles.Select(t => t.Value.ToString()));
                                     break;
                                 default:
                                     break;
@@ -549,21 +593,25 @@ namespace HemSoft.Eso.CharacterMonitor
                             }
                         }
 
+                        // Uncomment two lines below to force updates:
+                        //UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList);
+                        //Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
+
                         if (!character.LastLogin.HasValue)
                         {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
                         else if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                         {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
                         else if (lastCharacterActivity.LastLogin.HasValue)
                         {
                             if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                             {
-                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList);
+                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList);
                                 Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                             }
                         }
@@ -574,7 +622,7 @@ namespace HemSoft.Eso.CharacterMonitor
 
         private static void UpdateCharacterActvity(Account account, Character character, CharacterActivity characterActivity,
             List<CharacterSkill> skillList, List<CharacterQuest> quests, List<CharacterInventory> inventoryList,
-            List<string> titleList)
+            List<string> titleList, List<AccountGuild> guildList)
         {
             character.AchievementPoints = characterActivity.AchievementPoints;
             character.AlliancePoints = characterActivity.AlliancePoints;
@@ -606,6 +654,7 @@ namespace HemSoft.Eso.CharacterMonitor
             CharacterQuestManager.Save(quests);
             CharacterManager.Save(character);
             CharacterActivityManager.Save(characterActivity);
+            AccountManager.SaveGuildInfo(guildList);
             AccountManager.Save(account);
         }
     }

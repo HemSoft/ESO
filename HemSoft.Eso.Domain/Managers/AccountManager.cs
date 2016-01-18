@@ -1,4 +1,7 @@
-﻿namespace HemSoft.Eso.Domain.Managers
+﻿using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
+
+namespace HemSoft.Eso.Domain.Managers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -47,6 +50,33 @@
                     context.Entry(result).CurrentValues.SetValues(account);
                 }
                 context.SaveChanges();
+            }
+        }
+
+        public static void SaveGuildInfo(List<AccountGuild> accountGuilds)
+        {
+            using (var context = new EsoEntities())
+            {
+                foreach (var accountGuild in context.AccountGuilds)
+                {
+                    if (accountGuild.AccountId == accountGuilds[0].AccountId)
+                    {
+                        context.AccountGuilds.Remove(accountGuild);
+                    }
+                }
+                context.SaveChanges();
+            }
+
+            using (var context = new EsoEntities())
+            {
+                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.ProxyCreationEnabled = false;
+
+                foreach (var accountGuild in accountGuilds)
+                {
+                    context.AccountGuilds.Add(accountGuild);
+                    context.SaveChanges();
+                }
             }
         }
     }

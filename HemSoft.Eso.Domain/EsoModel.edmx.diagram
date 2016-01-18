@@ -9,7 +9,7 @@
         <EntityTypeShape EntityType="EsoModel.AllianceLookup" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
         <EntityTypeShape EntityType="EsoModel.Character" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="EsoModel.CharacterActivity" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="EsoModel.ClassLookup" Width="1.5" PointX="3.125" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EsoModel.ClassLookup" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="EsoModel.RaceLookup" Width="1.5" PointX="0.75" PointY="0.5" IsExpanded="true" />
         <AssociationConnector Association="EsoModel.FK_Character_Account" ManuallyRouted="false" />
         <AssociationConnector Association="EsoModel.FK_Character_Account1" ManuallyRouted="false" />
@@ -35,6 +35,9 @@
         <EntityTypeShape EntityType="EsoModel.ItemTraitTypeLookup" Width="1.5" PointX="9.375" PointY="9.75" />
         <EntityTypeShape EntityType="EsoModel.ItemTypeLookup" Width="1.5" PointX="11.375" PointY="0.75" />
         <AssociationConnector Association="EsoModel.FK_CharacterInventory_ArmorTypeLookup" />
+        <EntityTypeShape EntityType="EsoModel.AccountGuild" Width="1.5" PointX="3" PointY="10.625" />
+        <AssociationConnector Association="EsoModel.FK_AccountGuild_Account" />
+        <AssociationConnector Association="EsoModel.FK_AccountGuild_AccountGuild" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

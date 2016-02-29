@@ -118,6 +118,9 @@ namespace HemSoft.Eso.CharacterMonitor
                                 case "BlacksmithingSlotsMax":
                                     characterActivity.BlacksmithingSlotsMax = int.Parse(property.Value.ToString());
                                     break;
+                                case "BlacksmithingDone":
+                                    characterActivity.BlacksmthingDone = bool.Parse(property.Value.ToString());
+                                    break;
 
                                 case "ClothingSecondsMaximumLeft":
                                     characterActivity.ClothingSecondsMaximumLeft = int.Parse(property.Value.ToString());
@@ -137,6 +140,10 @@ namespace HemSoft.Eso.CharacterMonitor
                                 case "ClothingSlotsMax":
                                     characterActivity.ClothingSlotsMax = int.Parse(property.Value.ToString());
                                     break;
+                                case "ClothingDone":
+                                    characterActivity.ClothingDone = bool.Parse(property.Value.ToString());
+                                    break;
+
                                 case "Cash":
                                     characterActivity.Cash = int.Parse(property.Value.ToString());
                                     break;
@@ -177,7 +184,10 @@ namespace HemSoft.Eso.CharacterMonitor
                                                     accountGuild.Description = g.Value.ToString().Replace("\n", string.Empty);
                                                     break;
                                                 case "founded":
-                                                    accountGuild.Founded = DateTime.Parse(g.Value.ToString());
+                                                    if (!string.IsNullOrWhiteSpace(g.Value.ToString()))
+                                                    {
+                                                        accountGuild.Founded = DateTime.Parse(g.Value.ToString());
+                                                    }
                                                     break;
                                                 case "leadername":
                                                     accountGuild.LeaderName = g.Value.ToString();
@@ -319,7 +329,7 @@ namespace HemSoft.Eso.CharacterMonitor
                                     characterActivity.NumberOfFriends = int.Parse(property.Value.ToString());
                                     break;
                                 case "PlayerStats":
-                                    characterStat = new CharacterStat();
+                                    characterStat = new CharacterStat { CharacterId = character.Id };
                                     var characterStatDict = lua.GetTableDict(property.Value as LuaTable);
                                     foreach (var cs in characterStatDict)
                                     {
@@ -507,7 +517,8 @@ namespace HemSoft.Eso.CharacterMonitor
                                     character.HoursPlayed = (int) characterActivity.SecondsPlayed.Value / 60 / 60;
                                     break;
                                 case "SecondsUntilMountTraining":
-                                    characterActivity.SecondsUntilMountTraining = int.Parse(property.Value.ToString());
+                                    characterActivity.SecondsUntilMountTraining =
+                                        int.Parse(Math.Round(decimal.Parse(property.Value.ToString())).ToString());
                                     break;
                                 case "Skill":
                                     skillList.Clear();
@@ -587,6 +598,10 @@ namespace HemSoft.Eso.CharacterMonitor
                                 case "WoodworkingSlotsMax":
                                     characterActivity.WoodworkingSlotsMax = int.Parse(property.Value.ToString());
                                     break;
+                                case "WoodworkingDone":
+                                    characterActivity.WoodworkingDone = bool.Parse(property.Value.ToString());
+                                    break;
+
                                 case "XP":
                                     characterActivity.XP = int.Parse(property.Value.ToString());
                                     break;
@@ -720,7 +735,7 @@ namespace HemSoft.Eso.CharacterMonitor
                         }
 
                         // Uncomment two lines below to force updates:
-                        //UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList);
+                        //UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat);
                         //Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
 
                         if (!character.LastLogin.HasValue)

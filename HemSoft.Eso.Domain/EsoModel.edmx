@@ -91,6 +91,7 @@
           <Property Name="BlacksmithingSecondsMinimumTotal" Type="int" />
           <Property Name="BlacksmithingSlotsFree" Type="int" />
           <Property Name="BlacksmithingSlotsMax" Type="int" />
+          <Property Name="BlacksmthingDone" Type="bit" />
           <Property Name="Cash" Type="int" />
           <Property Name="ChampionPointsEarned" Type="int" />
           <Property Name="ClothingSecondsMaximumLeft" Type="int" />
@@ -99,6 +100,7 @@
           <Property Name="ClothingSecondsMinimumTotal" Type="int" />
           <Property Name="ClothingSlotsFree" Type="int" />
           <Property Name="ClothingSlotsMax" Type="int" />
+          <Property Name="ClothingDone" Type="bit" />
           <Property Name="EffectiveLevel" Type="int" />
           <Property Name="EnlightenedPool" Type="int" />
           <Property Name="GuildCount" Type="int" />
@@ -127,6 +129,7 @@
           <Property Name="WoodworkingSecondsMinimumTotal" Type="int" />
           <Property Name="WoodworkingSlotsFree" Type="int" />
           <Property Name="WoodworkingSlotsMax" Type="int" />
+          <Property Name="WoodworkingDone" Type="bit" />
           <Property Name="XP" Type="int" />
           <Property Name="XPMax" Type="int" />
           <Property Name="Zone" Type="varchar" MaxLength="100" />
@@ -699,6 +702,9 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <Property Name="XPMax" Type="Int32" />
           <Property Name="EffectiveLevel" Type="Int32" />
           <Property Name="AchievementPoints" Type="Int32" />
+          <Property Name="BlacksmthingDone" Type="Boolean" />
+          <Property Name="ClothingDone" Type="Boolean" />
+          <Property Name="WoodworkingDone" Type="Boolean" />
         </EntityType>
         <EntityType Name="ClassLookup">
           <Key>
@@ -1379,6 +1385,9 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <EntitySetMapping Name="CharacterActivities">
             <EntityTypeMapping TypeName="EsoModel.CharacterActivity">
               <MappingFragment StoreEntitySet="CharacterActivity">
+                <ScalarProperty Name="WoodworkingDone" ColumnName="WoodworkingDone" />
+                <ScalarProperty Name="ClothingDone" ColumnName="ClothingDone" />
+                <ScalarProperty Name="BlacksmthingDone" ColumnName="BlacksmthingDone" />
                 <ScalarProperty Name="AchievementPoints" ColumnName="AchievementPoints" />
                 <ScalarProperty Name="EffectiveLevel" ColumnName="EffectiveLevel" />
                 <ScalarProperty Name="XPMax" ColumnName="XPMax" />

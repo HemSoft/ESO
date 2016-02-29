@@ -89,7 +89,7 @@
                 context.Configuration.ProxyCreationEnabled = false;
 
                 // First step is to identify any characters that have skill 50 or above in order to do pledges:
-                var characters = context.Characters.Where(x => x.EffectiveLevel >= 50).ToList();
+                var characters = context.Characters.Where(x => x.EffectiveLevel >= 45).ToList();
 
                 foreach (var c in characters)
                 {
@@ -140,32 +140,31 @@
 
                 // First step is to identify any characters that have skill 50 in one of the writ skill lines:
                 var characters =
-                (
-                    from c in context.Characters
-                    join s in context.CharacterSkills on c.Id equals s.CharacterId
-                    join sl in context.SkillLookups on s.SkillId equals sl.Id
-                    where
-                        s.Rank == 50 &&
-                        (
-                            sl.Name == "Alchemy" ||
-                            sl.Name == "Blacksmithing" ||
-                            sl.Name == "Clothing" ||
-                            sl.Name == "Enchanting" ||
-                            sl.Name == "Provisioning" ||
-                            sl.Name == "Woodworking"
-                        ) &&
-                        c.EffectiveLevel >= 50
-                    select new
-                    {
-                        Character = c
-                      , Skill = s
-                      , SkillLookup = sl
-                    }
-                ).ToList();
+                    (
+                        from c in context.Characters
+                        join s in context.CharacterSkills on c.Id equals s.CharacterId
+                        join sl in context.SkillLookups on s.SkillId equals sl.Id
+                        where
+                            s.Rank == 50 &&
+                            (
+                                sl.Name == "Alchemy" ||
+                                sl.Name == "Blacksmithing" ||
+                                sl.Name == "Clothing" ||
+                                sl.Name == "Enchanting" ||
+                                sl.Name == "Provisioning" ||
+                                sl.Name == "Woodworking"
+                                ) &&
+                            c.EffectiveLevel >= 50
+                        select new
+                        {
+                            Character = c
+                        }
+                    ).Distinct().ToList();
 
                 // With a list of potential characters, check to see if they have completed the writ today:
                 var dailyWrit = new DailyWrit();
 
+                bool update = true;
                 foreach (var c in characters)
                 {
                     // Check to see if this character has completed the writs today:
@@ -178,7 +177,7 @@
                         {
                             UpdateMissedWrits(dailyWrit);
                             dailyWrits.Add(dailyWrit);
-                            dailyWrit = new DailyWrit { Character = c.Character };
+                            dailyWrit = new DailyWrit {Character = c.Character};
                         }
                     }
                     else
@@ -188,7 +187,7 @@
                             UpdateMissedWrits(dailyWrit);
                             dailyWrits.Add(dailyWrit);
                         }
-                        dailyWrit = new DailyWrit { Character = c.Character };
+                        dailyWrit = new DailyWrit {Character = c.Character};
                     }
 
                     foreach (var q in quests)
@@ -214,8 +213,8 @@
                                     dailyWrit.ProvisioningCompleted = true;
                                     break;
                                 case "Woodworker Writ":
-                                   dailyWrit.WoodworkingCompleted = true;
-                                   break;
+                                    dailyWrit.WoodworkingCompleted = true;
+                                    break;
                             }
                         }
                     }

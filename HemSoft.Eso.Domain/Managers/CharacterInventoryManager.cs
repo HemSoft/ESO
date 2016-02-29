@@ -42,10 +42,10 @@ namespace HemSoft.Eso.Domain.Managers
                 var characterId = inventories[0].CharacterId;
 
                 // We need to clear the inventory before we proceed:
-                foreach (var source in context.CharacterInventories.Where(x => x.CharacterId == characterId))
-                {
-                    context.CharacterInventories.Remove(source);
-                }
+                context.CharacterInventories.RemoveRange
+                (
+                    context.CharacterInventories.Where(x => x.CharacterId == characterId)
+                );
                 context.SaveChanges();
 
                 foreach (var inv in inventories)

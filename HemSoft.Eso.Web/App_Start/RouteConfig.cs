@@ -15,7 +15,10 @@
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-            routes.IgnoreRoute("{folder}/{*pathInfo}", new { folder = "Content" });
+            routes.MapRoute(
+                   name: "Default2",
+                   url: "{*url}",
+                   defaults: new { controller = "Home", action = "Index" });
         }
     }
 }

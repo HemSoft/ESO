@@ -15,7 +15,7 @@
     [EnableCors("*", "*", "*")]
     public class CharactersController : ApiController
     {
-        private EsoEntities db = new EsoEntities();
+        private readonly EsoEntities db = new EsoEntities();
 
         private bool CharacterExists(int id)
         {
@@ -48,7 +48,18 @@
             base.Dispose(disposing);
         }
 
-        // GET: api/Characters
+        public List<Character> GetAllCharacterQuests()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return CharacterManager.GetAllWithQuests();
+        }
+
+        public List<GetAllInventory_Result> GetAllInventory()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return CharacterInventoryManager.GetAllInventory();
+        }
+
         public IQueryable<Character> GetCharacters()
         {
             db.Configuration.ProxyCreationEnabled = false;
@@ -67,16 +78,16 @@
             return CharacterManager.GetCharactersNeedingAttention();
         }
 
+        public List<Character> GetCharacterQuests(int characterId)
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            return CharacterManager.GetCharacterQuests(characterId);
+        }
+
         public List<CharacterResearch_Result> GetCharacterResearch()
         {
             db.Configuration.ProxyCreationEnabled = false;
             return CharacterManager.GetCharacterResearch();
-        }
-
-        public List<Character> GetCharacterQuests()
-        {
-            db.Configuration.ProxyCreationEnabled = false;
-            return CharacterManager.GetAllWithQuests();
         }
 
         public List<GetCharacterSkills_Result> GetCharacterSkills()
@@ -105,7 +116,12 @@
             return status;
         }
 
-
+        public List<DailyPledge> GetPledgeStatus()
+        {
+            var dailyPledgeStatus = CharacterQuestManager.GetPledgeStatus();
+            return dailyPledgeStatus;
+        }
+        
         public List<DailyWrit> GetWritStatus()
         {
             var dailyWritStatus = CharacterQuestManager.GetWritStatus();

@@ -54,13 +54,34 @@
     <Compile Include="Account.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="AccountGuild.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AchievementCategory.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AchievementCriteria.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AchievementInfo.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AchievementSubCategory.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="AllianceLookup.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ArmorTypeLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Character.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CharacterActivity.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CharacterInventory.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CharacterQuest.cs">
@@ -78,11 +99,21 @@
     <Compile Include="CharactersNeedingAttention_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CharacterStat.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CharacterTitle.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ClassLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Domain\DailyPledge.cs" />
     <Compile Include="Domain\OrsiniumDaily.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="EquipTypeLookup.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EsoModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -101,14 +132,26 @@
     <Compile Include="GetAccounts_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="GetAllInventory_Result.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="GetCharacterSkills_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="GetLastCharacterActivity_Result.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ItemTraitTypeLookup.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ItemTypeLookup.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Managers\CharacterInventoryManager.cs" />
+    <Compile Include="Managers\CharacterStatManager.cs" />
     <Compile Include="Managers\CharacterQuestManager.cs" />
     <Compile Include="Domain\DailyWrit.cs" />
+    <Compile Include="Managers\TitleManager.cs" />
     <Compile Include="Managers\SkillManager.cs" />
     <Compile Include="Managers\CharacterActivityManager.cs" />
     <Compile Include="Managers\CharacterManager.cs" />
@@ -121,6 +164,9 @@
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SkillLookup.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TitleLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

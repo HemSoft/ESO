@@ -66,6 +66,9 @@ namespace HemSoft.Eso.Domain
         public Nullable<int> XPMax { get; set; }
         public Nullable<int> EffectiveLevel { get; set; }
         public Nullable<int> AchievementPoints { get; set; }
+        public Nullable<bool> BlacksmthingDone { get; set; }
+        public Nullable<bool> ClothingDone { get; set; }
+        public Nullable<bool> WoodworkingDone { get; set; }
     
         public virtual Character Character { get; set; }
     }

@@ -36,6 +36,19 @@ namespace HemSoft.Eso.Domain
         public virtual DbSet<CharacterSkill> CharacterSkills { get; set; }
         public virtual DbSet<SkillLookup> SkillLookups { get; set; }
         public virtual DbSet<CharacterQuest> CharacterQuests { get; set; }
+        public virtual DbSet<CharacterInventory> CharacterInventories { get; set; }
+        public virtual DbSet<CharacterTitle> CharacterTitles { get; set; }
+        public virtual DbSet<TitleLookup> TitleLookups { get; set; }
+        public virtual DbSet<ArmorTypeLookup> ArmorTypeLookups { get; set; }
+        public virtual DbSet<EquipTypeLookup> EquipTypeLookups { get; set; }
+        public virtual DbSet<ItemTraitTypeLookup> ItemTraitTypeLookups { get; set; }
+        public virtual DbSet<ItemTypeLookup> ItemTypeLookups { get; set; }
+        public virtual DbSet<AccountGuild> AccountGuilds { get; set; }
+        public virtual DbSet<CharacterStat> CharacterStats { get; set; }
+        public virtual DbSet<AchievementCategory> AchievementCategories { get; set; }
+        public virtual DbSet<AchievementCriteria> AchievementCriterias { get; set; }
+        public virtual DbSet<AchievementInfo> AchievementInfoes { get; set; }
+        public virtual DbSet<AchievementSubCategory> AchievementSubCategories { get; set; }
     
         public virtual ObjectResult<CharactersNeedingAttention_Result> CharactersNeedingAttention()
         {
@@ -74,6 +87,15 @@ namespace HemSoft.Eso.Domain
         public virtual ObjectResult<GetCharacterSkills_Result> GetCharacterSkills()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCharacterSkills_Result>("GetCharacterSkills");
+        }
+    
+        public virtual ObjectResult<GetAllInventory_Result> GetAllInventory(string inventoryName)
+        {
+            var inventoryNameParameter = inventoryName != null ?
+                new ObjectParameter("InventoryName", inventoryName) :
+                new ObjectParameter("InventoryName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAllInventory_Result>("GetAllInventory", inventoryNameParameter);
         }
     }
 }

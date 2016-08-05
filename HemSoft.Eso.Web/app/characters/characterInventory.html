@@ -1,0 +1,53 @@
+﻿<div class="col-md-12 panel" ng-controller="characterInventoryController as vmcic">
+    <div class="panel-heading">
+        <h2 class="text-center">
+            Inventory
+            <!--<span class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    {{ vmcic.selectedCharacter.Name || 'Select Character' }}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li ng-repeat="c in vmcic.characters">
+                        <a ng-click="vmcic.characterSelected(c);">{{ c.Name }}</a>
+                    </li>
+                </ul>
+            </span>-->
+        </h2>
+    </div>
+
+    <div class="panel-body">
+        <div class="col-md-12 panel">
+            <div class="panel-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <tr>
+                        <th><a href="#" ng-click="inventorySortType = 'CharacterName'; inventorySortReverse = !inventorySortReverse">Character</a></th>
+                        <th><a href="#" ng-click="inventorySortType = 'Name'; inventorySortReverse = !inventorySortReverse">Name</a></th>
+                        <th><a href="#" ng-click="inventorySortType = 'ItemType'; inventorySortReverse = !inventorySortReverse">Item Type</a></th>
+                        <th><a href="#" ng-click="inventorySortType = 'IsEquipable'; inventorySortReverse = !inventorySortReverse">Equipable</a></th>
+                        <th><a href="#" ng-click="inventorySortType = 'ArmorType'; inventorySortReverse = !inventorySortReverse">Armor Type</a></th>
+                        <th><a href="#" ng-click="inventorySortType = 'TraitName'; inventorySortReverse = !inventorySortReverse">Trait Name</a></th>
+                        <th><a href="#" ng-click="inventorySortType = 'StackSize'; inventorySortReverse = !inventorySortReverse">Stack Size</a></th>
+                        <th><a href="#" ng-click="inventorySortType = 'TotalCount'; inventorySortReverse = !inventorySortReverse">Total Count</a></th>
+                        <th><a href="#" ng-click="inventorySortType = 'RequiredLevel'; inventorySortReverse = !inventorySortReverse">Level</a></th>
+                        <th><a href="#" ng-click="inventorySortType = 'RequiredVeteranRank'; inventorySortReverse = !inventorySortReverse">Vet Rank</a></th>
+                        <th><a href="#" ng-click="inventorySortType = 'Location'; inventorySortReverse = !inventorySortReverse">Location</a></th>
+                    </tr>
+                    <tr ng-repeat="ci in vmcic.inventory | orderBy:inventorySortType:inventorySortReverse">
+                        <td ng-bind="ci.CharacterName"/>
+                        <td ng-bind="ci.Name" />
+                        <td ng-bind="ci.ItemType" />
+                        <td ng-bind="ci.IsEquipable" />
+                        <td ng-bind="ci.ArmorType" />
+                        <td ng-bind="ci.TraitName" />
+                        <td ng-bind="ci.StackSize" />
+                        <td ng-bind="ci.TotalCount" />
+                        <td ng-bind="ci.RequiredLevel" />
+                        <td ng-bind="ci.RequiredVeteranRank" />
+                        <td ng-bind="ci.Location" />
+                    <tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,15 @@
             return View();
         }
 
+        public ActionResult CharacterDetail()
+        {
+            return View();
+        }
+
+        public ActionResult Inventory()
+        {
+            return View();
+        }
         public ActionResult Quests()
         {
             return View();

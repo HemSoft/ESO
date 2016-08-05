@@ -9,7 +9,7 @@
         <EntityTypeShape EntityType="EsoModel.AllianceLookup" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
         <EntityTypeShape EntityType="EsoModel.Character" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="EsoModel.CharacterActivity" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="EsoModel.ClassLookup" Width="1.5" PointX="3.125" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EsoModel.ClassLookup" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="EsoModel.RaceLookup" Width="1.5" PointX="0.75" PointY="0.5" IsExpanded="true" />
         <AssociationConnector Association="EsoModel.FK_Character_Account" ManuallyRouted="false" />
         <AssociationConnector Association="EsoModel.FK_Character_Account1" ManuallyRouted="false" />
@@ -24,6 +24,29 @@
         <EntityTypeShape EntityType="EsoModel.CharacterQuest" Width="1.5" PointX="0.75" PointY="8.75" />
         <AssociationConnector Association="EsoModel.FK_CharacterDailyQuest_Character1" />
         <AssociationConnector Association="EsoModel.FK_CharacterQuest_Character" />
+        <EntityTypeShape EntityType="EsoModel.CharacterInventory" Width="1.5" PointX="7.375" PointY="5.875" />
+        <AssociationConnector Association="EsoModel.FK_CharacterInventory_Character" />
+        <EntityTypeShape EntityType="EsoModel.CharacterTitle" Width="1.5" PointX="10.25" PointY="3" />
+        <EntityTypeShape EntityType="EsoModel.TitleLookup" Width="1.5" PointX="8" PointY="13.25" />
+        <AssociationConnector Association="EsoModel.FK_CharacterTitle_Character" />
+        <AssociationConnector Association="EsoModel.FK_CharacterTitle_TitleLookup" />
+        <EntityTypeShape EntityType="EsoModel.ArmorTypeLookup" Width="1.5" PointX="9.375" PointY="6.875" />
+        <EntityTypeShape EntityType="EsoModel.EquipTypeLookup" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="EsoModel.ItemTraitTypeLookup" Width="1.5" PointX="9.375" PointY="9.75" />
+        <EntityTypeShape EntityType="EsoModel.ItemTypeLookup" Width="1.5" PointX="11.375" PointY="0.75" />
+        <AssociationConnector Association="EsoModel.FK_CharacterInventory_ArmorTypeLookup" />
+        <EntityTypeShape EntityType="EsoModel.AccountGuild" Width="1.5" PointX="3" PointY="10.625" />
+        <AssociationConnector Association="EsoModel.FK_AccountGuild_Account" />
+        <EntityTypeShape EntityType="EsoModel.CharacterStat" Width="1.5" PointX="5.25" PointY="13.25" />
+        <AssociationConnector Association="EsoModel.FK_CharacterStat_Character" />
+        <EntityTypeShape EntityType="EsoModel.AchievementCategory" Width="1.5" PointX="11.375" PointY="7" />
+        <EntityTypeShape EntityType="EsoModel.AchievementCriteria" Width="1.5" PointX="18.125" PointY="7.125" />
+        <EntityTypeShape EntityType="EsoModel.AchievementInfo" Width="1.5" PointX="15.875" PointY="7" />
+        <EntityTypeShape EntityType="EsoModel.AchievementSubCategory" Width="1.5" PointX="13.625" PointY="7" />
+        <AssociationConnector Association="EsoModel.FK_AchievementSubCategory_AchievementCategory" />
+        <AssociationConnector Association="EsoModel.FK_AchievementCriteria_AchievementInfo" />
+        <AssociationConnector Association="EsoModel.FK_AchievementInfo_AchievementSubCategory" />
+        <AssociationConnector Association="EsoModel.FK_AchievementCategory_Character" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

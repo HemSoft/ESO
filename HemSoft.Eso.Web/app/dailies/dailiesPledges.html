@@ -1,0 +1,31 @@
+﻿<div class="col-md-12 panel" ng-controller="dailiesPledgesController as vmdpc">
+    <div class="panel-heading">
+        <h2 class="text-center">Pledges</h2>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>Name</th>
+                <th class="text-center">Normal</th>
+                <th class="text-center">Veteran</th>
+            </tr>
+            <tr ng-repeat="p in vmdpc.pledges">
+                <td ng-bind="p.Character.Name" />
+
+                <td ng-show="{{ p.NormalPledgeCompleted }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
+                <td ng-show="{{ !p.NormalPledgeCompleted }}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
+
+                <td ng-show="{{ p.VeteranPledgeCompleted }}" class="text-center" style="background-color: green;">
+                    <div class="glyphicon glyphicon-ok"></div>
+                </td>
+                <td ng-show="{{ !p.VeteranPledgeCompleted }}" class="text-center" style="background-color: orangered;">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </td>
+            <tr>
+        </table>
+    </div>
+</div>

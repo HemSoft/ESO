@@ -1,0 +1,29 @@
+﻿<div class="row">
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">Overdue</h2>
+        </div>
+        <div class="panel-body" ng-controller="charactersNeedingAttentionController as vmcna">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Last Login</th>
+                    <th>Horse</th>
+                    <th>Blacksmthing</th>
+                    <th>Clothing</th>
+                    <th>Woodworking</th>
+                </tr>
+                <tr ng-repeat="character in vmcna.characters" ng-cloak>
+                    <td>{{character.CharacterId}}</td>
+                    <td>{{character.CharacterName}}</td>
+                    <td>{{character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'}}</td>
+                    <td>{{character.HorseFeedingStatus | date: 'EEEE MMM d, yyyy HH:mm:ss'}}</td>
+                    <td>{{character.BlacksmithingStatus | date: 'EEEE MMM d, yyyy HH:mm:ss'}}</td>
+                    <td>{{character.ClothingStatus | date: 'EEEE MMM d, yyyy HH:mm:ss'}}</td>
+                    <td>{{character.WoodworkingStatus | date: 'EEEE MMM d, yyyy HH:mm:ss'}}</td>
+                <tr>
+            </table>
+        </div>
+    </div>
+</div>

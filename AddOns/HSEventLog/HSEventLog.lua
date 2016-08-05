@@ -1,6 +1,6 @@
 -- First, we create a namespace for our addon by declaring a top-level table that will hold everything else.
 HSEventLogAddon = {}
- 
+
 -- This isn't strictly necessary, but we'll use this string later when registering events.
 -- Better to define it in a single place rather than retyping the same string.
 HSEventLogAddon.name = "HSEventLog"
@@ -12,8 +12,11 @@ HSEventLogAddon.inventoryToMonitor =
   { Name = "Grand Soul Gem"    , Above = 0, Below = 50 },
   { Name = "Potent Nirncrux"   , Above = 0, Below = 999 },
   { Name = "Fortified Nirncrux", Above = 0, Below = 999 },
-  { Name = "Itade"             , Above = 0, Below = 100 },
-  { Name = "Repora"            , Above = 0, Below = 100 },
+  { Name = "Itade"             , Above = 0, Below = 999 },
+  { Name = "Repora"            , Above = 0, Below = 999 },
+  { Name = "Hakeijo"           , Above = 0, Below = 999 },
+  { Name = "Rejera"            , Above = 0, Below = 999 },
+  { Name = "Jehade"            , Above = 0, Below = 999 },
   { Name = "Kuta"              , Above = 0, Below = 999 },
   { Name = "Crawlers"          , Above = 0, Below = 100 },
   { Name = "Guts"              , Above = 0, Below = 100 },
@@ -21,6 +24,32 @@ HSEventLogAddon.inventoryToMonitor =
   { Name = "Worms"             , Above = 0, Below = 100 }
 }
 HSEventLogAddon.lastChampionXP = 0
+HSEventLogAddon.lastQuestName = ""
+
+-- Constants
+HSEventLogAddon.SKILL_TYPE_NONE = 0
+HSEventLogAddon.SKILL_TYPE_CLASS = 1
+HSEventLogAddon.SKILL_TYPE_WEAPON = 2
+HSEventLogAddon.SKILL_TYPE_ARMOR = 3
+HSEventLogAddon.SKILL_TYPE_WORLD = 4
+HSEventLogAddon.SKILL_TYPE_GUILD = 5
+HSEventLogAddon.SKILL_TYPE_AVA = 6
+HSEventLogAddon.SKILL_TYPE_RACIAL = 7
+HSEventLogAddon.SKILL_TYPE_TRADESKILL = 8
+HSEventLogAddon.SKILL_TYPE_CHAMPION = 9
+
+HSEventLogAddon.SkillType  = {
+  [HSEventLogAddon.SKILL_TYPE_NONE] = "None",
+  [HSEventLogAddon.SKILL_TYPE_CLASS] = "Class",
+  [HSEventLogAddon.SKILL_TYPE_WEAPON] = "Weapon",
+  [HSEventLogAddon.SKILL_TYPE_ARMOR] = "Armor",
+  [HSEventLogAddon.SKILL_TYPE_WORLD] = "World",
+  [HSEventLogAddon.SKILL_TYPE_GUILD] = "Guild",
+  [HSEventLogAddon.SKILL_TYPE_AVA] = "PvP",
+  [HSEventLogAddon.SKILL_TYPE_RACIAL] = "Racial",
+  [HSEventLogAddon.SKILL_TYPE_TRADESKILL] = "TradeSkill",
+  [HSEventLogAddon.SKILL_TYPE_CHAMPION] = "Champion"
+}
 
 ---------------------------------------------------------------------------------------------------------
 -- E V E N T S
@@ -40,11 +69,6 @@ function HSEventLogAddon.OnAchievementsUpdated(eventCode)
   HSEventLogAddon:WriteLog(GetTimeString() .. " -- Achievement points: " .. earnedAchievementPoints .. " / " .. totAchievementPoints)
 end
 
-function HSEventLogAddon.OnEventLogoutDeferred(eventCode, deferMilliseconds, quitRequested)
-  d("OnOnEventLogoutDeferred() called.")
-  HSEventLogAddon:SetSavedVariables()
-end
-
 function HSEventLogAddon.OnEventQuestComplete(eventCode, questName, level, previousExperience, currentExperience, rank, previousPoints, currentPoints)
   local dateTime = GetDate() .. " " .. GetTimeString()
   local questInfo = {}
@@ -60,23 +84,34 @@ function HSEventLogAddon.OnEventQuestComplete(eventCode, questName, level, previ
   questInfo.Zone = GetUnitZone("player")
 
   if HSEventLogAddon.savedVariables.Quest == nil then
+    d("Resetting quest on savedVariables")
     HSEventLogAddon.savedVariables.Quest = {}
   end
-  if previousPoints ~= currentPoints then
+
+  if HSEventLogAddon.lastQuestName ~= questName then
+    d("PrevXP=" .. previousExperience .. ", CurrXP=" .. currentExperience .. ", PrevPoints=" .. previousPoints .. ", CurrPoints=" .. currentPoints)
     table.insert(HSEventLogAddon.savedVariables.Quest, questInfo)
+    HSEventLogAddon.lastQuestName = questName
   end
 
   HSEventLogAddon:LogInventory(text)
   HSEventLogAddon:SetSavedVariables()
 end
 
-function HSEventLogAddon.OnEventSkillXpUpdate(eventCode, skillType, skillIndex, reason, rank, previousXP, currentXP)
+function HSEventLogAddon.OnEventPvPRankPointUpdate(eventCode, unitTag, rankPoints, difference)
+  self.savedVariables.PvpInfo = HSEventLogAddon:GetPvPInfo()
+end
 
-  HSEventLogAddon:LogInventory(text)
+function HSEventLogAddon.OnEventSkillXpUpdate(eventCode, skillType, skillIndex, reason, rank, previousXP, currentXP)
+  local skillName, skillRank = GetSkillLineInfo(skillType, skillIndex)
+  local lastRankXP, nextRankXP, currentXP = GetSkillLineXPInfo(skillType, skillIndex)
+  local percentage = string.format("%.2f", (((currentXP - lastRankXP) / (nextRankXP - lastRankXP) * 100)))
+  d("Skill: " .. skillName .. ", Rank: " .. skillRank .. " CurrXP: " .. currentXP .. "/" .. nextRankXP .. " = " .. percentage .. "%")
+  --HSEventLogAddon:LogInventory(text)
 end
 
 function HSEventLogAddon.OnEventZoneChanged(eventCode, zoneName, subZoneName, newSubzone)
-
+  
   HSEventLogAddon:LogInventory(text)
 end
 
@@ -90,23 +125,41 @@ function HSEventLogAddon.OnPlayerCombatState(event, inCombat)
   HSEventLogAddon:LogInventory(text)
 end
 
-function HSEventLogAddon.OnLootReceived(eventCode, receivedBy, itemName, quantity, itemSound, lootType, self)
-  local usedBagSlots = GetNumBagUsedSlots(INVENTORY_BACKPACK)
-  local maxBagSlots = GetBagSize(INVENTORY_BACKPACK)
-  local text = ""
-  local itemName2 = itemName
+--function HSEventLogAddon.OnLootReceived(eventCode, receivedBy, itemName, quantity, itemSound, lootType, self,  isPickpocketLoot, questItemIcon, itemId)
+--function HSEventLogAddon.OnLootReceived( _, itemLink, quantity, _, lootType, mine)
+function HSEventLogAddon.OnLootReceived(eventCode, bagId, slotId, isNewItem, itemSoundCategory, updateReason)
 
-  if string.find(itemName, "^p") ~= nil or string.find(itemName, "^n") ~= nil  then
-    itemName2 = string.sub(itemName, 1, string.len(itemName) - 2)
+  local usedBagSlots = GetNumBagUsedSlots(BAG_BACKPACK)
+  local maxBagSlots = GetBagSize(BAG_BACKPACK)
+  
+  local itemType = GetItemType(bagId, slotId)
+  local itemLink = GetItemLink(bagId, slotId, LINK_STYLE_DEFAULT)
+  local itemName = GetItemLinkName(itemLink)
+  
+  local itemInstanceId = GetItemInstanceId(bagId, slotId)
+
+  local itemTotalCount = GetItemTotalCount(bagId, slotId)
+  local bankTotalCount = 0
+
+  if (bagId ~= BAG_BANK) then
+    -- Try to find this inventory in the bank:
+    local usedBankSlots = GetNumBagUsedSlots(BAG_BANK)
+    local maxBankSlots = GetBagSize(BAG_BANK)
+    for x = 1, usedBankSlots do
+      local bankItemType = GetItemType(BAG_BANK, x)
+      local bankItemLink = GetItemLink(BAG_BANK, x, LINK_STYLE_DEFAULT)
+      local bankItemName = GetItemLinkName(bankItemLink)
+      local bankItemInstanceId = GetItemInstanceId(BAG_BANK, x)
+      local bankItemTotalCount = GetItemTotalCount(BAG_BANK, x)
+
+      if bankItemName:lower() == itemName:lower() then
+        bankTotalCount = bankItemTotalCount
+      end
+    end
+    
+    local text = itemName .. " (" .. itemTotalCount .. "/" .. bankTotalCount .. ") " .. usedBagSlots .. "/" .. maxBagSlots .. "\n"
+    --HSEventLogAddon:LogInventory(text, itemName)
   end
-
-  text = "Got " .. quantity .. " " .. itemName2 .. " Bag " .. usedBagSlots .. "/" .. maxBagSlots .. "\n"
-  HSEventLogAddon:LogInventory(text)
-end
-
-function HSEventLogAddon.OnEventLogoutDisallowed(eventCode, quitRequested)
-  d("OnEventLogoutDisallowed() called.")
-  HSEventLogAddon:SetSavedVariables()
 end
 
 function HSEventLogAddon.OnEventSmithingTraitResearchCompleted(eventCode, craftingSkillType, researchLineIndex, traitIndex)
@@ -130,23 +183,6 @@ EVENT_MANAGER:RegisterForEvent(HSEventLogAddon.name, EVENT_ADD_ON_LOADED, HSEven
 ---------------------------------------------------------------------------------------------------------
 -- H E L P E R    F U N C T I O N S
 ---------------------------------------------------------------------------------------------------------
-function HSEventLogAddon:GetSkills()
-  local skill = {}
-  local skillInfo = {}
-  local numSkillTypes = GetNumSkillTypes()
-
-  for skillType = 1, numSkillTypes do
-    local numSkillLines = GetNumSkillLines(skillType)
-    for skillIndex = 1, numSkillLines do
-      skillInfo = {}
-      skillInfo.Name, skillInfo.Rank = GetSkillLineInfo(skillType, skillIndex)
-      skillInfo.LastRankXp, skillInfo.NextRankXP, skillInfo.XP = GetSkillLineXPInfo(skillType, skillIndex)
-      table.insert(skill, skillInfo)
-    end
-  end
-  return skill
-end
-
 function HSEventLogAddon:GetChampionPoints()
   local playerChampionXP = GetPlayerChampionXP()
   local playerChampionPointsEarned = GetPlayerChampionPointsEarned()
@@ -179,18 +215,6 @@ function HSEventLogAddon:GetChampionPoints()
   local championXPPercent = HSEventLogAddon:Round((playerChampionXP / championXPInRank) * 100)
 
   local result = "Champion Points = " .. playerChampionXP .. ' (' .. championXPPercent .. '%)/' .. championXPInRank .. ' (Earned: ' .. playerChampionPointsEarned .. '/' .. championPointsMax .. ') Enlightened pool: ' .. enlightenedPool
-
-  --local journalQuestCount = GetNumJournalQuests()
-  --d("Number of Journal Quests: " .. journalQuestCount)
-  --for x = 1, journalQuestCount do
-  --  journalQuestInfo = GetJournalQuestInfo(x)
-  --  local questName, backgroundText, activeStepText, activeStepType, activeStepTrackerOverrideText, completed, tracked, questLevel, pushed, questType, instanceDisplayType = GetJournalQuestInfo(x)
-  --  if (completed) then
-  --    d(questName .. " Completed. Type: " .. questType)
-  --  else
-  --    d(questName .. " not completed. Type: " .. questType)
-  --  end
-  --end
 
   return result
 end
@@ -226,6 +250,77 @@ function HSEventLogAddon:GetCraftingData(craftClass)
   return secsMinLeft, secsMinTotal, secsMaxLeft, secsMaxTotal, numSlots, numFreeSlots, icons
 end
 
+function HSEventLogAddon:GetGuildInfo()
+  local guildTable = {}
+  local guildInfo = {}
+
+  guildCount = GetNumGuilds()
+  for x = 1, guildCount do
+    guildInfo = {}
+
+    local members, membersOnline, leaderName = GetGuildInfo(x)
+    guildInfo = {
+      Name = GetGuildName(x)
+    , Description = GetGuildDescription(x)
+    , Founded = GetGuildFoundedDate(x)
+    , AllicanceId = GetGuildAlliance(x)
+    , MotD = GetGuildMotD(x)
+    , Members = members
+    , MembersOnline = membersOnline
+    , LeaderName = leaderName
+    }
+
+    table.insert(guildTable, guildInfo)
+  end
+  return guildTable
+end
+
+function HSEventLogAddon:GetInventory(whereToLook)
+  local inventoryTable = {}
+  local inventory = {}
+
+  usedSlots = GetNumBagUsedSlots(whereToLook)
+
+  for x = 1, usedSlots do
+    local icon, sellPrice, meetsUsageRequirement, equipType, itemStyle = GetItemLinkInfo(GetItemLink(whereToLook, x, LINK_STYLE_DEFAULT))
+
+    local itemLink = GetItemLink(whereToLook, x, LINK_STYLE_DEFAULT)
+    local itemName = GetItemLinkName(itemLink)
+    if itemName ~= nil then
+      inventory = {}
+      inventory = {
+        ArmorType = GetItemArmorType(whereToLook, x)
+      , Consumable = IsItemConsumable(whereToLook, x)
+      , Info = GetItemInfo(whereToLook, x)
+      , InstanceId = GetItemInstanceId(whereToLook, x)
+      , IsBound = IsItemBound(whereToLook, x)
+      , IsEquipable = IsEquipable(whereToLook, x)
+      , IsUsable = IsItemUsable(whereToLook, x)
+      , Location = whereToLook
+      , Name = itemName
+      , IsJunk = IsItemJunk(whereToLook, x)
+      , Link = itemLink
+      , Icon = icon
+      , SellPrice = sellPrice
+      , MeetsUsageRequirement = meetsUsageRequirement
+      , EquipType = equipType
+      , ItemStyle = itemStyle
+      , RequiredLevel = GetItemRequiredLevel(whereToLook, x)
+      , RequiredVeteranRank = GetItemRequiredVeteranRank(whereToLook, x)
+      , StackSize = GetSlotStackSize(whereToLook, x)
+      , StatValue = GetItemStatValue(whereToLook, x)
+      , TotalCount = GetItemTotalCount(whereToLook, x)
+      , Trait = GetItemTrait(whereToLook, x)
+      , Type = GetItemType(whereToLook, x)
+          -- Returns: string icon, number sellPrice, boolean meetsUsageRequirement, number equipType, number itemStyle
+      }
+      table.insert(inventoryTable, inventory)
+    end
+  end
+
+  return inventoryTable
+end
+
 function HSEventLogAddon:GetJournal()
   local journal = {}
   local journalInfo = {}
@@ -241,34 +336,85 @@ function HSEventLogAddon:GetJournal()
       if journalInfo.Completed == true then
         compl = "Yes"
       end
-      --d("QN: " .. journalInfo.QuestName .. ", C: " .. compl .. ", QT: " .. journalInfo.QuestType)
     end
   end
   return journal
 end
 
+function HSEventLogAddon:GetPvPInfo()
+  local rankPoints = GetUnitAvARankPoints("player")
+  local rank, subRank = GetUnitAvARank("player")
+  local subRankStartsAt, nextSubRankAt, rankStartsAt, nextRankAt = GetAvARankProgress(rankPoints)
+  local pointsNeededForRank = GetNumPointsNeededForAvARank(Rank)
+
+  local PvPInfo = {
+    RankPoints = rankPoints,
+    Rank = rank,
+    SubRank = subRank,
+    SubRankStartsAt = subRankStartsAt,
+    NextSubRankAt = nextSubRankAt,
+    RankStartsAt = rankStartsAt,
+    NextRankAt = nextRankAt,
+    PointsNeededForRank = pointsNeededForRank
+  }
+  return PvPInfo
+end
+
+function HSEventLogAddon:GetSkills()
+  local skill = {}
+  local skillInfo = {}
+  local numSkillTypes = GetNumSkillTypes()
+
+  for skillType = 1, numSkillTypes do
+    local numSkillLines = GetNumSkillLines(skillType)
+    for skillIndex = 1, numSkillLines do
+      skillInfo = {}
+      skillInfo.Name, skillInfo.Rank = GetSkillLineInfo(skillType, skillIndex)
+      skillInfo.LastRankXp, skillInfo.NextRankXP, skillInfo.XP = GetSkillLineXPInfo(skillType, skillIndex)
+      table.insert(skill, skillInfo)
+    end
+  end
+  return skill
+end
+
+function HSEventLogAddon:GetTitles()
+  local titleTable = {}
+  local numberOfTitles = GetNumTitles()
+
+  for titleIndex = 1, numberOfTitles do
+    local title = GetTitle(titleIndex)
+    table.insert(titleTable, title)
+  end
+
+  return titleTable
+end
+
 function HSEventLogAddon:Initialize()
   -- Next we create a function that will initialize our addon
   --EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ACHIEVEMENTS_UPDATED, self.OnAchievementsUpdated)
-  EVENT_MANAGER:RegisterForEvent(self.name, EVENT_LOOT_RECEIVED, self.OnLootReceived)
+  --EVENT_MANAGER:RegisterForEvent(self.name, EVENT_LOOT_RECEIVED, self.OnLootReceived)
+
+  EVENT_MANAGER:RegisterForEvent(self.name, EVENT_INVENTORY_SINGLE_SLOT_UPDATE, self.OnLootReceived)
+    
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_COMBAT_STATE, self.OnPlayerCombatState)
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ZONE_CHANGED, self.OnEventZoneChanged)
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_SKILL_XP_UPDATE, self.OnEventSkillXpUpdate)
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_QUEST_COMPLETE, self.OnEventQuestComplete)
-  EVENT_MANAGER:RegisterForEvent(self.name, EVENT_LOGOUT_DEFERRED, self.OnEventLogoutDeferred)
-  EVENT_MANAGER:RegisterForEvent(self.name, EVENT_LOGOUT_DISALLOWED, self.OnEventLogoutDisallowed)
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_SMITHING_TRAIT_RESEARCH_COMPLETED, self.OnEventSmithingTraitResearchCompleted)
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_SMITHING_TRAIT_RESEARCH_STARTED, self.OnEventSmithingTraitResearchStarted)
   EVENT_MANAGER:RegisterForEvent(self.name, EVENT_RIDING_SKILL_IMPROVEMENT, self.OnEventRidingSkillImprovement)
- 
-  self.savedVariables = ZO_SavedVars:New("HSEventLogSavedVariables", 1, nil, {})
+  EVENT_MANAGER:RegisterForEvent(self.name, EVENT_RANK_POINT_UPDATE, self.OnEventPvPRankPointUpdate) 
+
+  self.savedVariables = ZO_SavedVars:New("HSEventLogSavedVariables", 11, nil, {})
+  self.accountVariables = ZO_SavedVars:NewAccountWide("HSEventLogAccountVariables", 11, nil, {})
+
   HSEventLogAddon:SetSavedVariables()
   self:RestorePosition()
   HSEventLogAddon:LogInventory("")
 end
 
-function HSEventLogAddon:LogInventory(text)
-  local usedBagSlots = GetNumBagUsedSlots(INVENTORY_BACKPACK)
+function HSEventLogAddon:LogInventory(text, itemName)
+  local usedBagSlots = GetNumBagUsedSlots(BAG_BACKPACK)
   local backpackItemName = ""
   local backpackItemType = ""
   local trophyCount = 0
@@ -276,8 +422,7 @@ function HSEventLogAddon:LogInventory(text)
   local backpackItemTotalCount = 0
   local lowerBackpackItemName = ""
   local lowerInventoryToMonitor = ""
-  local correctedBackpackItemName = ""
-
+  
   if text == nil then
     text = ''
   end
@@ -285,8 +430,8 @@ function HSEventLogAddon:LogInventory(text)
   HSEventLogAddon.inventoryToMonitorCount = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 
   for x = 1, usedBagSlots do
-    backpackItemName = GetItemName(INVENTORY_BACKPACK, x)
-    backpackItemType = GetItemType(INVENTORY_BACKPACK, x)
+    backpackItemName = GetItemName(BAG_BACKPACK, x)
+    backpackItemType = GetItemType(BAG_BACKPACK, x)
 
     if (backpackItemType == ITEMTYPE_TROPHY) then
       trophyCount = trophyCount + 1
@@ -298,10 +443,10 @@ function HSEventLogAddon:LogInventory(text)
 
     -- Loop through inventory to monitor array
     for y = 1, #HSEventLogAddon.inventoryToMonitor do
-      backpackItemTotalCount = GetItemTotalCount(INVENTORY_BACKPACK, x)
+      backpackItemTotalCount = GetItemTotalCount(BAG_BACKPACK, x)
 
       lowerInventoryToMonitor = string.lower(HSEventLogAddon.inventoryToMonitor[y].Name)
-      correctedBackpackItemName = string.sub(lowerBackpackItemName, 1, string.len(lowerInventoryToMonitor))
+      local correctedBackpackItemName = string.sub(lowerBackpackItemName, 1, string.len(lowerInventoryToMonitor))
 
       if (lowerInventoryToMonitor == correctedBackpackItemName) then
         HSEventLogAddon.inventoryToMonitorCount[y] = backpackItemTotalCount
@@ -317,7 +462,11 @@ function HSEventLogAddon:LogInventory(text)
     end
   end
 
+  text = text .. "Achievement Points: " .. GetEarnedAchievementPoints() .. "/" .. GetTotalAchievementPoints() .. "\n"
   text = text .. HSEventLogAddon:GetChampionPoints() .. "\n"
+ 
+  self.savedVariables.PvpInfo = HSEventLogAddon:GetPvPInfo()
+  text = text .. "PVP Rank: " .. self.savedVariables.PvpInfo.Rank .. "/" .. self.savedVariables.PvpInfo.nextRankAt .. ", SubRank: " .. self.savedVariables.PvpInfo.SubRank .. "/" .. self.savedVariables.PvpInfo.nextSubRankAt
 
   HSEventLogAddon:SetSavedVariables()
   HSEventLogAddon:WriteLog(GetDate() .. " " .. GetTimeString() .. "\n" .. text)
@@ -340,6 +489,41 @@ function HSEventLogAddon:Round(num, idp)
   return math.floor(num * mult + 0.5) / mult
 end
 
+function HSEventLogAddon:GetResearchGrid()
+  local researchTable = {}
+
+  -- CRAFTING_TYPE_BLACKSMITHING
+  -- CRAFTING_TYPE_CLOTHIER
+  -- CRAFTING_TYPE_WOODWORKING
+  local _,_,MAXTRAITS = GetSmithingResearchLineInfo(1,1)
+
+  local blacksmi
+  thingResearchLines = GetNumSmithingResearchLines(CRAFTING_TYPE_BLACKSMITHING)
+  for line = 1, blacksmithingResearchLines do
+    for trait = 1, MAXTRAITS do
+      local traitType, traitDescription, known = GetSmithingResearchLineTraitInfo(CRAFTING_TYPE_BLACKSMITHING, x, trait)
+      local _,remaining = GetSmithingResearchLineTraitTimes(CRAFTING_TYPE_BLACKSMITHING, line, trait)
+      d(traitType .. ", " .. traitDescription .. ", " .. known)
+    end
+  end
+
+--  for craft, value in pairs(CS.account.crafting.research[CURRENT_PLAYER]) do
+--    for line = 1, GetNumSmithingResearchLines(craft) do
+--      CS.account.crafting.research[CURRENT_PLAYER][craft][line] = {}
+--      if not CS.account.crafting.studies[CURRENT_PLAYER][craft][line] then CS.account.crafting.studies[CURRENT_PLAYER][craft][line] = false end
+--      if not CS.account.crafting.stored[craft][line] then CS.account.crafting.stored[craft][line] = {} end
+--      for trait = 1, MAXTRAITS do
+--        if not CS.account.crafting.stored[craft][line][trait] then CS.account.crafting.stored[craft][line][trait] = {} end
+--        local _,_,known = GetSmithingResearchLineTraitInfo(craft,line,trait)
+--        local _,remaining = GetSmithingResearchLineTraitTimes(craft,line,trait)
+--        if remaining then CS.account.crafting.research[CURRENT_PLAYER][craft][line][trait] = remaining + GetTimeStamp()
+--        else CS.account.crafting.research[CURRENT_PLAYER][craft][line][trait] = known end
+--        CS.UpdatePanelIcon(craft,line,trait)
+--      end
+--    end
+--  end
+end
+
 function HSEventLogAddon:SetSavedVariables()
   self.savedVariables.Title = GetUnitTitle("player")
   self.savedVariables.Level = GetUnitLevel("player")
@@ -353,11 +537,18 @@ function HSEventLogAddon:SetSavedVariables()
   self.savedVariables.VPMax = GetUnitVeteranPointsMax("player")
   self.savedVariables.Alliance = GetAllianceName(GetUnitAlliance("player"))
 
+  self.savedVariables.AchievementPoints = GetEarnedAchievementPoints()
   self.savedVariables.Skill = HSEventLogAddon:GetSkills()
+  self.savedVariables.Titles = HSEventLogAddon:GetTitles()
   self.savedVariables.Journal = HSEventLogAddon:GetJournal()
   if self.savedVariables.Quest == nil then
     self.savedVariables.Quest = {}
   end
+
+  self.savedVariables.PvpInfo = HSEventLogAddon:GetPvPInfo()
+  
+  self.savedVariables.Inventory  = HSEventLogAddon:GetInventory(BAG_BACKPACK)
+  --self.accountVariables = HSEventLogAddon:GetInventory(BAG_BANK)
 
   self.savedVariables.HealthMax = GetPlayerStat(STAT_HEALTH_MAX, STAT_BONUS_OPTION_APPLY_BONUS, STAT_SOFT_CAP_OPTION_DONT_APPLY_SOFT_CAP)
 
@@ -366,8 +557,10 @@ function HSEventLogAddon:SetSavedVariables()
   self.savedVariables.BankedTelvarStones = GetBankedTelvarStones()
   self.savedVariables.Cash = GetCurrentMoney()
   self.savedVariables.ChampionPointsEarned = GetPlayerChampionPointsEarned()
+  self.savedVariables.Class = GetUnitClass("player")
   self.savedVariables.Date = GetDate()
   self.savedVariables.GuildCount = GetNumGuilds()
+  self.savedVariables.GuildInfo = HSEventLogAddon:GetGuildInfo()
   self.savedVariables.MailCount = GetNumMailItems()
   self.savedVariables.MailMax = GetMaxMailItems()
   self.savedVariables.MaxBagSize = GetBagSize(BAG_BACKPACK)
@@ -422,34 +615,9 @@ function HSEventLogAddon:SetSavedVariables()
   self.savedVariables.MountCapacity = inventoryBonus
   self.savedVariables.MountStamina = staminaBonus
   self.savedVariables.MountSpeed = speedBonus
-
-  --  self.savedVariables.Inventory = {}
-  --  local usedBagSlots = GetNumBagUsedSlots(INVENTORY_BACKPACK)
-  --  for x = 1, usedBagSlots do
-  --    self.savedVariables.Inventory[x].Name = GetItemName(INVENTORY_BACKPACK, x)
-  --    self.savedVariables.Inventory[x].Type = GetItemType(INVENTORY_BACKPACK, x)
-  --    self.savedVariables.Inventory[x].Count = GetItemTotalCount(INVENTORY_BACKPACK, x)
-  --  end
 end
 
 function HSEventLogAddon:WriteLog(text)
 
   HSEventLogAddonIndicatorLabel:SetText(text)
 end
-
-
-
-
-
-
---function HSEventLogAddon:GetCompletedQuests()
---  local completedQuestInfo = {}
---  local nextCompletedQuestId = GetNextCompletedQuestId()
---  while GetNextCompletedQuestId() ~= nil do
---    completedQuestInfo = {}
---    completedQuestInfo.Name, completedQuestInfo.QuestType = GetCompletedQuestInfo(nextCompletedQuestId)
---    d(completedQuestInfo.Name)
---    nextCompletedQuestId = GetNextCompletedQuestId(nextCompletedQuestId)
---  end
---end
-

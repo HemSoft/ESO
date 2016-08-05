@@ -1,4 +1,6 @@
-﻿namespace HemSoft.Eso.Api.Controllers
+﻿using HemSoft.Eso.Domain.Managers;
+
+namespace HemSoft.Eso.Api.Controllers
 {
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
@@ -15,7 +17,7 @@
     {
         private EsoEntities db = new EsoEntities();
 
-        // GET: api/CharacterActivities
+        // GET: api/CharacterActivities/GetCharacterActivities
         public IQueryable<CharacterActivity> GetCharacterActivities()
         {
             db.Configuration.ProxyCreationEnabled = false;
@@ -40,6 +42,12 @@
             }
 
             return Ok(characterActivity);
+        }
+
+        // GET: api/CharacterActivities/GetLastCharacterActivity
+        public CharacterActivity GetLastCharacterActivity(int characterId)
+        {
+            return CharacterActivityManager.GetLastActivity(characterId);
         }
 
         // PUT: api/CharacterActivities/5

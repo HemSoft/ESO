@@ -1,0 +1,37 @@
+﻿<div class="row" ng-controller="accountController as vmac">
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">Accounts</h2>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Last Logged In</th>
+                    <th>Telvar Stones</th>
+                    <th>CP</th>
+                    <th>Enlightened Pool</th>
+                    <th>Hours Played</th>
+                </tr>
+                <tr ng-repeat="account in vmac.accounts" style="cursor: pointer;" ng-click="vmac.selectAccount(account)">
+                    <td ng-bind="account.Id" />
+                    <td ng-bind="account.Name" />
+                    <td ng-bind="account.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
+                    <td ng-bind="account.BankedTelvarStones" />
+                    <td>
+                        <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{account.ChampionPointsEarned}}" aria-valuemin="0" aria-valuemax="501" ng-attr-style="width: {{(account.ChampionPointsEarned / 501) * 100}}%;">
+                            {{account.ChampionPointsEarned}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{account.EnlightenedPool}}" aria-valuemin="0" aria-valuemax="1200000" ng-attr-style="width: {{(account.EnlightenedPool / 1200000) * 100}}%;">
+                            {{account.EnlightenedPool}}
+                        </div>
+                    </td>
+                    <td ng-bind="account.HoursPlayed" />
+                <tr>
+            </table>
+        </div>
+    </div>
+</div>

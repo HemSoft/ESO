@@ -20,6 +20,10 @@ namespace HemSoft.Eso.Domain
             this.CharacterActivities = new HashSet<CharacterActivity>();
             this.CharacterSkills = new HashSet<CharacterSkill>();
             this.CharacterQuests = new HashSet<CharacterQuest>();
+            this.CharacterInventories = new HashSet<CharacterInventory>();
+            this.CharacterTitles = new HashSet<CharacterTitle>();
+            this.CharacterStats = new HashSet<CharacterStat>();
+            this.AchievementCategories = new HashSet<AchievementCategory>();
         }
     
         public int Id { get; set; }
@@ -37,6 +41,10 @@ namespace HemSoft.Eso.Domain
         public Nullable<int> HoursPlayed { get; set; }
         public Nullable<int> BankedTelvarStones { get; set; }
         public Nullable<int> AlliancePoints { get; set; }
+        public string FullImage { get; set; }
+        public string FaceImage { get; set; }
+        public string BuildImage { get; set; }
+        public string Title { get; set; }
     
         public virtual Account Account { get; set; }
         public virtual AllianceLookup AllianceLookup { get; set; }
@@ -48,5 +56,13 @@ namespace HemSoft.Eso.Domain
         public virtual ICollection<CharacterSkill> CharacterSkills { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CharacterQuest> CharacterQuests { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CharacterInventory> CharacterInventories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CharacterTitle> CharacterTitles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CharacterStat> CharacterStats { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AchievementCategory> AchievementCategories { get; set; }
     }
 }

@@ -1,0 +1,61 @@
+﻿<div class="row" ng-controller="characterInfoController as vmcic">
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">
+                Character Info {{ vmcic.selectedCharacter.Name }}
+                <span class="dropdown" style="cursor: pointer;">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        {{ vmcic.selectedCharacter.Name || 'Select Character' }}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li ng-repeat="c in vmcic.characters">
+                            <a ng-click="vmcic.characterSelected(c);">{{ c.Name }}</a>
+                        </li>
+                    </ul>
+                </span>
+            </h2>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <p>Face Image:</p>
+                    <img ng-src="{{ vmcic.selectedCharacter.FaceImage }}" class="img-rounded" />
+                </div>
+                <div class="col-md-2" style="background-color: dimgrey; text-align: right;">
+                    <p>Level:</p>
+                    <p>Hours Played:</p>
+                    <p>Achievement Points:</p>
+                    <p>Banked Telvar Stones:</p>
+                    <p>Champion Points:</p>
+                    <p>Enlightened Pool:</p>
+                    <p>Last Login:</p>
+                    <p>Banked Cash:</p>
+                    <p>Cash:</p>
+                    <p>Mount:</p>
+                </div>
+                <div class="col-md-3 panel">
+                    <p>{{ (vmcic.selectedCharacter.EffectiveLevel > 50) ? ('VR' + (50 - vmcic.selectedCharacter.EffectiveLevel)) : (vmcic.selectedCharacter.EffectiveLevel) }}</p>
+                    <p>{{ vmcic.selectedCharacter.HoursPlayed }}</p>
+                    <p>{{ vmcic.selectedCharacter.AchievementPoints }}</p>
+                    <p>{{ vmcic.selectedCharacter.BankedTelvarStones }}</p>
+                    <p>{{ vmcic.selectedCharacter.ChampionPointsEarned }}</p>
+                    <p>{{ vmcic.selectedCharacter.EnlightenedPool | number }}</p>
+                    <p>{{ vmcic.selectedCharacter.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss' }}</p>
+                    <p>{{ vmcic.selectedCharacterLastActivity.BankedCash | number}}</p>
+                    <p>{{ vmcic.selectedCharacterLastActivity.Cash | number}}</p>
+                    <p>{{ vmcic.selectedCharacterLastActivity.MountSpeed }}/{{ vmcic.selectedCharacterLastActivity.MountStamina }}/{{ vmcic.selectedCharacterLastActivity.MountCapacity }}</p>
+                </div>
+                </div>
+                <div class="col-md-1 panel">
+                </div>
+                <div class="col-md-2 panel">
+                </div>
+                <div class="col-md-2 panel">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -18,6 +18,7 @@ namespace HemSoft.Eso.Domain
         public Account()
         {
             this.Characters = new HashSet<Character>();
+            this.AccountGuilds = new HashSet<AccountGuild>();
         }
     
         public int Id { get; set; }
@@ -32,5 +33,7 @@ namespace HemSoft.Eso.Domain
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Character> Characters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AccountGuild> AccountGuilds { get; set; }
     }
 }

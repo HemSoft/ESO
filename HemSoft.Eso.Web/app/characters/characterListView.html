@@ -1,0 +1,39 @@
+﻿<div class="row" ng-controller="characterController as vmcc" ng-show="vmcc.selectedAccount">
+    <div class="col-md-12 panel">
+        <div class="panel-heading">
+            <h2 class="text-center">Characters</h2>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Last Logged In</th>
+                    <th>Level</th>
+                    <th>Achiev. Points</th>
+                    <td>Alliance Points</td>
+                    <th>Hours Played</th>
+                </tr>
+                <tr ng-repeat="character in vmcc.characters" style="cursor: pointer;">
+                    <td>
+                        <a ng-href="/Home/CharacterDetail">{{ character.Id }}</a>
+                    </td>
+                    <td ng-bind="character.Name" ng-click="vmcc.selectCharacter(character)" />
+                    <td ng-bind="character.LastLogin | date: 'EEEE MMM d, yyyy HH:mm:ss'" />
+                    <td>
+                        <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{character.EffectiveLevel}}" aria-valuemin="0" aria-valuemax="66" ng-attr-style="width: {{(character.EffectiveLevel / 66) * 100}}%;">
+                            {{character.EffectiveLevel}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="{{character.AchievementPoints}}" aria-valuemin="0" aria-valuemax="16950" ng-attr-style="width: {{(character.AchievementPoints / 16950) * 100}}%;">
+                            {{character.AchievementPoints}}
+                        </div>
+                    </td>
+                    <td ng-bind="character.AlliancePoints" />
+                    <td ng-bind="character.HoursPlayed" />
+                <tr>
+            </table>
+        </div>
+    </div>
+</div>

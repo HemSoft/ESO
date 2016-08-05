@@ -36,6 +36,11 @@ namespace HemSoft.Eso.CharacterMonitor
             var titleList = new List<string>();
             var characterStat = new CharacterStat();
 
+            var achievementCategories = new List<AchievementCategory>();
+            var achievementSubCategories = new List<AchievementSubCategory>();
+            var achievementInfos = new List<AchievementInfo>();
+            var achievementCriterias = new List<AchievementCriteria>();
+
             const string filePath = @"C:\Users\franz\Documents\Elder Scrolls Online\live\SavedVariables\HSEventLog.lua";
             if (!File.Exists(filePath))
             {
@@ -84,6 +89,165 @@ namespace HemSoft.Eso.CharacterMonitor
                             {
                                 case "AchievementPoints":
                                     characterActivity.AchievementPoints = int.Parse(property.Value.ToString());
+                                    break;
+                                case "Achievements":
+                                    achievementCategories = new List<AchievementCategory>();
+                                    var achievementCategoriesDictList = lua.GetTableDict(property.Value as LuaTable);
+
+                                    foreach (var categoryTable in achievementCategoriesDictList)
+                                    {
+                                        var achievementCategoriesDictList2 = lua.GetTableDict(categoryTable.Value as LuaTable);
+                                        var achievementCategory = new AchievementCategory();
+                                        achievementCategory.CharacterId = character.Id;
+
+                                        foreach (var category in achievementCategoriesDictList2)
+                                        {
+                                            switch (category.Key.ToString())
+                                            {
+                                                case "Achievements":
+                                                    achievementCategory.Achievements = int.Parse(category.Value.ToString());
+                                                    break;
+                                                case "EarnedPoints":
+                                                    achievementCategory.EarnedPointes = int.Parse(category.Value.ToString());
+                                                    break;
+                                                case "Name":
+                                                    achievementCategory.Name = category.Value.ToString();
+                                                    break;
+                                                case "SubCategories":
+                                                    achievementCategory.SubCategories = int.Parse(category.Value.ToString());
+                                                    break;
+                                                case "SubCategoryInfo":
+                                                    achievementSubCategories = new List<AchievementSubCategory>();
+                                                    var subCategoryDictList = lua.GetTableDict(category.Value as LuaTable);
+                                                    foreach (var subCategory1 in subCategoryDictList)
+                                                    {
+                                                        var subCategoryDictList2 = lua.GetTableDict(subCategory1.Value as LuaTable);
+                                                        var subCategory = new AchievementSubCategory();
+                                                        subCategory.AchievementCategoryId = achievementCategory.Id;
+                                                        subCategory.AchievementCategory = achievementCategory;
+
+                                                        foreach (var subCategory2 in subCategoryDictList2)
+                                                        {
+                                                            switch (subCategory2.Key.ToString())
+                                                            {
+                                                                case "AchievementInfo":
+                                                                    achievementInfos = new List<AchievementInfo>();
+                                                                    var achievementInfoDictList = lua.GetTableDict(subCategory2.Value as LuaTable);
+                                                                    foreach (var achievementInfo1 in achievementInfoDictList)
+                                                                    {
+                                                                        var achievementInfoDictList2 = lua.GetTableDict(achievementInfo1.Value as LuaTable);
+                                                                        var achievementInfo = new AchievementInfo();
+                                                                        achievementInfo.AchievementSubCategory = subCategory;
+                                                                        var completedDate = string.Empty;
+                                                                        var completedTime = string.Empty;
+                                                                        var completed = false;
+                                                                        foreach (var achievementInfo2 in achievementInfoDictList2)
+                                                                        {
+                                                                            switch (achievementInfo2.Key.ToString())
+                                                                            {
+                                                                                case "Completed":
+                                                                                    completed = bool.Parse(achievementInfo2.Value.ToString());
+                                                                                    break;
+                                                                                case "CompletedDate":
+                                                                                    completedDate = achievementInfo2.Value.ToString();
+                                                                                    break;
+                                                                                case "CompletedTime":
+                                                                                    completedTime = achievementInfo2.Value.ToString();
+                                                                                    break;
+                                                                                case "Criterion":
+                                                                                    var criterionDictList = lua.GetTableDict(achievementInfo2.Value as LuaTable);
+                                                                                    achievementCriterias = new List<AchievementCriteria>();
+                                                                                    foreach (var criterion1 in criterionDictList)
+                                                                                    {
+                                                                                        var criterionDictList2 = lua.GetTableDict(criterion1.Value as LuaTable);
+                                                                                        var criteria = new AchievementCriteria();
+                                                                                        criteria.AchievementInfo = achievementInfo;
+                                                                                        criteria.AchievementInfoId = achievementInfo.Id;
+                                                                                        foreach (var criterion2 in criterionDictList2)
+                                                                                        {
+                                                                                            switch (criterion2.Key.ToString())
+                                                                                            {
+                                                                                                case "Completed":
+                                                                                                    if (criterion2.Value.ToString() == "1")
+                                                                                                    { 
+                                                                                                        criteria.Completed = true;
+                                                                                                    }
+                                                                                                    else
+                                                                                                    { 
+                                                                                                        criteria.Completed = false;
+                                                                                                    }
+                                                                                                    break;
+                                                                                                case "Description":
+                                                                                                    criteria.Description = criterion2.Value.ToString();
+                                                                                                    break;
+                                                                                                case "Required":
+                                                                                                    if (criterion2.Value.ToString() == "1")
+                                                                                                    {
+                                                                                                        criteria.Required = true;
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        criteria.Required = false;
+                                                                                                    }
+                                                                                                    break;
+                                                                                            }
+                                                                                        }
+                                                                                        achievementCriterias.Add(criteria);
+                                                                                    }
+                                                                                    achievementInfo.AchievementCriterias = achievementCriterias;
+                                                                                    break;
+                                                                                case "Description":
+                                                                                    achievementInfo.Description = achievementInfo2.Value.ToString();
+                                                                                    break;
+                                                                                case "Id":
+                                                                                    achievementInfo.Id = int.Parse(achievementInfo2.Value.ToString());
+                                                                                    break;
+                                                                                case "Name":
+                                                                                    achievementInfo.Name = achievementInfo2.Value.ToString();
+                                                                                    break;
+                                                                                case "Points":
+                                                                                    achievementInfo.Points = int.Parse(achievementInfo2.Value.ToString());
+                                                                                    break;
+                                                                            }
+                                                                        }
+
+                                                                        if (completed &&
+                                                                            !string.IsNullOrWhiteSpace(completedDate) &&
+                                                                            !string.IsNullOrWhiteSpace(completedTime))
+                                                                        {
+                                                                            achievementInfo.Completed = DateTime.Parse(completedDate + " " + completedTime);
+                                                                        }
+                                                                        achievementInfos.Add(achievementInfo);
+                                                                    }
+                                                                    subCategory.AchievementInfoes = achievementInfos;
+                                                                    break;
+                                                                case "Achievements":
+                                                                    subCategory.Achievements = int.Parse(subCategory2.Value.ToString());
+                                                                    break;
+                                                                case "EarnedPoints":
+                                                                    subCategory.EarnedPoints = int.Parse(subCategory2.Value.ToString());
+                                                                    break;
+                                                                case "Name":
+                                                                    subCategory.Name = subCategory2.Value.ToString();
+                                                                    break;
+                                                                case "TotalPoints":
+                                                                    subCategory.TotalPoints = int.Parse(subCategory2.Value.ToString());
+                                                                    break;
+                                                            }
+                                                        }
+
+                                                        achievementSubCategories.Add(subCategory);
+                                                    }
+
+                                                    achievementCategory.AchievementSubCategories = achievementSubCategories;
+                                                    break;
+                                                case "TotalPoints":
+                                                    achievementCategory.TotalPoints = int.Parse(category.Value.ToString());
+                                                    break;
+                                            }
+                                        }
+                                        achievementCategories.Add(achievementCategory);
+                                    }
                                     break;
                                 case "Alliance":
                                     break;
@@ -627,6 +791,8 @@ namespace HemSoft.Eso.CharacterMonitor
                                     var titles = lua.GetTableDict(property.Value as LuaTable);
                                     titleList.AddRange(titles.Select(t => t.Value.ToString()));
                                     break;
+                                default:
+                                    break;
                             }
                         }
 
@@ -735,24 +901,24 @@ namespace HemSoft.Eso.CharacterMonitor
                         }
 
                         // Uncomment two lines below to force updates:
-                        //UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat);
+                        //UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat, achievementCategories);
                         //Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
 
                         if (!character.LastLogin.HasValue)
                         {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat, achievementCategories);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
                         else if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                         {
-                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat);
+                            UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat, achievementCategories);
                             Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                         }
                         else if (lastCharacterActivity.LastLogin.HasValue)
                         {
                             if (DateTime.Compare(characterActivity.LastLogin.Value, lastCharacterActivity.LastLogin.Value) > 0)
                             {
-                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat);
+                                UpdateCharacterActvity(account, character, characterActivity, skillList, questList, inventoryList, titleList, guildList, characterStat, achievementCategories);
                                 Console.WriteLine($"Updated { character.Name } at { DateTime.Now.ToLongTimeString() }");
                             }
                         }
@@ -763,8 +929,10 @@ namespace HemSoft.Eso.CharacterMonitor
 
         private static void UpdateCharacterActvity(Account account, Character character, CharacterActivity characterActivity,
             List<CharacterSkill> skillList, List<CharacterQuest> quests, List<CharacterInventory> inventoryList,
-            List<string> titleList, List<AccountGuild> guildList, CharacterStat characterStat)
+            List<string> titleList, List<AccountGuild> guildList, CharacterStat characterStat, 
+            List<AchievementCategory> achievementCategories)
         {
+            Console.WriteLine($"--> Updating { character.Name } ...");
             character.AchievementPoints = characterActivity.AchievementPoints;
             character.AlliancePoints = characterActivity.AlliancePoints;
             character.BankedTelvarStones = characterActivity.BankedTelvarStones;
@@ -789,15 +957,25 @@ namespace HemSoft.Eso.CharacterMonitor
             character.EffectiveLevel = characterActivity.EffectiveLevel;
 
             AccountManager.Save(account);
+            Console.WriteLine($"--> Updating { character.Name } Skills ...");
             CharacterManager.SaveSkills(skillList, character.Id);
             CharacterManager.SaveTitles(titleList, character.Id);
+
+            //TODO:
+            //Console.WriteLine($"--> Updating { character.Name } Achievements ...");
+            //CharacterManager.SaveAchievements(achievementCategories);
+
+            Console.WriteLine($"--> Updating { character.Name } Inventory ...");
             CharacterInventoryManager.Save(inventoryList);
+            Console.WriteLine($"--> Updating { character.Name } Quests ...");
             CharacterQuestManager.Save(quests);
             CharacterManager.Save(character);
+            Console.WriteLine($"--> Updating { character.Name } Activities ...");
             CharacterActivityManager.Save(characterActivity);
             CharacterStatManager.Save(characterStat);
             AccountManager.SaveGuildInfo(guildList);
             AccountManager.Save(account);
+            Console.WriteLine($"--> Updating { character.Name } Done.");
         }
     }
 

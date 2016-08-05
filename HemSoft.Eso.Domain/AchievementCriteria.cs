@@ -12,20 +12,14 @@ namespace HemSoft.Eso.Domain
     using System;
     using System.Collections.Generic;
     
-    public partial class AccountGuild
+    public partial class AchievementCriteria
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public bool Completed { get; set; }
+        public bool Required { get; set; }
         public string Description { get; set; }
-        public Nullable<System.DateTime> Founded { get; set; }
-        public string LeaderName { get; set; }
-        public int Members { get; set; }
-        public int MembersOnline { get; set; }
-        public string MotDescription { get; set; }
-        public int AccountId { get; set; }
-        public Nullable<int> AllianceId { get; set; }
-        public string AllianceName { get; set; }
+        public int AchievementInfoId { get; set; }
     
-        public virtual Account Account { get; set; }
+        public virtual AchievementInfo AchievementInfo { get; set; }
     }
 }

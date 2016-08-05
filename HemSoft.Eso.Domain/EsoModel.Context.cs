@@ -45,6 +45,10 @@ namespace HemSoft.Eso.Domain
         public virtual DbSet<ItemTypeLookup> ItemTypeLookups { get; set; }
         public virtual DbSet<AccountGuild> AccountGuilds { get; set; }
         public virtual DbSet<CharacterStat> CharacterStats { get; set; }
+        public virtual DbSet<AchievementCategory> AchievementCategories { get; set; }
+        public virtual DbSet<AchievementCriteria> AchievementCriterias { get; set; }
+        public virtual DbSet<AchievementInfo> AchievementInfoes { get; set; }
+        public virtual DbSet<AchievementSubCategory> AchievementSubCategories { get; set; }
     
         public virtual ObjectResult<CharactersNeedingAttention_Result> CharactersNeedingAttention()
         {

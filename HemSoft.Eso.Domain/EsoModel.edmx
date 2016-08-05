@@ -35,6 +35,50 @@
           <Property Name="MotDescription" Type="varchar(max)" />
           <Property Name="AccountId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="AchievementCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+          <Property Name="Achievements" Type="int" Nullable="false" />
+          <Property Name="SubCategories" Type="int" Nullable="false" />
+          <Property Name="TotalPoints" Type="int" Nullable="false" />
+          <Property Name="EarnedPointes" Type="int" Nullable="false" />
+          <Property Name="CharacterId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AchievementCriteria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Completed" Type="bit" Nullable="false" />
+          <Property Name="Required" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="AchievementInfoId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AchievementInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+          <Property Name="Points" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="Completed" Type="datetime" />
+          <Property Name="AchievementSubCategoryId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AchievementSubCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+          <Property Name="Achievements" Type="int" Nullable="false" />
+          <Property Name="TotalPoints" Type="int" Nullable="false" />
+          <Property Name="EarnedPoints" Type="int" Nullable="false" />
+          <Property Name="AchievementCategoryId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="AllianceLookup">
           <Key>
             <PropertyRef Name="Id" />
@@ -329,6 +373,42 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AchievementCategory_Character">
+          <End Role="Character" Type="Self.Character" Multiplicity="1" />
+          <End Role="AchievementCategory" Type="Self.AchievementCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Character">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AchievementCategory">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievementCriteria_AchievementInfo">
+          <End Role="AchievementInfo" Type="Self.AchievementInfo" Multiplicity="1" />
+          <End Role="AchievementCriteria" Type="Self.AchievementCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AchievementInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AchievementCriteria">
+              <PropertyRef Name="AchievementInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievementSubCategory_AchievementCategory">
+          <End Role="AchievementCategory" Type="Self.AchievementCategory" Multiplicity="1" />
+          <End Role="AchievementSubCategory" Type="Self.AchievementSubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AchievementCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AchievementSubCategory">
+              <PropertyRef Name="AchievementCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Character_Account">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="Character" Type="Self.Character" Multiplicity="*" />
@@ -500,6 +580,10 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
         <EntityContainer Name="EsoModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccountGuild" EntityType="Self.AccountGuild" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AchievementCategory" EntityType="Self.AchievementCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AchievementCriteria" EntityType="Self.AchievementCriteria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AchievementInfo" EntityType="Self.AchievementInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AchievementSubCategory" EntityType="Self.AchievementSubCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AllianceLookup" EntityType="Self.AllianceLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ArmorTypeLookup" EntityType="Self.ArmorTypeLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Character" EntityType="Self.Character" Schema="dbo" store:Type="Tables" />
@@ -528,6 +612,18 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <AssociationSet Name="FK_AccountGuild_AccountGuild" Association="Self.FK_AccountGuild_AccountGuild">
             <End Role="AccountGuild" EntitySet="AccountGuild" />
             <End Role="AccountGuild1" EntitySet="AccountGuild" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievementCategory_Character" Association="Self.FK_AchievementCategory_Character">
+            <End Role="Character" EntitySet="Character" />
+            <End Role="AchievementCategory" EntitySet="AchievementCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievementCriteria_AchievementInfo" Association="Self.FK_AchievementCriteria_AchievementInfo">
+            <End Role="AchievementInfo" EntitySet="AchievementInfo" />
+            <End Role="AchievementCriteria" EntitySet="AchievementCriteria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievementSubCategory_AchievementCategory" Association="Self.FK_AchievementSubCategory_AchievementCategory">
+            <End Role="AchievementCategory" EntitySet="AchievementCategory" />
+            <End Role="AchievementSubCategory" EntitySet="AchievementSubCategory" />
           </AssociationSet>
           <AssociationSet Name="FK_Character_Account" Association="Self.FK_Character_Account">
             <End Role="Account" EntitySet="Account" />
@@ -644,6 +740,7 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <NavigationProperty Name="CharacterTitles" Relationship="EsoModel.FK_CharacterTitle_Character" FromRole="Character" ToRole="CharacterTitle" />
           <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CharacterStats" Relationship="EsoModel.FK_CharacterStat_Character" FromRole="Character" ToRole="CharacterStat" />
+          <NavigationProperty Name="AchievementCategories" Relationship="EsoModel.FK_AchievementCategory_Character" FromRole="Character" ToRole="AchievementCategory" />
         </EntityType>
         <EntityType Name="CharacterActivity">
           <Key>
@@ -882,14 +979,30 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
             <End Role="Account" EntitySet="Accounts" />
             <End Role="AccountGuild" EntitySet="AccountGuilds" />
           </AssociationSet>
-          <AssociationSet Name="FK_AccountGuild_AccountGuild" Association="EsoModel.FK_AccountGuild_AccountGuild">
-            <End Role="AccountGuild" EntitySet="AccountGuilds" />
-            <End Role="AccountGuild1" EntitySet="AccountGuilds" />
-          </AssociationSet>
           <EntitySet Name="CharacterStats" EntityType="EsoModel.CharacterStat" />
           <AssociationSet Name="FK_CharacterStat_Character" Association="EsoModel.FK_CharacterStat_Character">
             <End Role="Character" EntitySet="Characters" />
             <End Role="CharacterStat" EntitySet="CharacterStats" />
+          </AssociationSet>
+          <EntitySet Name="AchievementCategories" EntityType="EsoModel.AchievementCategory" />
+          <EntitySet Name="AchievementCriterias" EntityType="EsoModel.AchievementCriteria" />
+          <EntitySet Name="AchievementInfoes" EntityType="EsoModel.AchievementInfo" />
+          <EntitySet Name="AchievementSubCategories" EntityType="EsoModel.AchievementSubCategory" />
+          <AssociationSet Name="FK_AchievementSubCategory_AchievementCategory" Association="EsoModel.FK_AchievementSubCategory_AchievementCategory">
+            <End Role="AchievementCategory" EntitySet="AchievementCategories" />
+            <End Role="AchievementSubCategory" EntitySet="AchievementSubCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievementCriteria_AchievementInfo" Association="EsoModel.FK_AchievementCriteria_AchievementInfo">
+            <End Role="AchievementInfo" EntitySet="AchievementInfoes" />
+            <End Role="AchievementCriteria" EntitySet="AchievementCriterias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievementInfo_AchievementSubCategory" Association="EsoModel.FK_AchievementInfo_AchievementSubCategory">
+            <End Role="AchievementSubCategory" EntitySet="AchievementSubCategories" />
+            <End Role="AchievementInfo" EntitySet="AchievementInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievementCategory_Character" Association="EsoModel.FK_AchievementCategory_Character">
+            <End Role="Character" EntitySet="Characters" />
+            <End Role="AchievementCategory" EntitySet="AchievementCategories" />
           </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CharactersNeedingAttention_Result">
@@ -1238,8 +1351,6 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
           <Property Name="MotDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="AccountId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="EsoModel.FK_AccountGuild_Account" FromRole="AccountGuild" ToRole="Account" />
-          <NavigationProperty Name="AccountGuild1" Relationship="EsoModel.FK_AccountGuild_AccountGuild" FromRole="AccountGuild" ToRole="AccountGuild1" />
-          <NavigationProperty Name="AccountGuild2" Relationship="EsoModel.FK_AccountGuild_AccountGuild" FromRole="AccountGuild1" ToRole="AccountGuild" />
           <Property Name="AllianceId" Type="Int32" />
           <Property Name="AllianceName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
@@ -1252,18 +1363,6 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
             </Principal>
             <Dependent Role="AccountGuild">
               <PropertyRef Name="AccountId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AccountGuild_AccountGuild">
-          <End Type="EsoModel.AccountGuild" Role="AccountGuild" Multiplicity="1" />
-          <End Type="EsoModel.AccountGuild" Role="AccountGuild1" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="AccountGuild">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AccountGuild1">
-              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1323,6 +1422,105 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="CharacterStat">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AchievementCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Achievements" Type="Int32" Nullable="false" />
+          <Property Name="SubCategories" Type="Int32" Nullable="false" />
+          <Property Name="TotalPoints" Type="Int32" Nullable="false" />
+          <Property Name="EarnedPointes" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AchievementSubCategories" Relationship="EsoModel.FK_AchievementSubCategory_AchievementCategory" FromRole="AchievementCategory" ToRole="AchievementSubCategory" />
+          <Property Name="CharacterId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Character" Relationship="EsoModel.FK_AchievementCategory_Character" FromRole="AchievementCategory" ToRole="Character" />
+        </EntityType>
+        <EntityType Name="AchievementCriteria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Completed" Type="Boolean" Nullable="false" />
+          <Property Name="Required" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AchievementInfoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AchievementInfo" Relationship="EsoModel.FK_AchievementCriteria_AchievementInfo" FromRole="AchievementCriteria" ToRole="AchievementInfo" />
+        </EntityType>
+        <EntityType Name="AchievementInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Points" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Completed" Type="DateTime" Precision="3" />
+          <Property Name="AchievementSubCategoryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AchievementCriterias" Relationship="EsoModel.FK_AchievementCriteria_AchievementInfo" FromRole="AchievementInfo" ToRole="AchievementCriteria" />
+          <NavigationProperty Name="AchievementSubCategory" Relationship="EsoModel.FK_AchievementInfo_AchievementSubCategory" FromRole="AchievementInfo" ToRole="AchievementSubCategory" />
+        </EntityType>
+        <EntityType Name="AchievementSubCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Achievements" Type="Int32" Nullable="false" />
+          <Property Name="TotalPoints" Type="Int32" Nullable="false" />
+          <Property Name="EarnedPoints" Type="Int32" Nullable="false" />
+          <Property Name="AchievementCategoryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AchievementCategory" Relationship="EsoModel.FK_AchievementSubCategory_AchievementCategory" FromRole="AchievementSubCategory" ToRole="AchievementCategory" />
+          <NavigationProperty Name="AchievementInfoes" Relationship="EsoModel.FK_AchievementInfo_AchievementSubCategory" FromRole="AchievementSubCategory" ToRole="AchievementInfo" />
+          </EntityType>
+        <Association Name="FK_AchievementSubCategory_AchievementCategory">
+          <End Type="EsoModel.AchievementCategory" Role="AchievementCategory" Multiplicity="1" />
+          <End Type="EsoModel.AchievementSubCategory" Role="AchievementSubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AchievementCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AchievementSubCategory">
+              <PropertyRef Name="AchievementCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievementCriteria_AchievementInfo">
+          <End Type="EsoModel.AchievementInfo" Role="AchievementInfo" Multiplicity="1" />
+          <End Type="EsoModel.AchievementCriteria" Role="AchievementCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AchievementInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AchievementCriteria">
+              <PropertyRef Name="AchievementInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievementInfo_AchievementSubCategory">
+          <End Type="EsoModel.AchievementSubCategory" Role="AchievementSubCategory" Multiplicity="1" />
+          <End Type="EsoModel.AchievementInfo" Role="AchievementInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AchievementSubCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AchievementInfo">
+              <PropertyRef Name="AchievementSubCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievementCategory_Character">
+          <End Type="EsoModel.Character" Role="Character" Multiplicity="1" />
+          <End Type="EsoModel.AchievementCategory" Role="AchievementCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Character">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AchievementCategory">
               <PropertyRef Name="CharacterId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1800,6 +1998,54 @@ warning 6002: The table/view 'Eso.dbo.ItemTypeLookup' does not have a primary ke
                 <ScalarProperty Name="Block" ColumnName="Block" />
                 <ScalarProperty Name="AttackPower" ColumnName="AttackPower" />
                 <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AchievementCategories">
+            <EntityTypeMapping TypeName="EsoModel.AchievementCategory">
+              <MappingFragment StoreEntitySet="AchievementCategory">
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="EarnedPointes" ColumnName="EarnedPointes" />
+                <ScalarProperty Name="TotalPoints" ColumnName="TotalPoints" />
+                <ScalarProperty Name="SubCategories" ColumnName="SubCategories" />
+                <ScalarProperty Name="Achievements" ColumnName="Achievements" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AchievementCriterias">
+            <EntityTypeMapping TypeName="EsoModel.AchievementCriteria">
+              <MappingFragment StoreEntitySet="AchievementCriteria">
+                <ScalarProperty Name="AchievementInfoId" ColumnName="AchievementInfoId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Required" ColumnName="Required" />
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AchievementInfoes">
+            <EntityTypeMapping TypeName="EsoModel.AchievementInfo">
+              <MappingFragment StoreEntitySet="AchievementInfo">
+                <ScalarProperty Name="AchievementSubCategoryId" ColumnName="AchievementSubCategoryId" />
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AchievementSubCategories">
+            <EntityTypeMapping TypeName="EsoModel.AchievementSubCategory">
+              <MappingFragment StoreEntitySet="AchievementSubCategory">
+                <ScalarProperty Name="AchievementCategoryId" ColumnName="AchievementCategoryId" />
+                <ScalarProperty Name="EarnedPoints" ColumnName="EarnedPoints" />
+                <ScalarProperty Name="TotalPoints" ColumnName="TotalPoints" />
+                <ScalarProperty Name="Achievements" ColumnName="Achievements" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

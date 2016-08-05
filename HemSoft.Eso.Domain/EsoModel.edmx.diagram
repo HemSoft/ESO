@@ -37,9 +37,16 @@
         <AssociationConnector Association="EsoModel.FK_CharacterInventory_ArmorTypeLookup" />
         <EntityTypeShape EntityType="EsoModel.AccountGuild" Width="1.5" PointX="3" PointY="10.625" />
         <AssociationConnector Association="EsoModel.FK_AccountGuild_Account" />
-        <AssociationConnector Association="EsoModel.FK_AccountGuild_AccountGuild" />
         <EntityTypeShape EntityType="EsoModel.CharacterStat" Width="1.5" PointX="5.25" PointY="13.25" />
         <AssociationConnector Association="EsoModel.FK_CharacterStat_Character" />
+        <EntityTypeShape EntityType="EsoModel.AchievementCategory" Width="1.5" PointX="11.375" PointY="7" />
+        <EntityTypeShape EntityType="EsoModel.AchievementCriteria" Width="1.5" PointX="18.125" PointY="7.125" />
+        <EntityTypeShape EntityType="EsoModel.AchievementInfo" Width="1.5" PointX="15.875" PointY="7" />
+        <EntityTypeShape EntityType="EsoModel.AchievementSubCategory" Width="1.5" PointX="13.625" PointY="7" />
+        <AssociationConnector Association="EsoModel.FK_AchievementSubCategory_AchievementCategory" />
+        <AssociationConnector Association="EsoModel.FK_AchievementCriteria_AchievementInfo" />
+        <AssociationConnector Association="EsoModel.FK_AchievementInfo_AchievementSubCategory" />
+        <AssociationConnector Association="EsoModel.FK_AchievementCategory_Character" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

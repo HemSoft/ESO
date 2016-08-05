@@ -57,6 +57,18 @@
     <Compile Include="AccountGuild.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="AchievementCategory.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AchievementCriteria.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AchievementInfo.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AchievementSubCategory.cs">
+      <DependentUpon>EsoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="AllianceLookup.cs">
       <DependentUpon>EsoModel.tt</DependentUpon>
     </Compile>

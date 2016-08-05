@@ -31,7 +31,7 @@
                 {
                     if (c.EffectiveLevel == 66)
                     {
-                        var daily = new OrsiniumDaily {Character = c};
+                        var daily = new OrsiniumDaily { Character = c };
                         var completedCount = 0;
                         foreach (var q in c.CharacterQuests)
                         {
@@ -100,10 +100,10 @@
 
                     foreach (var q in quests)
                     {
-                        // Writs reset at midnight CST.
-                        if (q.Completed.AddHours(-6).Date == DateTime.UtcNow.AddHours(-6).Date)
+                        if (q.Name.ToLower().Contains("pledge"))
                         {
-                            if (q.Name.ToLower().Contains("pledge"))
+                            // Writs reset at midnight CST.
+                            if (q.Completed.AddHours(-6).Date == DateTime.UtcNow.AddHours(-6).Date)
                             {
                                 if (q.Name.ToLower().Contains("veteran"))
                                 {
@@ -177,7 +177,7 @@
                         {
                             UpdateMissedWrits(dailyWrit);
                             dailyWrits.Add(dailyWrit);
-                            dailyWrit = new DailyWrit {Character = c.Character};
+                            dailyWrit = new DailyWrit { Character = c.Character };
                         }
                     }
                     else
@@ -187,7 +187,7 @@
                             UpdateMissedWrits(dailyWrit);
                             dailyWrits.Add(dailyWrit);
                         }
-                        dailyWrit = new DailyWrit {Character = c.Character};
+                        dailyWrit = new DailyWrit { Character = c.Character };
                     }
 
                     foreach (var q in quests)
